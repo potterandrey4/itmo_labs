@@ -1,0 +1,22 @@
+{
+  "name": "public_html",
+  "version": "1.0.0",
+  "description": "laba1",
+  "main": "script.js",
+  "scripts": {
+    "test": "test_command"
+  },
+  "repository": {
+    "type": "git",
+    "url": "none"
+  },
+  "author": "Andrey",
+  "license": "ISC",
+  "devDependencies": {
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4"
+  },
+  "scripts": {
+  "build": "webpack"
+  }
+}

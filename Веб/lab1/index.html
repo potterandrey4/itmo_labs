@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laba1</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="styles.css"> -->
+    <link rel="shortcut icon" href="static/favicon.ico" type="image/x-icon">
+    <style>
+    	html,
+body {
+    height: 100%;
+}
+
+
+body {
+    background-color: #0103;
+}
+
+
+
+a {
+    text-decoration: none;
+}
+
+
+a:hover {
+    text-decoration: none;
+}
+
+h1, h2, h3, h4, h5, h6, a {
+    color: black;
+}
+
+img {
+    border-radius: 5px;
+    width: 60%;
+}
+
+.content {
+    min-height: 100%;
+}
+
+.header {
+    background-color: #222;
+    text-align: center;
+    color: #3399ff !important;
+    padding: 1% 0;
+}
+
+.header h1 {
+    font-family: cursive;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 55px;
+    line-height: 57px;
+    padding-bottom: 1%;
+}
+
+.header h1>a:hover {
+    color: #3399ff !important;
+}
+
+.header * {
+    text-decoration: none;
+    color: #3399ff !important;
+}
+
+.wrapper {
+    min-height: 100%;
+    padding: 5%;
+}
+
+select, input {
+    text-align: center !important;
+}
+
+footer {
+    color: #a1a1a1 !important;
+    background-color: #222;
+    padding: 2% 0%;
+    border-top: 1px solid #000;
+    text-align: center;
+}
+
+footer h6 {
+    color: #3399ff !important;
+}
+
+footer a{
+    color: #a1a1a1 !important;
+}
+
+
+@media (max-width: 480px) {
+
+img {
+    margin: 0 0 5% 0;
+}
+
+table {
+    margin: 5% 0 0 0;
+}
+
+}
+    </style>
+</head>
+
+<body>
+	<div class="header text-center">
+		<h1><a href="./">Лаба 1</a></h1>
+		<h5>Дьячков Андрей</h5>
+		<h5>P3209</h5>
+		<h5>Номер варианта: <i>1995</i></h5>
+	</div>
+
+	<div class="text-center wrapper">
+		<div class="container-fluid">
+			<div class="row">
+
+
+			<div class="col-md-5">
+				<img src="static/1.png" alt="">
+			</div>
+
+			<div class="col-md-2">
+	    		<form action="public_html/result.php" method="post" id="data-form">
+		        	<div class="form-group">
+		            	<label for="x"><b>Изменение X</b></label>
+		                <select class="form-control" name="x" id="x" required>
+			                <option value="-4">-4</option>
+			                <option value="-3">-3</option>
+			                <option value="-2">-2</option>
+			                <option value="-1">-1</option>
+			                <option value="0">0</option>
+			                <option value="1">1</option>
+			                <option value="2">2</option>
+			                <option value="3">3</option>
+			                <option value="4">4</option>
+						</select>
+		            </div>
+
+		                <div class="form-group">
+		                    <label for="y"><b>Изменение Y:</b></label>
+		                    <input class="form-control" name="y" id="y" type="number" min="-5" max="5" step="0.1" required>
+		                    <p id="msg-y">Введите число в диапазоне [-5, 5]</p>
+		                    <div id="error-message" style="color: red;"></div>
+		                    <audio id="error-audio" src="static/неправильно.mp3"></audio>
+		                </div>
+
+		                <div class="form-group">
+		                    <label for="r"><b>Изменение R:</b></label>
+		                    <select class="form-control" name="r" id="r">
+		                        <option value="1">1</option>
+		                        <option value="2">2</option>
+		                        <option value="3">3</option>
+		                        <option value="4">4</option>
+		                        <option value="5">5</option>
+		                    </select>
+		                </div>
+
+		                <div class="form-group">
+		                    <button type="reset" class="btn btn-secondary">Не жми</button>
+		                    <button type="button" class="btn btn-primary" id="submitBtn">Жмяк</button>
+		                </div>
+		            </form>
+		            <button type="button" class="btn btn-dark" id="clearTable">Очистить таблицу</button>
+	            </div>
+
+	            <div class="col-md-5 col-xs-12">
+	            	<table class="table table-bordered" id="resultTable">
+
+		            	<thead>
+							<tr>
+								<th scope="col">X</th>
+								<th scope="col">Y</th>
+								<th scope="col">R</th>
+								<th scope="col">Result</th>
+								<th scope="col">Ex.time</th>
+								<th scope="col">Time</th>
+							</tr>
+						</thead>
+
+			            <tbody>
+
+			            </tbody>
+		        	</table>
+	            </div>
+
+	        </div>
+
+	    </div>
+	</div>
+
+	<footer>
+      <div class="container">
+        <h6>Претензии и предложения направлять в бумажном виде</h6>
+        <p><a href="static/lgd.pdf" target="_blank">*бланк*</a></p>
+      </div>
+
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script src="dist/bundle.js"></script>
+
+	</body>
+
+</html>
