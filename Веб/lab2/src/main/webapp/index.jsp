@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 
 <head>
@@ -30,10 +30,11 @@
             </div>
 
             <div class="col-md-2">
-                <form action="public_html/result.php" method="post" id="data-form">
+                <form action="" method="post" id="data-form">
                     <div class="form-group">
                         <label for="x"><b>Изменение X</b></label>
                         <select class="form-control" name="x" id="x" required>
+                            <option value="0" hidden="">0</option>
                             <option value="-4">-4</option>
                             <option value="-3">-3</option>
                             <option value="-2">-2</option>
@@ -48,7 +49,8 @@
 
                     <div class="form-group">
                         <label for="y"><b>Изменение Y:</b></label>
-                        <input class="form-control" name="y" id="y" type="number" min="-5" max="5" step="0.1" required>
+                        <input class="form-control" name="y" id="y" type="number" min="-5" max="5" step="0.1" value="0"
+                               required>
                         <p id="msg-y">Введите число в диапазоне [-5, 5]</p>
                         <div id="error-message" style="color: red;"></div>
                         <audio id="error-audio" src="static/неправильно.mp3"></audio>
@@ -66,7 +68,7 @@
                     </div>
 
                     <div class="form-group">
-                        <button type="reset" class="btn btn-secondary">Не жми</button>
+                        <button type="reset" class="btn btn-secondary">Очистить форму</button>
                         <button type="button" class="btn btn-primary" id="submitBtn">Жмяк</button>
                     </div>
                 </form>
@@ -106,9 +108,8 @@
 
 </footer>
 
-<%--<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>--%>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 <script src="JS/script.js"></script>
 <script src="JS/graph.js"></script>

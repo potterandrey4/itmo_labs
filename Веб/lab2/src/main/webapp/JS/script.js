@@ -1,7 +1,7 @@
 const minY = -5, maxY = 5;
 let r;
 
-const points = [];
+let dots = [];
 
 function isNumeric(val) {
     return !isNaN(parseFloat(val)) && isFinite(val);
@@ -45,7 +45,6 @@ function validateForm(){
 
 $(document).ready(function() {
     restoreDataFromLocalStorage();
-;
     let submitBtn = document.getElementById("submitBtn");
 
     submitBtn.addEventListener("click", function() {
@@ -59,24 +58,39 @@ $(document).ready(function() {
             r: $("#r").val()
         };
 
-        points.push( {x: formData.x, y: formData.y} );
+        dots.push( {x: formData.x, y: formData.y} );
 
         drawGraph(formData.r);
-        drawPoints(points);
+        drawDots(dots);
 
-        $.ajax({
-            type: "POST",
-            url: "result.php",
-            data: formData,
-            success: function(response) {
-                $("#resultTable tbody").append(response);
+        saveDataToLocalStorage();
 
-                saveDataToLocalStorage();
+        fetch("controller", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
             },
-            error: function(xhr, status, error) {
-                console.error(xhr.responseText);
-            }
-        });
+            body: new URLSearchParams({
+                "x": formData.x,
+                "y": formData.y,
+                "r": formData.r
+            })
+        })
+            .then(response => {
+                if (!response.ok) {
+                    console.log("зашёл в ошибку");
+                    throw new Error(`Server responded with bad getaway status: ${response.status} ${response.text()}`);
+                }
+                return response;
+            })
+            .then(function (serverAnswer) {
+                console.log("зашёл в серверАнсвер");
+                insertData(serverAnswer);
+            })
+            .catch(error => {
+                console.log(`При обработке вашего запроса произошла ошибка: ${error.message} ${error.body}`);
+            });
+
     });
 
 
@@ -105,12 +119,16 @@ $(document).ready(function() {
         };
 
         localStorage.setItem("formData", JSON.stringify(formData));
+
+        localStorage.setItem('dots', JSON.stringify(dots));
+
     }
 
 
     // Восстанавливаем данные из localStorage
     function restoreDataFromLocalStorage() {
         let storedData = localStorage.getItem("tableData");
+        dots = JSON.parse(localStorage.getItem('dots')) || [];
 
         if (storedData) {
             let tableData = JSON.parse(storedData);
@@ -155,3 +173,25 @@ let yInput = document.getElementById("y");
         }
     });
 });
+
+
+function insertData(data) {
+
+    let parsedX = parseInt(data.x);
+    let parsedY = parseFloat(data.y);
+    let parsedR = parseFloat(data.r);
+
+    // Draw the new point directly
+    // Update Table
+    const table = document.getElementById('resultTable');
+    const newRow = table.insertRow();
+    const cell1 = newRow.insertCell(0);
+    const cell2 = newRow.insertCell(1);
+    const cell3 = newRow.insertCell(2);
+    const cell4 = newRow.insertCell(3);
+
+    cell1.innerHTML = data.x;
+    cell2.innerHTML = data.y;
+    cell3.innerHTML = data.r;
+    cell4.innerHTML = data.isHit ? 'Hit' : 'Didn\'t hit';
+}

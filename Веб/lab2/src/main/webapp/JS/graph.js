@@ -4,7 +4,7 @@ const ctx = canvasPlot.getContext(`2d`);
 //Рисуем сетку
 const canvasPlotWidth = canvasPlot.clientWidth;
 const canvasPlotHeight = canvasPlot.clientHeight;
-const scaleX = 40   ; //расстояние между элементами сетки по Х
+const scaleX = 40; //расстояние между элементами сетки по Х
 const scaleY = 40; //расстояние между элементами сетки по Y
 
 const xAxis = Math.round(canvasPlotWidth / scaleX / 2) * scaleX;
@@ -65,7 +65,7 @@ function drawGraph(r) {
     // Четверть круга
     ctx.beginPath();
     ctx.fillStyle = `rgba(0, 0, 0, 0.66)`;
-    const xCircle = xAxis ;
+    const xCircle = xAxis;
     const yCircle = yAxis;
     ctx.arc(xCircle, yCircle, r * scaleX, Math.PI / 2, Math.PI);
     ctx.lineTo(xCircle, yCircle);
@@ -76,7 +76,7 @@ function drawGraph(r) {
     ctx.beginPath();
     ctx.fillStyle = `rgba(0, 0, 0, 0.66)`;
     const xTriangle = xAxis;
-    const yTriangle = yAxis + r*scaleY;
+    const yTriangle = yAxis + r * scaleY;
     ctx.moveTo(xTriangle, yTriangle);
     ctx.lineTo(xTriangle, yTriangle - r * scaleY);
     ctx.lineTo(xTriangle + r * scaleX, yTriangle - r * scaleY);
@@ -89,7 +89,7 @@ window.onload = function () {
     drawAxes();
 }
 
-function drawPoints(points) {
+function drawDots(points) {
     // Точки
     ctx.fillStyle = `rgba(0, 0, 0, 0.66)`;
     points.forEach(point => {
