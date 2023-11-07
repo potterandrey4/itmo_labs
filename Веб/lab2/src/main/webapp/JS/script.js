@@ -81,10 +81,9 @@ $(document).ready(function() {
                     console.log("зашёл в ошибку");
                     throw new Error(`Server responded with bad getaway status: ${response.status} ${response.text()}`);
                 }
-                return response;
+                return response.json();
             })
             .then(function (serverAnswer) {
-                console.log("зашёл в серверАнсвер");
                 insertData(serverAnswer);
             })
             .catch(error => {
@@ -176,22 +175,23 @@ let yInput = document.getElementById("y");
 
 
 function insertData(data) {
+    // Предполагаем, что data.results - это массив объектов
+    const results = data.results;
 
-    let parsedX = parseInt(data.x);
-    let parsedY = parseFloat(data.y);
-    let parsedR = parseFloat(data.r);
+    // Очищаем таблицу перед вставкой новых данных
+    $("#resultTable tbody").empty();
 
-    // Draw the new point directly
-    // Update Table
-    const table = document.getElementById('resultTable');
-    const newRow = table.insertRow();
-    const cell1 = newRow.insertCell(0);
-    const cell2 = newRow.insertCell(1);
-    const cell3 = newRow.insertCell(2);
-    const cell4 = newRow.insertCell(3);
-
-    cell1.innerHTML = data.x;
-    cell2.innerHTML = data.y;
-    cell3.innerHTML = data.r;
-    cell4.innerHTML = data.isHit ? 'Hit' : 'Didn\'t hit';
+    // Проходим по массиву и вставляем данные в таблицу
+    results.forEach(result => {
+        const row = `
+            <tr>
+                <td>${result.x}</td>
+                <td>${result.y}</td>
+                <td>${result.r}</td>
+                <td>${result.isHit}</td>
+                <td>${result.executionTime} мс</td>
+                <td>${result.time}</td>
+            </tr>`;
+        $("#resultTable tbody").append(row);
+    });
 }

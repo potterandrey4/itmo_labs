@@ -28,7 +28,7 @@ public class Validator {
     }
 
     private boolean checkY() {
-        return y > -5 && y < 5;
+        return y >= -5 && y <= 5;
     }
 
     private boolean checkR() {

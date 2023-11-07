@@ -1,4 +1,6 @@
+<%@ taglib prefix="core" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
+<jsp:useBean id="results" scope="session" class="beans.DataListBean"/>
 <!doctype html>
 <html lang="ru">
 
@@ -90,7 +92,16 @@
                     </thead>
 
                     <tbody>
-
+                    <core:forEach var="result" items="${results.results}">
+                        <tr>
+                            <td>${result.x}</td>
+                            <td>${result.y}</td>
+                            <td>${result.r}</td>
+                            <td>${result.isHit}</td>
+                            <td>${result.executionTime}</td>
+                            <td>${result.time}</td>
+                        </tr>
+                    </core:forEach>
                     </tbody>
                 </table>
             </div>
