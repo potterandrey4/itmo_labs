@@ -77,7 +77,7 @@
                 <button type="button" class="btn btn-dark" id="clearTable">Очистить таблицу</button>
             </div>
 
-            <div class="col-md-5 col-xs-12">
+            <div class="table col-md-5 col-xs-12">
                 <table class="table table-bordered" id="resultTable">
 
                     <thead>
@@ -92,16 +92,7 @@
                     </thead>
 
                     <tbody>
-                    <core:forEach var="result" items="${results.results}">
-                        <tr>
-                            <td>${result.x}</td>
-                            <td>${result.y}</td>
-                            <td>${result.r}</td>
-                            <td>${result.isHit}</td>
-                            <td>${result.executionTime}</td>
-                            <td>${result.time}</td>
-                        </tr>
-                    </core:forEach>
+
                     </tbody>
                 </table>
             </div>

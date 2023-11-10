@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <link rel="stylesheet" href="styles.css">
+        <title>5_пр_раб</title>
+    </head>
+    <body>
+
+        <div class="header">
+            <h5>Выполнил: Дьячков Андрей</h5>
+            <h5>P3209</h5>
+            <h5>Номер варианта: <i>3</i></h5>
+        </div>
+
+        <div class="clear"></div>
+
+        <div class="main">
+
+            <button type="button" class="btn btn-warning" id="submitBtn">Обработать данные</button>
+
+            <p>Выборка данных</p>
+            <input id="inputValues" type="text" value="-0.03 0.73 -0.59 -1.59 0.38 1.49 0.14 -0.62 -1.59 1.45 -0.38 -1.49 -0.15 0.63 0.06 -1.59 0.61 0.62 -0.05 1.56" required onupd>
+
+            <p>X для ЭФР</p>
+            <input id="inputX" type="number" value="1" required onupd>
+            <hr>
+
+            <p>Вариационный ряд</p>
+            <p id="res_task_1"></p>
+            <hr>
+
+            <p>Экстремальное значение (максимум)</p>
+            <p id="max"></p>
+            <hr>
+            
+            <p>Экстремальное значение (минимум)</p>
+            <p id="min"></p>
+            <hr>
+            
+            <p>Размах</p>
+            <p id="scope"></p>
+            <hr>
+        </div>
+
+        
+        <div class="footer"></div>
+
+        <script src="script.js"></script>
+
+    </body>
+</html>

@@ -175,7 +175,6 @@ let yInput = document.getElementById("y");
 
 
 function insertData(data) {
-    // Предполагаем, что data.results - это массив объектов
     const results = data.results;
 
     // Очищаем таблицу перед вставкой новых данных
