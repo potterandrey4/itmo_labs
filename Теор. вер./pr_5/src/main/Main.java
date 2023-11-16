@@ -1,8 +1,12 @@
 package main;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import static main.Tasks.*;
+import static main.Tools.getDoubleFor5Task;
+import static main.Tools.printFunctionValues;
 
 public class Main {
 	public static void main(String[] args) {
@@ -29,9 +33,13 @@ public class Main {
 		values.add(-0.05);
 		values.add(1.56);
 
+		Collections.sort(values);
+
+		System.out.println("Исходные данные: " + values);
+
 		System.out.println("\nВариационный ряд: " + task1(values));
 
-		ArrayList<String> resTask2 = task2(values);
+		ArrayList<Double> resTask2 = task2(values);
 		System.out.println("Экстремальное значение (максимум): " + resTask2.get(0));
 		System.out.println("Экстремальное значение (минимум): " + resTask2.get(1));
 		System.out.println("Размах: " + resTask2.get(2));
@@ -43,10 +51,12 @@ public class Main {
 		String res3_2 = calculationStandardDeviation(values);
 		System.out.println("Оценка среднеквадратического отклонения: " + res3_2);
 
-		String res4 = task4(values, 1);
-		System.out.println("Численные значения ЭФР: " + res4);
+		List<Object[]> result = task4(values);
+		printFunctionValues(result);
 
 		task5_1(values);
 		task5_2(values);
+
+		System.out.println("\ngetDoubleFor5Task: " + getDoubleFor5Task(values));
 	}
 }

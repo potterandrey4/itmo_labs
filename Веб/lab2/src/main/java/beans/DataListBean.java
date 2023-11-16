@@ -86,12 +86,12 @@ public class DataListBean implements Serializable {
 		@Override
 		public String toString() {
 			return "<tr>" +
-						"<td>" + x + "</td>" +
-						"<td>" + y + "</td>" +
-						"<td>" + r + "/<td>" +
-						"<td>" + isHit + "</td>"+
-						"<td>" + executionTime + " мс</td>" +
-						"<td>" + time + "</td>" +
+					"<td>" + x + "</td>" +
+					"<td>" + y + "</td>" +
+					"<td>" + r + "/<td>" +
+					"<td>" + isHit + "</td>"+
+					"<td>" + executionTime + " мс</td>" +
+					"<td>" + time + "</td>" +
 					"</tr>";
 		}
 

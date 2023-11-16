@@ -160,8 +160,7 @@ $(document).ready(function() {
 
 
 
-
-let yInput = document.getElementById("y");
+    let yInput = document.getElementById("y");
 
     // Добавляем обработчик события keydown
     yInput.addEventListener("keydown", function(event) {
@@ -175,6 +174,7 @@ let yInput = document.getElementById("y");
 
 
 function insertData(data) {
+    // Предполагаем, что data.results - это массив объектов
     const results = data.results;
 
     // Очищаем таблицу перед вставкой новых данных

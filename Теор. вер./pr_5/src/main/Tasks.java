@@ -4,29 +4,29 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
+import java.util.stream.DoubleStream;
 
 import static main.GraphForTask5_2.drawGraph5_2;
+import static main.Tools.getUniqueValues;
 
 public class Tasks {
 	static DecimalFormat df = new DecimalFormat("#.##");
 
 	// вариационный ряд
 	public static ArrayList<Double> task1(ArrayList<Double> values) {
-		HashSet<Double> uniqueSet = new HashSet<>(values);
-		ArrayList<Double> sortedValues = new ArrayList<>(uniqueSet);
-		Collections.sort(sortedValues);
-		return sortedValues;
+		Collections.sort(values);
+		return values;
 	}
 
 
 	// экстремальные значение и размах
-	public static ArrayList<String> task2(ArrayList<Double> values) {
+	public static ArrayList<Double> task2(ArrayList<Double> values) {
 		if (values.isEmpty()) {
 			return null;
 		}
 
-		ArrayList<String> result = new ArrayList<>();
+		ArrayList<Double> result = new ArrayList<>();
 		double max = values.get(0);
 		double min = values.get(0);
 		for (int i = 1; i < values.size(); i++) {
@@ -36,26 +36,28 @@ public class Tasks {
 				min = values.get(i);
 			}
 		}
-		result.add(String.valueOf(max));
-		result.add(String.valueOf(min));
+		result.add(max);
+		result.add(min);
 
 
-		result.add(String.valueOf(df.format(Math.abs(max - min))));
+		result.add(Double.valueOf(df.format(Math.abs(max - min)).replace(",", ".")));
 
 		return result;
 	}
 
 
+	static double expectationEstimation = 0;
+
 	// оценка математического ожидания
 	// task3_1
 	public static String calculationExpectedValue(ArrayList<Double> values) {
-		HashMap<Double, Double> probabilities = Tools.getProbabilities(values);        // кол-ва каждого числа
-		double expectation = 0;
-
-		for (Double value : values) {
-			expectation += value * probabilities.get(value);
+		double sum = 0;
+		Collections.sort(values);
+		for (double value : values) {
+			sum += value;
 		}
-		return df.format(expectation);
+		expectationEstimation = sum / values.size();
+		return String.valueOf(expectationEstimation);
 	}
 
 
@@ -63,26 +65,41 @@ public class Tasks {
 	// иначе говоря -- корень дисперсии
 	// task3_2
 	public static String calculationStandardDeviation(ArrayList<Double> values) {
-		return String.valueOf(Math.sqrt(Tools.getDispersion(values)));
+		Collections.sort(values);
+		double sumSquaredDifferences = values.stream()
+				.flatMapToDouble(it -> DoubleStream.of(Math.pow(it - expectationEstimation, 2)))
+				.sum();
+
+		return String.valueOf(Math.sqrt(sumSquaredDifferences / (values.size() - 1)));
 	}
 
 	// эмпирическая функция распределения
 	// task4
-	public static String task4(ArrayList<Double> values, double x) {
+	public static List<Object[]> task4(ArrayList<Double> values) {
 		Collections.sort(values);
+		ArrayList<Double> uniqueValues = getUniqueValues(values);
+		int size = values.size();
+		List<Object[]> frequencies = new ArrayList<>();
+		double sum = 0;
 
-		// Создание массива для хранения частот
-		HashMap<Double, Double> frequencies = new HashMap<>();
-		// Подсчет частот для каждого X < x
-		int count = 0;
-		for (int i = 0; i < values.size(); i++) {
-			if (values.get(i) < x) {
-				count++;
-			}
-			frequencies.put( values.get(i), ((double) count / values.size()) );
+		// Обработка первого элемента
+		frequencies.add(new Object[]{new String[]{"-inf", String.valueOf(uniqueValues.get(0))}, sum});
+		sum += (double) countOccurrences(values, uniqueValues.get(0)) / size;
+
+		// Обработка остальных элементов
+		for (int it = 1; it < uniqueValues.size(); ++it) {
+			frequencies.add(new Object[]{new String[]{String.valueOf(uniqueValues.get(it - 1)), String.valueOf(uniqueValues.get(it))}, Double.valueOf(df.format(sum).replace(",", "."))});
+			sum += (double) countOccurrences(values, uniqueValues.get(it)) / size;
 		}
 
-		return String.valueOf(frequencies);
+		// Обработка последнего элемента
+		frequencies.add(new Object[]{new String[]{String.valueOf(uniqueValues.get(uniqueValues.size() - 1)), "inf"}, 1});
+
+		return frequencies;
+	}
+
+	private static long countOccurrences(List<Double> data, double value) {
+		return data.stream().filter(v -> v.equals(value)).count();
 	}
 
 
