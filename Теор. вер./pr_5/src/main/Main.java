@@ -1,12 +1,6 @@
-package main;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import static main.Tasks.*;
-import static main.Tools.getDoubleFor5Task;
-import static main.Tools.printFunctionValues;
 
 public class Main {
 	public static void main(String[] args) {
@@ -37,26 +31,26 @@ public class Main {
 
 		System.out.println("Исходные данные: " + values);
 
-		System.out.println("\nВариационный ряд: " + task1(values));
+		System.out.println("\nВариационный ряд: " + Tasks.task1(values));
 
-		ArrayList<Double> resTask2 = task2(values);
+		ArrayList<Double> resTask2 = Tasks.task2(values);
 		System.out.println("Экстремальное значение (максимум): " + resTask2.get(0));
 		System.out.println("Экстремальное значение (минимум): " + resTask2.get(1));
 		System.out.println("Размах: " + resTask2.get(2));
 
 
-		String resTask3_1 = calculationExpectedValue(values);
+		String resTask3_1 = Tasks.calculationExpectedValue(values);
 		System.out.println("Оценка математического ожидания: " + resTask3_1);
 
-		String res3_2 = calculationStandardDeviation(values);
+		String res3_2 = Tasks.calculationStandardDeviation(values);
 		System.out.println("Оценка среднеквадратического отклонения: " + res3_2);
 
-		List<Object[]> result = task4(values);
-		printFunctionValues(result);
+		List<Object[]> result = Tasks.task4(values);
+		Tools.printFunctionValues(result);
 
-		task5_1(values);
-		task5_2(values);
+		Tasks.task5_1(values);
+		Tasks.task5_2(values);
 
-		System.out.println("\ngetDoubleFor5Task: " + getDoubleFor5Task(values));
+		System.out.println(Tools.getWidthsStolbicks(values));
 	}
 }

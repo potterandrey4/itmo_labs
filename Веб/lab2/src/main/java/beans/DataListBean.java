@@ -35,7 +35,7 @@ public class DataListBean implements Serializable {
 		private String executionTime;
 		private String time;
 
-		public DataBean(int x, double y, int r, boolean isHit, String executionTime, String time) {
+		public DataBean(double x, double y, int r, boolean isHit, String executionTime, String time) {
 			this.x = String.valueOf(x);
 			this.y = String.valueOf(y);
 			this.r = String.valueOf(r);

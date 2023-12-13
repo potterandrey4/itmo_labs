@@ -2,6 +2,8 @@ package servlets;
 
 import beans.DataListBean;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,25 +23,20 @@ public class AreaCheckServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) {
 		LocalDateTime startTime = LocalDateTime.now();
 
-		int x;
+		double[] x;
 		double y;
 		int r;
 
 		try {
-			x = Integer.parseInt(request.getParameter("x"));
-			y = Double.parseDouble(request.getParameter("y").replace(",", "."));
-			r = Integer.parseInt(request.getParameter("r"));
+			String[] xValuesArray = request.getParameter("x").split(";");
 
-			Validator validator = new Validator(x, y, r);
-
-			if (!validator.checkData()) {
-				System.out.println("Невалидные данные");
-				return;
+			x = new double[xValuesArray.length];
+			for (int i = 0; i < xValuesArray.length; i++) {
+				x[i] = Double.parseDouble(xValuesArray[i]);
 			}
 
-			boolean flagIsHit = Checker.isInArea(x, y, r);
-
-			String executionTime = String.valueOf(Duration.between(startTime, LocalDateTime.now()).toMillis());
+			y = Double.parseDouble(request.getParameter("y").replace(",", "."));
+			r = Integer.parseInt(request.getParameter("r"));
 
 			// формирование bean компонента
 			DataListBean bean = (DataListBean) request.getSession().getAttribute("results");
@@ -48,10 +45,24 @@ public class AreaCheckServlet extends HttpServlet {
 				request.getSession().setAttribute("results", bean);
 			}
 
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-			DataListBean.DataBean result = new DataListBean.DataBean(x, y, r, flagIsHit, executionTime, LocalDateTime.now().format(formatter));
+			for (int i = 0; i < x.length; i++) {
 
-			bean.add(result);
+				Validator validator = new Validator(x[i], y, r);
+
+				if (!validator.checkData()) {
+					System.out.println("Невалидные данные");
+					return;
+				}
+
+				boolean flagIsHit = Checker.isInArea(x[i], y, r);
+
+				String executionTime = String.valueOf(Duration.between(startTime, LocalDateTime.now()).toMillis());
+
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+				DataListBean.DataBean result = new DataListBean.DataBean(x[i], y, r, flagIsHit, executionTime, LocalDateTime.now().format(formatter));
+
+				bean.add(result);
+			}
 
 			// Преобразование объекта DataListBean в JSON
 			ObjectMapper objectMapper = new ObjectMapper();
@@ -64,11 +75,8 @@ public class AreaCheckServlet extends HttpServlet {
 			out.print(jsonResult);
 			out.flush();
 
-
-		} catch (NumberFormatException e) {
-			System.err.println(e);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
+		} catch (NumberFormatException | IOException e) {
+			System.err.println(e.toString());
 		}
 	}
 }

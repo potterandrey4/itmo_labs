@@ -23,8 +23,7 @@ public class Validator {
 	}
 
 	private boolean checkX() {
-		List<Integer> validValues = Arrays.asList(-4, -3, -2, -1, 0, 1, 2, 3, 4);
-		return validValues.contains((int) x) && x == (int) x;
+		return x >= -5 && x <= 5;
 	}
 
 	private boolean checkY() {

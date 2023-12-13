@@ -1,14 +1,9 @@
-package main;
-
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.DoubleStream;
-
-import static main.GraphForTask5_2.drawGraph5_2;
-import static main.Tools.getUniqueValues;
 
 public class Tasks {
 	static DecimalFormat df = new DecimalFormat("#.##");
@@ -77,7 +72,7 @@ public class Tasks {
 	// task4
 	public static List<Object[]> task4(ArrayList<Double> values) {
 		Collections.sort(values);
-		ArrayList<Double> uniqueValues = getUniqueValues(values);
+		ArrayList<Double> uniqueValues = Tools.getUniqueValues(values);
 		int size = values.size();
 		List<Object[]> frequencies = new ArrayList<>();
 		double sum = 0;
@@ -112,7 +107,7 @@ public class Tasks {
 
 	public static void task5_2(ArrayList<Double> values) {
 		HashMap<Double, Double> probabilities = Tools.getProbabilities(values);
-		drawGraph5_2(probabilities);
+		GraphForTask5_2.drawGraph5_2(probabilities);
 	}
 
 

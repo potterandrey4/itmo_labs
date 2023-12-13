@@ -51,6 +51,7 @@ function drawAxes() {
 
 
 //ПРЕОБРАЗОВАНИЕ CANVAS СИСТЕМУ КООРДИНАТ В ДЕКАРТОВУ СИСТЕМУ КООРДИНАТ
+
 // Рисуем график функции
 function drawGraph(r) {
     ctx.clearRect(0, 0, canvasPlotWidth, canvasPlotHeight); // Очистить весь холст
@@ -100,4 +101,9 @@ function drawDots(points) {
         ctx.fill();
         ctx.closePath();
     });
+}
+
+function clearDots() {
+    dots = [];
+    localStorage.removeItem("dots");
 }

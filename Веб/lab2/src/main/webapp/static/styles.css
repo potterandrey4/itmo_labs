@@ -27,6 +27,11 @@ img {
     width: 60%;
 }
 
+button {
+    width: 165px;
+    margin-top: 10px;
+}
+
 .content {
     min-height: 100%;
 }
