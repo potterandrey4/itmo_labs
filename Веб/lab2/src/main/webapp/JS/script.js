@@ -28,8 +28,7 @@ function validateForm(y) {
 
 $(document).ready(function () {
     restoreDataFromLocalStorage();
-    drawDots(dots);
-
+    drawDots(dots, JSON.parse(localStorage.getItem("formData")).r);
     getData('getAll');
 
     let submitBtn = document.getElementById("submitBtn");
@@ -43,7 +42,6 @@ $(document).ready(function () {
                 selectedXValues.push(xCheckboxes[i].value);
             }
         }
-
 
         let rRadioButton = document.getElementsByName("r");
         let selectedR;
@@ -70,7 +68,7 @@ $(document).ready(function () {
         for (let i = 0; i < formData.x.length; i++) {
             dots.push({x: formData.x[i], y: formData.y});
         }
-        drawDots(dots);
+        drawDots(dots, formData.r);
 
         saveDataToLocalStorage();
 
@@ -95,7 +93,7 @@ $(document).ready(function () {
                 insertData(serverAnswer);
 
                 setLastData(serverAnswer);
-                window.location.href = "lastRequest";
+                // window.location.href = "lastRequest";
             })
             .catch(error => {
                 console.log(`При обработке вашего запроса произошла ошибка: ${error.message} ${error.body}`);
@@ -200,7 +198,7 @@ canvas.addEventListener("click", function (event) {
     let graphY = (canvas.height / 2 - y) / 40;
 
     dots.push({x: graphX, y: graphY});
-    drawDots(dots);
+    drawDots(dots, r);
     saveDataToLocalStorage();
 
     if (r !== null) {
@@ -226,7 +224,7 @@ canvas.addEventListener("click", function (event) {
                 insertData(serverAnswer);
 
                 setLastData(serverAnswer);
-                window.location.href = "lastRequest";
+                // window.location.href = "lastRequest";
             })
             .catch(error => {
                 console.log(`При обработке вашего запроса произошла ошибка: ${error.message} ${error.body}`);
@@ -262,7 +260,7 @@ function setLastData(serverAnswer) {
 function handleRadioButtonChange(radioButton) {
     let selectedR = radioButton.value;
     drawGraph(selectedR);
-    drawDots(dots);
+    drawDots(dots, selectedR);
 }
 
 function saveFormData() {
@@ -285,7 +283,7 @@ document.getElementById("clearDotsBtn").addEventListener("click", function () {
     dots.length = 0; // Очистка массива
     localStorage.removeItem('dots'); // Удаление данных из localStorage по ключу 'dots'
     drawGraph(JSON.parse(localStorage.getItem("formData")).r);
-    drawDots(dots);
+    drawDots(dots, 0);
 });
 
 // Вызов функции сохранения данных при изменении формы

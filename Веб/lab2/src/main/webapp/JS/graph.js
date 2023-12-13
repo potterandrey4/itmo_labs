@@ -81,8 +81,8 @@ function drawGraph(r) {
     ctx.moveTo(xTriangle, yTriangle);
     ctx.lineTo(xTriangle, yTriangle - r * scaleY);
     ctx.lineTo(xTriangle + r * scaleX, yTriangle - r * scaleY);
-    ctx.closePath();
     ctx.fill();
+    ctx.closePath();
 }
 
 window.onload = function () {
@@ -90,20 +90,38 @@ window.onload = function () {
     drawAxes();
 }
 
-function drawDots(points) {
+function drawDots(points, r) {
+    const originalColor = ctx.fillStyle; // Сохранить оригинальный цвет
+
     // Точки
-    ctx.fillStyle = `rgba(0, 0, 0, 0.66)`;
     points.forEach(point => {
         const x = xAxis + point.x * scaleX;
         const y = yAxis - point.y * scaleY;
         ctx.beginPath();
         ctx.arc(x, y, 3, 0, 2 * Math.PI);
+
+        if (isInArea(point.x, point.y, r)) {
+            ctx.fillStyle = 'green';
+        } else {
+            ctx.fillStyle = 'red';
+        }
+
         ctx.fill();
         ctx.closePath();
     });
+
+    ctx.fillStyle = originalColor; // Восстановить оригинальный цвет
 }
 
-function clearDots() {
-    dots = [];
-    localStorage.removeItem("dots");
+function isInArea(x, y, r) {
+    if ((x <= 0 && y >= 0) && (x >= -r && y <= r)){
+        return true;
+    }
+    else if ((x <= 0 && y <= 0) && ((r*r) >= (x * x + y * y))) {
+        return true;
+    }
+    else if ((x >= 0 && y <= 0) && (y >= x - r)) {
+        return true;
+    }
+    return false;
 }
