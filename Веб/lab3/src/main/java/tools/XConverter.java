@@ -14,16 +14,24 @@ import java.util.regex.Pattern;
 public class XConverter implements Converter<Double> {
 	@Override
 	public Double getAsObject(FacesContext facesContext, UIComponent uiComponent, String x) {
+		if (isAutoFill(uiComponent)) {
+			return null; // Если значение пришло из автозаполненного поля, возвращаем null
+		}
+
 		if (x == null || x.isEmpty()) {
 			return null;
 		} else {
-			if (!Pattern.matches("(?:-5|\\+?3)(?:[.,]0{1,15})?|(?:-[43210]|\\+?[012])(?:[.,]\\d{1,15})?", x)) {
+			if (!Pattern.matches("(?:-5|\\+?3)(?:[.,]0{1,30})?|(?:-[43210]|\\+?[012])(?:[.,]\\d{1,30})?", x)) {
 				throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "X: Значение не соответствует шаблону.", ""));
 			}
 			return Double.parseDouble(x.replace(",", "."));
 		}
 	}
 
+	private boolean isAutoFill(UIComponent uiComponent) {
+		// Проверка, пришло ли значение из автозаполненного поля
+		return uiComponent.getId() != null && uiComponent.getId().startsWith("hidden");
+	}
 
 	@Override
 	public String getAsString(FacesContext facesContext, UIComponent uiComponent, Double x) {
@@ -33,5 +41,4 @@ public class XConverter implements Converter<Double> {
 			return x.toString();
 		}
 	}
-
 }

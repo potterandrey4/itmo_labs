@@ -1,4 +1,4 @@
-const canvasPlot = document.getElementById(`canvas`);
+const canvasPlot = document.querySelector('#canvas')
 const ctx = canvasPlot.getContext(`2d`);
 
 //Рисуем сетку

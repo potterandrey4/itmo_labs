@@ -9,7 +9,8 @@
 
             <h:outputText id="clock" style="font-size: 60px" value="#{timeProcessor.currentTime}"/>
             <p:poll interval="13" listener="#{timeProcessor.updateTime()}" update="clock"/>
-            <p:link outcome="/main" value="MAIN"/>
+
+            <p:link outcome="/main" value="на главную"/>
 
         </div>
     </ui:define>
