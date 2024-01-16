@@ -20,7 +20,7 @@
                 <div class="form-group">
                     <label><b>Изменение X</b></label>
                     <br/>
-                    <h:selectOneMenu id="x" required="true" value="#{resultHandler.x}" onchange="saveFormData(); changeXValue(this.value)">
+                    <h:selectOneMenu id="x" required="true" value="#{resultHandler.x}" onchange="updateHiddenFields(); saveFormData(); changeXValue(this.value)">
                         <f:selectItem itemValue="-3" itemLabel=" -3 "/>
                         <f:selectItem itemValue="-2" itemLabel=" -2 "/>
                         <f:selectItem itemValue="-1" itemLabel=" -1 "/>
@@ -40,8 +40,9 @@
                                  styleClass="text-input" pt:placeholder="[-5.0; 3.0]"
                                  pt:pattern="(?:-5|\+?3)(?:[.,]0{1,16})?|(?:-[43210]|\+?[012])(?:[.,]\d{1,16})?"
                                  converter="tools.XCoordinateConverter"
-                                 oninput="saveFormData(); changeYValue(this.value)"
+                                 oninput="saveFormData(); changeYValue(this.value); updateHiddenFields()"
                     />
+                    <br/><h:outputText value="диапазон: [-5.0; 3.0]"/>
                     <br/><h:outputText value="до 15 знаков после запятой"/>
                 </div>
 
@@ -62,7 +63,11 @@
                 <h:inputHidden id="hiddenY" value="#{resultHandler.y}" />
                 <h:inputHidden id="hiddenAutoFill" value="#{resultHandler.autoFill}" />
 
-                <h:commandButton class="submit-button" value="Вычислить" action="#{resultHandler.setResultParams()}"/>
+                <h:commandButton class="submit-button" value="Вычислить" action="#{resultHandler.setResultParams()}" oncomplete="submitBtnFunction()"/>
+            </h:form>
+
+            <h:form>
+                <h:commandButton value="Очистить" action="#{resultHandler.clean()}" onclick="clearDots()"/>
             </h:form>
 
         </div>

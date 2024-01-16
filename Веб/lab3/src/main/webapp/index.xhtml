@@ -5,10 +5,10 @@
 
     <ui:param name="title" value="Лаба 3"/>
     <ui:define name="content">
-        <div style="display: flex; flex-direction: column; align-items: center; gap: 20px">
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 20px; text-align: center">
 
             <h:outputText id="clock" style="font-size: 60px" value="#{timeProcessor.currentTime}"/>
-            <p:poll interval="13" listener="#{timeProcessor.updateTime()}" update="clock"/>
+            <p:poll interval="9" listener="#{timeProcessor.updateTime()}" update="clock"/>
 
             <p:link outcome="/main" value="на главную"/>
 

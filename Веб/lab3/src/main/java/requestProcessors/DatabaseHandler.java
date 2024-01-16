@@ -4,6 +4,7 @@ import beans.ResultBean;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 
 import java.io.Serializable;
 import java.util.List;
@@ -24,4 +25,9 @@ public class DatabaseHandler implements Serializable {
 		return db.createQuery("from ResultBean", ResultBean.class).getResultList();
 	}
 
+
+	public void deleteAll() {
+		Query query = db.createQuery("DELETE FROM ResultBean");
+		query.executeUpdate();
+	}
 }

@@ -53,36 +53,56 @@ function drawAxes() {
 //ПРЕОБРАЗОВАНИЕ CANVAS СИСТЕМУ КООРДИНАТ В ДЕКАРТОВУ СИСТЕМУ КООРДИНАТ
 
 // Рисуем график функции
+// Рисуем график функции
 function drawGraph(r) {
     ctx.clearRect(0, 0, canvasPlotWidth, canvasPlotHeight); // Очистить весь холст
     drawAxes();
 
-    // Квадрат
+    // Треугольник во второй четверти
+    ctx.beginPath();
     ctx.fillStyle = `rgba(0, 0, 0, 0.66)`;
-    const xSquare = xAxis - r * scaleX;
-    const ySquare = yAxis - r * scaleY;
-    ctx.fillRect(xSquare, ySquare, r * scaleX, r * scaleY);
+    const xTriangle = xAxis;
+    const yTriangle = yAxis;
+    const xVertex1 = xTriangle;
+    const yVertex1 = yTriangle;
+
+    const xVertex2 = xTriangle;
+    const yVertex2 = yTriangle - r / 2 * scaleY;
+
+    const xVertex3 = xTriangle - r / 2 * scaleX;
+    const yVertex3 = yTriangle;
+    ctx.moveTo(xVertex1, yVertex1);
+    ctx.lineTo(xVertex2, yVertex2);
+    ctx.lineTo(xVertex3, yVertex3);
+    ctx.fill();
+    ctx.closePath();
+
+
+    // // Квадрат в 1 четверти
+    ctx.beginPath();
+    ctx.fillStyle = `rgba(0, 0, 0, 0.66)`;
+
+    const xRect = xAxis;
+    const yRect = yAxis;
+
+    const widthRect = r * scaleX;
+    const heightRect = r / 2 * scaleY;
+
+    ctx.fillRect(xRect, yRect - heightRect, widthRect, heightRect);
+    ctx.closePath();
+
 
     // Четверть круга
     ctx.beginPath();
     ctx.fillStyle = `rgba(0, 0, 0, 0.66)`;
     const xCircle = xAxis;
     const yCircle = yAxis;
-    ctx.arc(xCircle, yCircle, r * scaleX, Math.PI / 2, Math.PI);
+    ctx.arc(xCircle, yCircle, r / 2 * scaleX, 0, Math.PI / 2);
     ctx.lineTo(xCircle, yCircle);
     ctx.fill();
     ctx.closePath();
 
-    // Треугольник
-    ctx.beginPath();
-    ctx.fillStyle = `rgba(0, 0, 0, 0.66)`;
-    const xTriangle = xAxis;
-    const yTriangle = yAxis + r * scaleY;
-    ctx.moveTo(xTriangle, yTriangle);
-    ctx.lineTo(xTriangle, yTriangle - r * scaleY);
-    ctx.lineTo(xTriangle + r * scaleX, yTriangle - r * scaleY);
-    ctx.fill();
-    ctx.closePath();
+
 }
 
 window.onload = function () {
@@ -114,14 +134,14 @@ function drawDots(points, r) {
 }
 
 function isInArea(x, y, r) {
-    if ((x <= 0 && y >= 0) && (x >= -r && y <= r)){
+    if (r / 2 >= Math.sqrt(x ** 2 + y ** 2) && x >= 0 && y <= 0) {
         return true;
-    }
-    else if ((x <= 0 && y <= 0) && ((r*r) >= (x * x + y * y))) {
+    } else if (x <= 2 * r && y <= r / 2 && x >= 0 && y >= 0) {
         return true;
-    }
-    else if ((x >= 0 && y <= 0) && (y >= x - r)) {
+    } else if (y <= x + r / 2 && x <= 0 && y >= 0) {
         return true;
+    } else {
+        return false;
     }
-    return false;
+
 }

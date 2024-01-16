@@ -16,6 +16,8 @@ $(document).ready(function () {
     restoreDataFromLocalStorage();
     drawDots(dots, JSON.parse(localStorage.getItem("formData")).r);
 
+    document.getElementById('data-form:y').value = "";
+
     const canvas = document.querySelector('#canvas');
 
     canvas.addEventListener("click", function (event) {
@@ -38,7 +40,10 @@ $(document).ready(function () {
 
         document.getElementById('data-form:hiddenX').value = graphX;
         document.getElementById('data-form:hiddenY').value = graphY;
-        $('#hiddenAutoFill').val(true);
+
+        document.getElementById('data-form:y').value = 0;
+
+        $('#hiddenAutoFill').val("true");
         $('.submit-button').click();
 
     });
@@ -73,20 +78,6 @@ $(document).ready(function () {
         drawGraph(formData.r);
     }
 
-    //
-    // function updateHiddenFields() {
-    //     let x = document.getElementById('data-form:x').value;
-    //     let y = document.getElementById('data-form:y').value;
-    //     let r = document.getElementById('data-form:r').value;
-    //
-    //     document.getElementById('data-form:hiddenX').value = x;
-    //     document.getElementById('data-form:hiddenY').value = y;
-    //     document.getElementById('data-form:hiddenR').value = r;
-    // }
-    //
-    // document.getElementById('data-form:x').addEventListener('change', updateHiddenFields);
-    // document.getElementById('data-form:y').addEventListener('change', updateHiddenFields);
-    // document.getElementById('data-form:r').addEventListener('change', updateHiddenFields);
 });
 
 // Сохраняем данные в localStorage
@@ -111,6 +102,9 @@ function saveFormData() {
 
     let elementY = document.getElementById('data-form:y');
     let y = elementY.value;
+    if (y === "") {
+        y = 0;
+    }
 
     let elementR = document.getElementById('data-form:r');
     let r = elementR.options[elementR.selectedIndex].value;
@@ -125,14 +119,28 @@ function saveFormData() {
     localStorage.setItem("formData", JSON.stringify(formData));
 }
 
-// document.getElementById("clearDotsBtn").addEventListener("click", function () {
-//     dots.length = 0; // Очистка массива
-//     localStorage.removeItem('dots'); // Удаление данных из localStorage по ключу 'dots'
-//     drawGraph(JSON.parse(localStorage.getItem("formData")).r);
-//     drawDots(dots, 0);
-// });
+function clearDots () {
+    dots = [];
+    saveDataToLocalStorage();
+    let r = JSON.parse(localStorage.getItem("formData")).r;
+    drawGraph(r);
+    drawDots(dots, r);
+}
 
-// Вызов функции сохранения данных при изменении формы
-$("input[name='x'], #y, input[name='r']").change(function () {
-    saveFormData();
-});
+function updateHiddenFields() {
+    let x = document.getElementById('data-form:x').value;
+    let y = document.getElementById('data-form:y').value;
+    let r = document.getElementById('data-form:r').value;
+
+    document.getElementById('data-form:hiddenX').value = x;
+    document.getElementById('data-form:hiddenY').value = y;
+    document.getElementById('data-form:hiddenR').value = r;
+}
+
+window.submitBtnFunction = function() {
+    dots.push(document.getElementById('data-form:x').value, document.getElementById('data-form:y').value);
+    saveDataToLocalStorage();
+    let r = JSON.parse(localStorage.getItem("formData")).r;
+    drawGraph(r);
+    drawDots(dots, r);
+}

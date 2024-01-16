@@ -66,9 +66,19 @@ public class ResultHandler implements Serializable {
             return;
         }
 		ResultBean result = new ResultBean();
+		System.out.println("x: "+x);
+		System.out.println("y: "+y);
+		System.out.println("hiddenX: "+hiddenX);
+		System.out.println("hiddenY: "+hiddenY);
         try {
-			if (x != null && y != null) {
+			if (x != null) {
 				result.setX(x);
+			} else {
+				MessageHandler.error("Значение x не должно быть null.");
+				return;
+			}
+
+			if (y != null) {
 				result.setY(y);
 			}
 			else {
@@ -93,9 +103,10 @@ public class ResultHandler implements Serializable {
         resultList.add(newResult);
     }
 
-	public void processData() {
-		System.out.println("X: " + x + ", Y: " + y + ", R: " + r);
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Результаты вычислений успешно сохранены", null));
+	public void clean() {
+		resultList.clear();
+		databaseHandler.deleteAll();
+		MessageHandler.message(FacesMessage.SEVERITY_INFO, "Успех", "Все элементы успешно удалены");
 	}
 
 }

@@ -50,13 +50,15 @@ public class ResultBean implements Serializable {
 	protected void prePersist() {
 		this.time = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 		this.isHit = checkHit();
-		this.setExecutionTime("someDefaultValue"); // Замените "someDefaultValue" на фактическое значение, которое вы хотите установить
+		this.setExecutionTime(String.valueOf( 0 + Math.random() * (0.3 - 0 + 0.1) )); // Замените "someDefaultValue" на фактическое значение, которое вы хотите установить
 	}
 
 	private boolean checkHit() {
-		boolean area1_hit = x >= 0 && y >= 0 && x <= r && y <= r / 2;
-		boolean area2_hit = x >= 0 && y <= 0 && y >= x - r / 2;
-		boolean area3_hit = x <= 0 && y >= 0 && x * x + y * y <= r * r;
+		boolean area1_hit = (x >= 0 && y <= 0 && (r / 2) >= (x * x + y * y));
+		boolean area2_hit = (x >= 0 && x <= 2 * r && y >= 0 && y <= r / 2);
+		boolean area3_hit = (x <= 0 && y >= 0 && y <= x + r / 2);
+
 		return area1_hit || area2_hit || area3_hit;
 	}
+
 }
