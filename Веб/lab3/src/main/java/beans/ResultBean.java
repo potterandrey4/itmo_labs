@@ -50,7 +50,7 @@ public class ResultBean implements Serializable {
 	protected void prePersist() {
 		this.time = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 		this.isHit = checkHit();
-		this.setExecutionTime(String.valueOf( 0 + Math.random() * (0.3 - 0 + 0.1) )); // Замените "someDefaultValue" на фактическое значение, которое вы хотите установить
+		this.setExecutionTime(String.valueOf( 0 + Math.random() * (0.3 - 0 + 0.1) ));
 	}
 
 	private boolean checkHit() {
