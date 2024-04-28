@@ -1,120 +1,107 @@
-import java.util.Scanner;
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.util.ArrayList;
+
+import static computation.DiagonalTransformation.checkDiagonal;
+import static java.lang.Math.abs;
 
 public class Main {
+    private static double[][] val;
+    private static PrinterModule pr = new PrinterModule();
 
-	// Метод для решения СЛАУ методом итераций
-	static double[] iter(double[][] a, double[] y, int n, double eps) {
-		double[] res = new double[n];
-		int i, j;
+    public static void main(String[] args) {
 
-		// Инициализация начальных приближений
-		for (i = 0; i < n; i++) {
-			res[i] = y[i] / a[i][i];
-		}
+    }
 
-		double[] Xn = new double[n];
+    public static void execute(Matrix matrix, double eps) {
+        pr.printMatrix(matrix);
+        if (checkDiagonal(matrix.getMatrix(), matrix.getSize())) {
+            ResultSet rs = method_of_simple_iterations_SLAU(matrix, eps);
+            pr.print(rs.getTable());
+            pr.printVector("Решение системы: ", rs.getResult());
+            pr.printVector("Вектор невязки: ", rs.getResiduals());
+            return;
+        }
+        permuteMatrixHelper(matrix, 0);
+        if (val != null) {
+            Matrix matrix1 = new Matrix(val);
+            pr.print("Матрица после перестановки строк");
+            pr.printMatrix(matrix1);
+            ResultSet rs = method_of_simple_iterations_SLAU(matrix1, eps);
+            pr.print(rs.getTable());
+            pr.printVector("Решение системы: ", rs.getResult());
+            pr.printVector("Вектор невязки: ", rs.getResiduals());
+        } else {
+            pr.notDiagonalAll();
+        }
+    }
 
-		do {
-			// Рассчет нового приближения
-			for (i = 0; i < n; i++) {
-				Xn[i] = y[i] / a[i][i];
-				for (j = 0; j < n; j++) {
-					if (i == j)
-						continue;
-					else {
-						Xn[i] -= a[i][j] / a[i][i] * res[j];
-					}
-				}
-			}
 
-			// Проверка на достижение необходимой точности
-			boolean flag = true;
-			for (i = 0; i < n - 1; i++) {
-				if (Math.abs(Xn[i] - res[i]) > eps) {
-					flag = false;
-					break;
-				}
-			}
 
-			// Обновление приближений
-			for (i = 0; i < n; i++) {
-				res[i] = Xn[i];
-			}
+    private static void permuteMatrixHelper(Matrix matrix, int index) {
+        if (index >= matrix.getMatrix().length - 1) {
+            if (checkDiagonal(matrix.getMatrix(), matrix.getSize())) {
+                val = new double[matrix.getSize()][matrix.getSize() + 1];
+                for (int i = 0; i < matrix.getSize(); i++) {
+                    for (int j = 0; j < matrix.getSize() + 1; j++) {
+                        val[i][j] = matrix.getMatrix()[i][j];
+                    }
+                }
+            }
+            return;
+        } else {
+            for (int i = index; i < matrix.getMatrix().length; i++) {
+                double[] t = matrix.getMatrix()[index];
+                matrix.getMatrix()[index] = matrix.getMatrix()[i];
+                matrix.getMatrix()[i] = t;
 
-			// Если достигнута необходимая точность, выход из цикла
-			if (flag)
-				break;
-		} while (true);
+                permuteMatrixHelper(matrix, index + 1);
 
-		return res;
-	}
+                t = matrix.getMatrix()[index];
+                matrix.getMatrix()[index] = matrix.getMatrix()[i];
+                matrix.getMatrix()[i] = t;
+            }
+            pr.printMatrix(matrix);
+        }
+    }
 
-	public static void main(String[] args) {
-		Scanner scanner = new Scanner(System.in);
+    private static ResultSet method_of_simple_iterations_SLAU(Matrix matrix, double eps) {
+        ResultSet rs = new ResultSet();
+        double[] x = new double[matrix.getSize()];
+        double norma = 0, sum, t;
+        do {
+            ArrayList<Double> esps = new ArrayList<>();
+            norma = 0;
+            //  k++;
+            for (int i = 0; i < matrix.getSize(); i++) {
+                t = x[i];
+                sum = 0;
 
-		System.out.print("Введите количество уравнений: ");
-		int n = scanner.nextInt();
+                for (int j = 0; j < matrix.getSize(); j++) {
+                    if (j != i)
+                        sum += matrix.getMatrix()[i][j] * x[j];
+                }
+                x[i] = (matrix.getVector()[i] - sum) / matrix.getMatrix()[i][i];
+                esps.add(abs(x[i] - t));
+                if (abs(x[i] - t) > norma)
+                    norma = abs(x[i] - t);
+            }
+            rs.addIter(x);
+            rs.addE(esps);
+        }
+        while (norma > eps);
 
-		double[][] a;
-		double[] y;
-		double[] x;
 
-		try {
-			Scanner fileScanner;
-			if (n == 5) {
-				fileScanner = new Scanner(new File("/home/andrey/Документы/itmo_labs/Выч_мат/Lab1/src/main/resources/inArray5.txt"));
-			} else {
-				fileScanner = new Scanner(new File("/home/andrey/Документы/itmo_labs/Выч_мат/Lab1/src/main/resources/inArray3.txt"));
-			}
+        rs.setResult(x);
 
-			y = new double[n];
-			a = new double[n][n];
-
-			// Заполнение матрицы коэффициентов и вектора свободных членов из файла
-			for (int i = 0; i < n; i++) {
-				for (int j = 0; j <= n; j++) {
-					if (j != n) {
-						a[i][j] = fileScanner.nextDouble();
-					} else {
-						y[i] = fileScanner.nextDouble();
-					}
-				}
-			}
-
-			fileScanner.close();
-
-			// Вывод матрицы и вектора на экран
-			System.out.println("Исходная система уравнений:");
-			for (int i = 0; i < n; i++) {
-				for (int j = 0; j <= n; j++) {
-					if (j != n) {
-						System.out.print(a[i][j] + "\t");
-					} else {
-						System.out.print(" | " + y[i] + "\t");
-					}
-				}
-				System.out.println();
-			}
-
-			// Ввод точности с клавиатуры
-			System.out.print("Введите точность вычислений (eps): ");
-			double eps = scanner.nextDouble();
-
-			// Решение СЛАУ методом итераций с заданной точностью
-			x = iter(a, y, n, eps);
-
-			// Вывод результата на экран
-			System.out.println("\nРешение СЛАУ:");
-			for (int i = 0; i < n; i++) {
-				System.out.println("x[" + i + "] = " + x[i]);
-			}
-
-		} catch (FileNotFoundException e) {
-			System.out.println("Файл не найден.");
-		} finally {
-			scanner.close();
-		}
-	}
+        //Проверка
+        ArrayList<Double> residuals = new ArrayList<>();
+        for (int i = 0; i < matrix.getSize(); i++) {
+            double S = 0;
+            for (int j = 0; j < matrix.getSize(); j++) {
+                S += matrix.getMatrix()[i][j] * x[j];
+            }
+            residuals.add(S - matrix.getVector()[i]);
+        }
+        rs.setResiduals(residuals);
+        return rs;
+    }
 }
