@@ -35,16 +35,20 @@ public class Main {
                 }
             }
 
-
-
-            System.out.println("Введите матрицу. Столбцы разделяйте пробелами");
+            System.out.println("Введите матрицу. Столбцы разделяйте пробелами, свободные коэфы отделите вертикальной линией");
             matrix = new double[dimension][dimension + 1];
 
-            for (int i = 0; i < dimension; i++) {
-                String[] rowElements = console_sc.nextLine().replace("| ", "").split(" ");
-                for (int j = 0; j < dimension + 1; j++) {
-                    matrix[i][j] = Double.parseDouble(rowElements[j].replace(",", "."));
+            try {
+                for (int i = 0; i < dimension; i++) {
+                    String[] rowElements = console_sc.nextLine().replace("| ", "").split(" ");
+                    for (int j = 0; j < dimension + 1; j++) {
+                        matrix[i][j] = Double.parseDouble(rowElements[j].replace(",", "."));
+                    }
                 }
+            }
+            catch (ArrayIndexOutOfBoundsException e) {
+                System.err.println("Вы ошиблись в введении матрицы. Попробуйте ещё раз");
+                System.exit(52);
             }
 
 
