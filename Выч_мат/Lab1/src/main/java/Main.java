@@ -25,8 +25,16 @@ public class Main {
         int mode = Integer.parseInt(console_sc.nextLine());
         if (mode == 1) {
 
-            System.out.println("Введите размерность матрицы");
-            dimension = Integer.parseInt(console_sc.nextLine());
+            System.out.println("Введите размерность матрицы (целое положительное число)");
+            while (dimension <= 0) {
+                if (console_sc.hasNextInt()) {
+                    dimension = Integer.parseInt(console_sc.nextLine());
+                } else {
+                    System.out.println("Введите целое положительное число");
+                    console_sc.nextLine();
+                }
+            }
+
 
 
             System.out.println("Введите матрицу. Столбцы разделяйте пробелами");
@@ -35,13 +43,13 @@ public class Main {
             for (int i = 0; i < dimension; i++) {
                 String[] rowElements = console_sc.nextLine().replace("| ", "").split(" ");
                 for (int j = 0; j < dimension + 1; j++) {
-                    matrix[i][j] = Double.parseDouble(rowElements[j]);
+                    matrix[i][j] = Double.parseDouble(rowElements[j].replace(",", "."));
                 }
             }
 
 
             System.out.println("Введите точность");
-            accuracy = Double.parseDouble(console_sc.nextLine());
+            accuracy = Double.parseDouble(console_sc.nextLine().replace(",", "."));
 
         }
 
@@ -66,10 +74,10 @@ public class Main {
             for (int i = 0; i < dimension; i++) {
                 String[] rowElements = f_sc.nextLine().replace("| ", "").split(" ");
                 for (int j = 0; j < dimension + 1; j++) {
-                    matrix[i][j] = Double.parseDouble(rowElements[j]);
+                    matrix[i][j] = Double.parseDouble(rowElements[j].replace(",", "."));
                 }
             }
-            accuracy = Double.parseDouble(f_sc.nextLine());
+            accuracy = Double.parseDouble(f_sc.nextLine().replace(",", "."));
 
             f_sc.close();
 
@@ -87,7 +95,7 @@ public class Main {
             System.out.println("Введите размерность матрицы");
             dimension = Integer.parseInt(console_sc.nextLine());
             System.out.println("Введите точность");
-            accuracy = Double.parseDouble(console_sc.nextLine());
+            accuracy = Double.parseDouble(console_sc.nextLine().replace(",", "."));
 
             matrix = ы.generateMatrix(dimension);
 
