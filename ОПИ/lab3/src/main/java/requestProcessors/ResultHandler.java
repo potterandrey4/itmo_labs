@@ -17,7 +17,7 @@ import java.util.Map;
 
 @Getter
 @Named @SessionScoped
-public class ResultHandler implements Serializable {
+public class АбобаResultHandler implements Serializable {
 
     private final ResultBean result = new ResultBean();
 

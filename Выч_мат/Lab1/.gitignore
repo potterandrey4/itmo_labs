@@ -50,3 +50,10 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+.idea
+/.idea
+.gitignore
+/.target
+.target
+/src/main/resources

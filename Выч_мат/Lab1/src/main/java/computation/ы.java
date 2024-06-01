@@ -1,6 +1,7 @@
 package computation;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -78,62 +79,37 @@ public class ы {
 
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n + 1; j++) {
-                matrix[i][j] = rand.nextDouble() * 10; // Заполняем случайными числами от 0 до 10
+                matrix[i][j] = rand.nextDouble() * 10;
             }
+        }
+
+        for (int i = 0; i <n; i++) {
+            matrix[i][i] = Arrays.stream(matrix[i]).sum();
         }
 
         return matrix;
     }
 
 
-
-
     public static double calcDet(double[][] matrix) {
         int n = matrix.length;
 
-        // Базовый случай для матрицы 1x1
-        if (n == 1) {
-            return matrix[0][0];
-        }
-
-        // Базовый случай для матрицы 2x2
-        if (n == 2) {
-            return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];
-        }
-
-        double determinant = 0;
+        double determinant = 1;
 
         for (int i = 0; i < n; i++) {
-            double[][] subMatrix = getSubMatrix(matrix, 0, i);
-            determinant += Math.pow(-1, i) * matrix[0][i] * calcDet(subMatrix);
+            // зануляем элементы под главной диагональю
+            for (int j = i + 1; j < n; j++) {
+                double factor = matrix[j][i] / matrix[i][i];
+                for (int k = i; k < n; k++) {
+                    matrix[j][k] -= factor * matrix[i][k];
+                }
+            }
+        }
+        for (int i = 0; i < n; i++) {
+            determinant *= matrix[i][i];
         }
 
         return determinant;
     }
-
-
-    private static double[][] getSubMatrix(double[][] matrix, int excludingRow, int excludingCol) {
-        int n = matrix.length;
-        double[][] subMatrix = new double[n - 1][n - 1];
-        int r = -1;
-
-        for (int i = 0; i < n; i++) {
-            if (i == excludingRow) {
-                continue;
-            }
-            r++;
-            int c = -1;
-            for (int j = 0; j < n; j++) {
-                if (j == excludingCol) {
-                    continue;
-                }
-                c++;
-                subMatrix[r][c] = matrix[i][j];
-            }
-        }
-
-        return subMatrix;
-    }
-
 
 }

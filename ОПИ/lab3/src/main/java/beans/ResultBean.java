@@ -53,6 +53,62 @@ public class ResultBean implements Serializable {
 		this.setExecutionTime(String.valueOf( 0 + Math.random() * (0.3 - 0 + 0.1) ));
 	}
 
+	public void setExecutionTime(String executionTime) {
+		this.executionTime = executionTime;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Double getX() {
+		return x;
+	}
+
+	public void setX(Double x) {
+		this.x = x;
+	}
+
+	public Double getY() {
+		return y;
+	}
+
+	public void setY(Double y) {
+		this.y = y;
+	}
+
+	public Double getR() {
+		return r;
+	}
+
+	public void setR(Double r) {
+		this.r = r;
+	}
+
+	public String getTime() {
+		return time;
+	}
+
+	public void setTime(String time) {
+		this.time = time;
+	}
+
+	public String getExecutionTime() {
+		return executionTime;
+	}
+
+	public boolean isHit() {
+		return isHit;
+	}
+
+	public void setHit(boolean hit) {
+		isHit = hit;
+	}
+
 	private boolean checkHit() {
 		boolean area1_hit = (x >= 0 && y <= 0 && (r / 2) >= (x * x + y * y));
 		boolean area2_hit = (x >= 0 && x <= 2 * r && y >= 0 && y <= r / 2);

@@ -101,13 +101,13 @@ public class Main {
             System.out.println("Введите точность");
             accuracy = Double.parseDouble(console_sc.nextLine().replace(",", "."));
 
-            matrix = ы.generateMatrix(dimension);
+            permutetedMatrix = ы.generateMatrix(dimension);
 
             System.out.println("Сгененированная матрица");
             for (int i = 0; i < dimension; i++) {
                 for (int j = 0; j < dimension+1; j++) {
                     if (j == dimension) System.out.print("| ");
-                    System.out.print(matrix[i][j] + " ");
+                    System.out.print(permutetedMatrix[i][j] + " ");
                 }
                 System.out.println();
             }
