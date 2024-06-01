@@ -17,7 +17,7 @@ import java.util.Map;
 
 @Getter
 @Named @SessionScoped
-public class АбобаResultHandler implements Serializable {
+public class ResultHandler implements Serializable {
 
     private final ResultBean result = new ResultBean();
 
@@ -108,5 +108,7 @@ public class АбобаResultHandler implements Serializable {
 		databaseHandler.deleteAll();
 		MessageHandler.message(FacesMessage.SEVERITY_INFO, "Успех", "Все элементы успешно удалены");
 	}
+
+
 
 }

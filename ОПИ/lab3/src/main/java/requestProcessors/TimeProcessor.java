@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter;
 
 @Named @ViewScoped
 @Getter
-public class АбобаTimeProcessor implements Serializable {
+public class TimeProcessor implements Serializable {
     private String currentTime;
     { updateTime(); }
 
