@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="Lab3" default="build">
     <taskdef resource="net/sf/antcontrib/antlib.xml"/>
+    <taskdef resource="net/sf/git4ant/git4ant-taskdefs.xml" classpath="/home/andrey/Документы/itmo_labs/ОПИ/lab3/lib/main/ant-git-tasks-1.1.0.jar"/>
 
     <property file="build.properties"/>
     <taskdef resource="net/sf/antcontrib/antlib.xml">
@@ -103,7 +104,7 @@
         <echo>Create_dir_for_test</echo>
         <mkdir dir="${test.report.dir}"/>
         <echo>Run_test</echo>
-        
+
         <junitlauncher printsummary="true" haltonfailure="true">
             <classpath>
                 <path refid="lib.test.path"/>
@@ -162,62 +163,65 @@
 
     <!-- ✅ -->
     <!-- 10: alt создаёт альтернативную версию программы-->
-    <target name="alt" depends="build">
-        <replace file="${basedir}/src/main/resources/META-INF/persistence.xml">
-            <token name="original_name" value="original_value"/>
-            <token name="new_name" value="new_value"/>
-        </replace>
 
-        <replaceregexp file="${basedir}/src/main/java/beans/ResultBean.java">
-            <regexp replace="original_regex_pattern" with="new_regex_pattern"/>
-        </replaceregexp>
-
-        <mkdir dir="${basedir}/alt"/>
-
-        <copy todir="${basedir}/alt">
-            <fileset dir="${basedir}/src/main/java" excludes="**/beans/ResultBean.java"/>
-            <fileset dir="${basedir}/src/main/resources" excludes="META-INF/persistence.xml"/>
-            <fileset dir="${basedir}/src/main/webapp" excludes="WEB-INF/web.xml"/>
+    <target name="alt" description="Создание версии программы с измененными именами переменных и классов по указанному регулярному выражению">
+        <echo>Создание временной директории и копирование исходных файлов...</echo>
+        <tempfile property="temp.dir" destdir="${java.io.tmpdir}" prefix="ant"/>
+        <copy todir="${temp.dir}">
+            <fileset dir="${src.main.dir}" includes="**/*.java"/>
         </copy>
 
-        <jar destfile="${basedir}/alt/alt-version.jar" basedir="${basedir}/alt">
-            <manifest>
-                <entry name="Main-Class" value="com.example.Main"/> </manifest>
-        </jar>
+        <replaceregexp match="main.xhtml"
+                       flags=""
+                       replace="asas.xhtml">
+            <fileset dir="${temp.dir}" includes="**"/>
+        </replaceregexp>
+
+        <antcall target="build">
+            <param name="srcdir" value="${temp.dir}"/>
+            <param name="war" value="${build.dir}/АБОБА.war"/>
+        </antcall>
     </target>
 
-
-
-    <!-- Загрузка задачи properties -->
-    <taskdef resource="net/sf/antcontrib/antlib.xml"/>
 
 
     <!-- 11: diff -->
-    <target name="diff" description="Совершение коммита в репозиторий svn, если изменения не касаются указанных классов">
-        <echo>Получение списка измененных файлов...</echo>
-        <svn-status outputproperty="diff.status"/>
-        <echo>Поиск изменений в указанных классах...</echo>
-        <for param="class" list="${diff.classes}" delimiter=" ">
-            <sequential>
-                <condition property="commit">
-                    <not>
-                        <contains string="${diff.status}"
-                          substring="@{class}.java"/>
-                      </not>
-                  </condition>
-              </sequential>
-          </for>
-          <if>
-            <isset property="commit"/>
-            <then>
-                <echo>Изменения не были найдены: выполнение коммита...</echo>
-                <svn-commit/>
-            </then>
-            <else>
-                <echo>Изменения были найдены: завершение...</echo>
-            </else>
-        </if>
+    <target name="svn-commit" depends="clean">
+        <property name="params.file" value="${basedir}/params.txt"/>
+
+        <svn status verbose="true" failonerror="false" outputProperty="changed.files"/>
+
+        <property name="ignored.classes" value=""/>
+        <forEach file="${params.file}">
+            <filterchain>
+                <filterreader>
+                    <reader>
+                        <file file="${file}"/>
+                    </reader>
+                    <tokenizer linetokenizer/>
+                    <filtermapper basedir="${basedir}">
+                        <regexp pattern="^\s*((\w+\.)+\w+)\s*$" replace="$$1"/>
+                    </filtermapper>
+                    <merge>
+                        <iterator property="ignored.classes" usecomma="true"/>
+                        <property file="${file}"/>
+                    </merge>
+                </filterreader>
+            </filterchain>
+        </forEach>
+
+        <property name="ignored.changes.present" value="false"/>
+        <for each="changed.file" delimiter="\n">
+            <if condition="ant:contains('${changed.file}', '${ignored.classes}')">
+                <set property="ignored.changes.present" value="true"/>
+            </if>
+        </for>
+
+        <condition if="ant:not('${ignored.changes.present}')">
+            <svn commit message="Автоматический коммит" failonerror="true"/>
+        </condition>
     </target>
+
 
 
     <!-- 12: report -->
