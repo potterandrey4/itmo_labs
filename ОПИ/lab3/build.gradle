@@ -1,0 +1,403 @@
+import javax.xml.parsers.DocumentBuilderFactory
+
+plugins {
+    id 'java'
+    id 'war'
+    id 'application'
+    id 'base'
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    implementation 'jakarta.platform:jakarta.jakartaee-web-api:10.0.0'
+    implementation 'org.primefaces:primefaces:13.0.0:jakarta'
+    implementation 'org.postgresql:postgresql:42.7.1'
+    implementation 'org.hibernate.orm:hibernate-core:6.4.0.Final'
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    implementation 'com.sun.faces:jsf-api:2.2.8-35'
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.1'
+}
+mainClassName = 'App'
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main/java'
+        }
+        resources {
+            srcDir 'src/main/resources'
+        }
+        webAppDirName = 'src/main/webapp'
+    }
+}
+
+// 1 - compile
+task compile {
+    dependsOn 'compileJava'
+}
+
+tasks.processResources.duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+// 2 - build
+task customBuild(type: War) {
+    dependsOn 'compileJava'
+    dependsOn 'processResources'
+    dependsOn 'classes'
+
+    // Устанавливаем стратегию обработки дубликатов для этой задачи
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    from sourceSets.main.output
+    into("WEB-INF/classes") {
+        from sourceSets.main.output
+    }
+
+    webInf {
+        from 'src/main/webapp/WEB-INF'
+    }
+
+    webXml = file('src/main/webapp/WEB-INF/web.xml')
+}
+
+// 4 - test
+task customTest(type: Test) {
+    dependsOn 'customBuild'
+    testClassesDirs = sourceSets.test.output.classesDirs
+    classpath = sourceSets.test.runtimeClasspath
+    include 'beans/ResultBeanTest.class'
+    reports {
+        junitXml {
+            required.set(true)
+            outputLocation.set(file("${buildDir}/test-results/junit"))
+        }
+    }
+}
+
+
+// 5 - scp
+task scp(type: Exec, dependsOn: customBuild) {
+    description = 'SCP the built project to a remote server'
+    group = 'custom'
+    commandLine 'expect', '/home/andrey/devTools/scripts/scp.exp'
+}
+
+// 6 - doc
+
+task doc(type: War, dependsOn: 'compile') {
+    def buildDocDir = file("${buildDir}/doc")
+    def buildTmpDir = file("${buildDir}/tmp")
+    def srcMainDir = file("${projectDir}/src/main")
+
+    doFirst {
+        delete buildDocDir
+        delete buildTmpDir
+
+        mkdir buildDocDir
+        mkdir buildTmpDir
+
+        ant.checksum(algorithm: "MD5", totalproperty: "md5", todir: buildTmpDir) {
+            fileset(dir: srcMainDir)
+        }
+
+        ant.checksum(algorithm: "SHA-1", totalproperty: "sha1", todir: buildTmpDir) {
+            fileset(dir: srcMainDir)
+        }
+    }
+
+    from {
+        project.tasks.javadoc {
+            destinationDir = buildDocDir
+            source = fileTree(dir: "${srcMainDir}/java")
+            classpath = configurations.compileClasspath
+        }
+        buildDocDir
+    }
+
+    archiveFileName = "javadoc.war"
+
+    doLast {
+        manifest {
+            attributes(
+                    "SHA-1": ant.properties["sha1"],
+                    "MD5": ant.properties["md5"]
+            )
+        }
+
+        file('output.txt').text = "sha1=${ant.properties['sha1']}"
+    }
+}
+
+
+// 7 - xml validation
+task xmlValidation {
+    description = 'Validate all XML files in the project'
+    group = 'verification'
+
+    def validateXmlFile = { File xmlFile ->
+        try {
+            def factory = DocumentBuilderFactory.newInstance()
+            factory.setNamespaceAware(true)
+            def builder = factory.newDocumentBuilder()
+            builder.parse(xmlFile)
+            println "Validated: ${xmlFile}"
+        } catch (Exception e) {
+            System.err.println("Validation failed for ${xmlFile}: ${e.message}")
+        }
+    } as Object
+
+    doLast {
+        fileTree(dir: 'src/main', include: '**/*.xml').each { File xmlFile ->
+            validateXmlFile(xmlFile)
+        }
+        fileTree(dir: 'src/test', include: '**/*.xml').each { File xmlFile ->
+            validateXmlFile(xmlFile)
+        }
+    }
+}
+
+
+// 8 - native2ascii
+task native2ascii {
+    description = 'Converts files in localization directory using native2ascii'
+    group = 'Localization'
+
+    // Пути к каталогам и файлам
+    def localizationDir = 'src/main/resources/localization'
+    def outputDir = 'build/resources/main/localization'
+
+    inputs.dir localizationDir
+    outputs.dir outputDir
+
+    // Выполнение команды native2ascii для каждого файла в каталоге локализации
+    doLast {
+        fileTree(localizationDir).each { file ->
+            def outputFile = file.absolutePath.replace(localizationDir, outputDir)
+            println "Converting ${file.name} to ASCII..."
+            project.exec {
+                commandLine 'native2ascii', file.absolutePath, outputFile
+            }
+        }
+    }
+}
+
+
+// Определение задачи воспроизведения музыки
+task music {
+    description = 'Play music after the build is completed'
+    group = 'custom'
+
+    doLast {
+        // Определяем результат сборки
+        def buildResult = tasks.build.state.failure
+
+        // Путь к файлам с музыкой
+        def successMusicFile = '/home/andrey/Документы/itmo_labs/ОПИ/lab3/sounds/rickroll.mp3'
+        def failureMusicFile = '/home/andrey/Документы/itmo_labs/ОПИ/lab3/sounds/fail.wav'
+
+        // Выбираем файл с музыкой в зависимости от результата сборки
+        def musicFile = buildResult ? failureMusicFile : successMusicFile
+
+        // Команда для воспроизведения музыки
+        def command = "xdg-open ${musicFile}"
+
+        // Запуск команды
+        exec {
+            commandLine 'bash', '-c', command
+        }
+    }
+}
+
+// Добавление задачи воспроизведения музыки в список зависимостей для задачи сборки
+tasks.build.finalizedBy music
+
+
+// 10 - alt
+task alt {
+    dependsOn build
+
+    description = 'создаёт альтернативную версию программы с измененными именами переменных и классов и упаковывает её в jar-архив'
+    group = 'Build'
+
+    doLast {
+        def altDir = "${buildDir}/alt"
+        def srcDir = 'src/main/java'
+
+        println 'Making alt version..'
+
+        // Create directory structure
+        mkdir "${altDir}/src"
+        mkdir "${altDir}/artifacts"
+
+        // Copy source files
+        copy {
+            from srcDir
+            into "${altDir}/src"
+        }
+
+        // Delete tests directory
+        delete fileTree("${altDir}/src/tests")
+
+        // Move files
+        moveFile("${altDir}/src/beans/ResultBean.java", "${altDir}/src/beans/AltResultBean.java")
+        moveFile("${altDir}/src/requestProcessors/DatabaseHandler.java", "${altDir}/src/requestProcessors/AltDatabaseHandler.java")
+        moveFile("${altDir}/src/requestProcessors/ResultHandler.java", "${altDir}/src/requestProcessors/AltResultHandler.java")
+        moveFile("${altDir}/src/requestProcessors/TimeProcessor.java", "${altDir}/src/requestProcessors/AltTimeProcessor.java")
+        moveFile("${altDir}/src/tools/MessageHandler.java", "${altDir}/src/tools/AltMessageHandler.java")
+        moveFile("${altDir}/src/tools/XConverter.java", "${altDir}/src/tools/AltXConverter.java")
+
+        // Replace tokens in files
+        replaceTokens("${altDir}/src/beans", 'ResultBean', 'AltResultBean')
+        replaceTokens("${altDir}/src/requestProcessors", 'DatabaseHandler', 'AltDatabaseHandler')
+        replaceTokens("${altDir}/src/requestProcessors", 'ResultHandler', 'AltResultHandler')
+        replaceTokens("${altDir}/src/requestProcessors", 'TimeProcessor', 'AltTimeProcessor')
+        replaceTokens("${altDir}/src/tools", 'MessageHandler', 'AltMessageHandler')
+        replaceTokens("${altDir}/src/tools", 'XConverter', 'AltXConverter')
+
+        // Call build task with new source
+        copy {
+            from "${altDir}/src"
+            into "${buildDir}/classes/java/main"
+        }
+
+        // Rename WAR file
+        def warFile = file("${altDir}/artifacts/lab3.war")
+        if (warFile.exists()) {
+            def newWarFile = file("${altDir}/artifacts/alt-lab3.war")
+            warFile.renameTo(newWarFile)
+            println "Renamed WAR file to ${newWarFile}"
+        } else {
+            println "WAR file not found: ${warFile}"
+        }
+
+        exec {
+            commandLine 'rm', file("${altDir}/artifacts/lab3.jar")
+        }
+        println 'Success!'
+    }
+}
+
+void moveFile(String src, String dest) {
+    def srcFile = file(src)
+    def destFile = file(dest)
+    if (srcFile.exists()) {
+        destFile.parentFile.mkdirs()
+        srcFile.renameTo(destFile)
+    } else {
+        println "File not found: ${src}"
+    }
+}
+
+void replaceTokens(String dir, String token, String replacement) {
+    fileTree(dir).matching {
+        include '**/*.java'
+    }.each { file ->
+        def text = file.text
+        file.text = text.replaceAll(token, replacement)
+    }
+}
+
+build.doLast {
+    copy {
+        from 'build/libs'
+        into "${buildDir}/alt/artifacts"
+    }
+}
+
+
+// 11: diff
+task diff {
+    description = 'Проверяет состояние рабочей копии и выполняет commit в репозиторий svn, если изменения касаются указанных классов.'
+    group = 'Verification'
+
+    def paramsFile = file('params.props')
+    def differences = new ByteArrayOutputStream()
+
+    doLast {
+        if (!paramsFile.exists()) {
+            throw new FileNotFoundException("Файл params.props не найден: ${paramsFile.absolutePath}")
+        }
+
+        // Load parameters
+        def params = paramsFile.text.trim().split('\n').collect { it.trim() }.findAll { it }
+
+        params.each { param ->
+            def diffOutput = new ByteArrayOutputStream()
+            exec {
+                executable = 'svn'
+                args 'st', param
+                standardOutput = diffOutput
+                ignoreExitValue = true
+            }
+            def diff = diffOutput.toString().trim()
+            if (!diff.isEmpty()) {
+                differences.write(diffOutput.toByteArray())
+            }
+        }
+
+        def allDifferences = differences.toString().trim()
+
+        // Determine if commit is needed
+        def commitFlag = !allDifferences.isEmpty()
+        project.ext.commitFlag = commitFlag
+
+        if (commitFlag) {
+            println "Changes detected: \n$allDifferences"
+
+            // Add files to svn
+            exec {
+                executable = 'svn'
+                args 'add', '--force', '.'
+                ignoreExitValue = true
+            }
+
+            // Commit files to svn
+            exec {
+                executable = 'svn'
+                args 'commit', '-m', 'Some changes appeared', '--username=gradle'
+                ignoreExitValue = true
+            }
+
+            println 'Changes committed successfully.'
+        } else {
+            println 'No changes to commit.'
+        }
+    }
+}
+
+
+// 12: report
+task report {
+    description = 'В случае успешного прохождения тестов сохраняет отчет JUnit в формате XML, добавляет его в репозиторий SVN и выполняет commit.'
+    group = 'Verification'
+
+    def testReportDir = file("${buildDir}/test-results/junit")
+
+    doLast {
+        // Проверить, что тесты прошли успешно
+        if (tasks.customTest.state.failure == null) {
+            println "Tests passed successfully."
+
+            // Добавить отчет в SVN
+            exec {
+                executable = 'svn'
+                args 'add', '--force', "${testReportDir}"
+            }
+
+            // Сделать commit
+            exec {
+                executable = 'svn'
+                args 'commit', '-m', 'JUnit test report added', '--username=gradle'
+            }
+
+            println 'JUnit test report committed successfully.'
+        } else {
+            println "Tests failed. No report committed."
+        }
+    }
+}
+
+report.dependsOn customTest

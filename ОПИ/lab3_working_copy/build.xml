@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Lab3" default="build">
+    <taskdef resource="net/sf/antcontrib/antlib.xml"/>
+    <taskdef resource="net/sf/git4ant/git4ant-taskdefs.xml" classpath="/home/andrey/Документы/itmo_labs/ОПИ/lab3/lib/main/ant-git-tasks-1.1.0.jar"/>
+
+    <property file="build.properties"/>
+    <taskdef resource="net/sf/antcontrib/antlib.xml">
+        <classpath>
+            <pathelement location="lib/main/ant-contrib-1.0b3.jar"/>
+        </classpath>
+    </taskdef>
+    <path id="lib.main.dir">
+        <fileset dir="lib" includes="ant-contrib-1.0b3.jar"/>
+    </path>
+
+    <path id="lib.main.path">
+        <fileset dir="${lib.main.dir}" includes="**/*.jar"/>
+    </path>
+
+    <path id="lib.test.path">
+        <path refid="lib.main.path"/>
+        <fileset dir="${lib.test.dir}" includes="**/*.jar"/>
+    </path>
+
+
+    <!-- ✅ -->
+    <!-- 1: компиляция исходного кода -->
+    <target name="compile" description="Компиляция кода проекта">
+        <echo>Compile_main</echo>
+        <property name="srcdir" value="${src.main.dir}"/>
+        <mkdir dir="${build.classes.dir}"/>
+        <javac srcdir="${srcdir}"
+               destdir="${build.classes.dir}"
+               includeantruntime="false">
+            <classpath refid="lib.main.path"/>
+        </javac>
+        <echo>Compile_Test</echo>
+        <mkdir dir="${test.dir}"/>
+        <javac srcdir="${src.test.dir}"
+               destdir="${test.dir}"
+               includeantruntime="false">
+            <classpath>
+                <path refid="lib.test.path"/>
+                <pathelement location="${build.classes.dir}"/>
+            </classpath>
+        </javac>
+    </target>
+
+    <target name="cleanWar" description="Удаление старого WAR файла">
+        <delete file="${build.dir}/${ant.project.name}.war"/>
+    </target>
+
+
+    <!-- ✅ -->
+    <!-- 2: сборка проекта -->
+    <target name="build" depends="compile,cleanWar" description="Создание war-файла">
+        <echo>Compile_lib</echo>
+        <copy todir="${build.web-inf.lib}">
+            <path refid="lib.main.path"/>
+        </copy>
+
+        <echo>Compile_all_WEB-INF</echo>
+        <copy todir="${build.web-inf}">
+            <fileset dir="${src.main.web}/WEB-INF"/>
+        </copy>
+
+        <echo>Compile_resources</echo>
+        <copy todir="${build.classes.dir}">
+            <fileset dir="${src.main.resources}"/>
+        </copy>
+
+        <echo>Copy_files_in_war</echo>
+        <copy todir="${build.dir}">
+            <fileset dir="${src.main.web}">
+                <exclude name="WEB-INF/**"/>
+            </fileset>
+        </copy>
+
+        <echo>Create_war</echo>
+        <property name="war" value="${build.dir}/${ant.project.name}.war"/>
+        <war destfile="${war}" update="true">
+            <fileset dir="${build.dir}"/>
+        </war>
+    </target>
+
+
+    <!-- ✅ -->
+    <!-- 3: очистка удаление скомпилированных классов -->
+    <target name="clean" description="Удаление скомпилированных файлов">
+        <echo>Delete_dir_classes</echo>
+        <delete dir="${build.dir}"/>
+        <echo>Delete_dir_tests</echo>
+        <delete dir="${test.dir}"/>
+        <echo>Delete_dir_doc</echo>
+        <delete dir="${doc.dir}"/>
+        <echo>Delete_resources</echo>
+        <delete dir="${native2ascii.resources}"/>
+    </target>
+
+
+    <!-- NO -->
+    <!-- 4: запуск junit-тестов проекта -->
+    <target name="test" depends="build" description="Компиляция и выполнение тестов">
+        <echo>Create_dir_for_test</echo>
+        <mkdir dir="${test.report.dir}"/>
+        <echo>Run_test</echo>
+
+        <junitlauncher printsummary="true" haltonfailure="true">
+            <classpath>
+                <path refid="lib.test.path"/>
+                <pathelement location="${build.dir}"/>
+                <pathelement location="${build.classes.dir}"/>
+                <pathelement location="${test.dir}"/>
+                <pathelement location="/home/andrey/Документы/itmo_labs/ОПИ/lab3/lib/test/junitlauncher.jar"/>
+            </classpath> <!-- Убедитесь, что здесь закрывающий тег присутствует -->
+
+            <testclasses outputdir="${test.report.dir}">
+                <fileset dir="${test.dir}">
+                    <include name="**/*Test*.class"/>
+                </fileset>
+                <listener type="legacy-plain"
+                          sendSysOut="true"
+                          sendSysErr="true"/>
+                <fork/>
+            </testclasses>
+        </junitlauncher>
+
+    </target>
+
+
+    <!-- 5: перемещение собранного проекта по scp по завершению сборки -->
+    <target name="scp" depends="build" description="Сборка и перемещение собранного war-архива по scp на сервер">
+        <input message="Введите пароль: " addproperty="scp.password">
+            <handler type="secure"/>
+        </input>
+        <trycatch>
+            <try>
+                <echo>Connecting and sending a war archive to the server...</echo>
+                <echo>${scp.user}@${scp.host}:${scp.dir}</echo>
+                <scp file="${build.dir}/${ant.project.name}.war"
+                     todir="${scp.user}@${scp.host}:${scp.dir}"
+                     password="${scp.password}"
+                     port="${scp.port}"
+                     trust="true"/>
+            </try>
+            <catch>
+                <fail message="Failed to connect to the server."/>
+            </catch>
+        </trycatch>
+    </target>
+
+
+    <!-- NO -->
+    <!-- 9: музыка после сборки -->
+    <target name="music" depends="build">
+        <taskdef name="sound" classname="org.apache.tools.ant.taskdefs.optional.sound.SoundTask"/>
+        <sound>
+            <success source="sounds/success.wav"/>
+            <fail source="sounds/fail.wav"/>
+        </sound>
+    </target>
+
+
+    <!-- ✅ -->
+    <!-- 10: alt создаёт альтернативную версию программы-->
+
+    <target name="alt" description="Создание версии программы с измененными именами переменных и классов по указанному регулярному выражению">
+        <echo>Создание временной директории и копирование исходных файлов...</echo>
+        <tempfile property="temp.dir" destdir="${java.io.tmpdir}" prefix="ant"/>
+        <copy todir="${temp.dir}">
+            <fileset dir="${src.main.dir}" includes="**/*.java"/>
+        </copy>
+
+        <replaceregexp match="main.xhtml"
+                       flags=""
+                       replace="asas.xhtml">
+            <fileset dir="${temp.dir}" includes="**"/>
+        </replaceregexp>
+
+        <antcall target="build">
+            <param name="srcdir" value="${temp.dir}"/>
+            <param name="war" value="${build.dir}/АБОБА.war"/>
+        </antcall>
+    </target>
+
+
+
+    <!-- 11: diff -->
+    <target name="svn-commit" depends="clean">
+        <property name="params.file" value="${basedir}/params.txt"/>
+
+        <svn status verbose="true" failonerror="false" outputProperty="changed.files"/>
+
+        <property name="ignored.classes" value=""/>
+        <forEach file="${params.file}">
+            <filterchain>
+                <filterreader>
+                    <reader>
+                        <file file="${file}"/>
+                    </reader>
+                    <tokenizer linetokenizer/>
+                    <filtermapper basedir="${basedir}">
+                        <regexp pattern="^\s*((\w+\.)+\w+)\s*$" replace="$$1"/>
+                    </filtermapper>
+                    <merge>
+                        <iterator property="ignored.classes" usecomma="true"/>
+                        <property file="${file}"/>
+                    </merge>
+                </filterreader>
+            </filterchain>
+        </forEach>
+
+        <property name="ignored.changes.present" value="false"/>
+        <for each="changed.file" delimiter="\n">
+            <if condition="ant:contains('${changed.file}', '${ignored.classes}')">
+                <set property="ignored.changes.present" value="true"/>
+            </if>
+        </for>
+
+        <condition if="ant:not('${ignored.changes.present}')">
+            <svn commit message="Автоматический коммит" failonerror="true"/>
+        </condition>
+    </target>
+
+
+
+    <!-- 12: report -->
+    <target name="report" depends="test">
+        <copy file="${test.results.dir}/${test.report.file}" todir="${svn.url}"/>
+
+
+        <exec executable="svn" failonerror="true">
+            <arg value="commit"/>
+            <arg value="-m"/>
+            <arg value="Adding JUnit test report"/>
+        </exec>
+    </target>
+
+
+    <!-- 13: history -->
+    <target name="history" depends="compile">
+        <condition property="previousRevisionLoaded">
+            <not>
+                <success/>
+            </not>
+        </condition>
+
+        <if condition="${previousRevisionLoaded}">
+            <exec executable="git" failonerror="true">
+                <arg value="checkout"/>
+                <arg value="HEAD~1"/>
+            </exec>
+        </if>
+
+        <trycatch property="buildFailed">
+            <try>
+                <target name="compile"/>
+            </try>
+            <catch>
+                <echo message="Compilation failed, trying to load previous revision..."/>
+            </catch>
+        </trycatch>
+
+        <if condition="${buildFailed}">
+            <exec executable="git" failonerror="true">
+                <arg value="checkout"/>
+                <arg value="HEAD~1"/>
+            </exec>
+        </if>
+
+        <if condition="${buildFailed}">
+            <exec executable="git" failonerror="true">
+                <arg value="checkout"/>
+                <arg value="HEAD"/>
+            </exec>
+            <exec executable="git" failonerror="true">
+                <arg value="diff"/>
+                <arg value="--name-only"/>
+                <arg value="HEAD~1..HEAD"/>
+                <redirector>
+                    <outputfile file="${diff.output.file}"/>
+                </redirector>
+            </exec>
+        </if>
+    </target>
+
+
+    <!-- 14: team -->
+    <target name="team" depends="build">
+        <mkdir dir="${builds.dir}"/>
+
+        <for list="${revs=1..4}" target="buildAndZip" param="rev">
+            <exec executable="git" failonerror="true">
+                <arg value="checkout"/>
+                <arg value="HEAD~${rev}"/>
+            </exec>
+            <exec executable="cp" failonerror="true">
+                <arg value="-r"/>
+                <arg value="${build.dir}"/>
+                <arg value="${builds.dir}/rev${rev}"/>
+            </exec>
+            <exec executable="cp" failonerror="true">
+                <arg value="-r"/>
+                <arg value="${output.dir}"/>
+                <arg value="${builds.dir}/rev${rev}"/>
+            </exec>
+        </for>
+
+        <!-- Упаковка получившихся jar-файлов в zip-архив -->
+        <zip destfile="${zip.output.file}">
+            <fileset dir="${builds.dir}"/>
+        </zip>
+    </target>
+
+
+    <!-- 15: env -->
+    <target name="env" depends="build">
+        <echo message="--- Executing: java ${params} -jar ${dest.jar} ---"/>
+        <exec executable="cmd">
+            <arg value="/c"/>
+            <arg value="java ${params} -jar ${dest.jar}"/>
+        </exec>
+    </target>
+
+</project>
