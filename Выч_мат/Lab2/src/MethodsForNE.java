@@ -9,16 +9,22 @@ import java.util.function.Function;
 
 public class MethodsForNE {
 
+
     public static double[] bisectionMethod(Function<Double, Double> function, double a, double b, double eps) {
         double[] result = new double[3];
         int iterations = 0;
-        double mid = 0;
+        double mid = (a + b) / 2;
 
-        while ((b - a) / 2 > eps) {
+        // Условие для продолжения цикла, учитывающее точность eps
+        while (Math.abs(b - a)*4 > eps) {
             mid = (a + b) / 2;
-            if (function.apply(mid) == 0) {
+            double fMid = function.apply(mid);
+
+            if (Math.abs(fMid) < eps) {
                 break;
-            } else if (function.apply(a) * function.apply(mid) < 0) {
+            }
+
+            if (function.apply(a) * fMid < 0) {
                 b = mid;
             } else {
                 a = mid;
@@ -32,8 +38,6 @@ public class MethodsForNE {
 
         return result;
     }
-
-
 
     public static double[] secantMethod(Function<Double, Double> function, double a, double b, double eps) {
         double[] result = new double[3];
@@ -82,18 +86,26 @@ public class MethodsForNE {
         return result;
     }
 
+    public static double findInitialApproximation(Function<Double, Double> function, Function<Double, Double> derivative, double a, double b) {
+        double fa = function.apply(a);
+        double fb = function.apply(b);
 
-    public static double findInitialApproximation(Function<Double, Double> function, Function<Double, Double> derivativeDerivativeFunction, double a, double b) {
-
-        double f_a = function.apply(a);
-        double ddf_a = derivativeDerivativeFunction.apply(a);
-
-        if (f_a * ddf_a > 0) {
-            return a;
+        // If function changes sign in the interval, choose the midpoint or a point near zero if applicable
+        if (fa * fb < 0) {
+            return (a + b) / 2;
         }
-        else {
-            return b;
+
+        // If a <= 0, and b > 0, start with a small positive value
+        if (a <= 0) {
+            if (b > 0) {
+                return b;
+            } else {
+                return (a + b) / 2;
+            }
         }
+
+        // Otherwise, use the midpoint
+        return (a + b) / 2;
     }
 
 }

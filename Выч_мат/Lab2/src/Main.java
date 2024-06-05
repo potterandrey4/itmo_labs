@@ -55,17 +55,16 @@ public class Main {
             int a = -1;
             int b = 2;
             double[] bisectionMethodRoot = MethodsForNE.bisectionMethod(function, a, b, 0.001);
-            System.out.println("метод пд: " + bisectionMethodRoot[0] + " | " + bisectionMethodRoot[1] + " | " + bisectionMethodRoot[2]);
+            System.out.println("метод пд: " + bisectionMethodRoot[0] + " | " + bisectionMethodRoot[1] + " | " + bisectionMethodRoot[1]);
 
             double[] chordMethodRoot = MethodsForNE.secantMethod(function, a, b, 0.001);
-            System.out.println("метод хорд: " + chordMethodRoot[0] + " | " + chordMethodRoot[1] + " | " + chordMethodRoot[2]);
+            System.out.println("метод хорд: " + chordMethodRoot[0] + " | " + chordMethodRoot[1] + " | " + chordMethodRoot[1]);
 
             double initialApproximation = MethodsForNE.findInitialApproximation(function, derivativeDerivativeFunction, a, b);
             double[] newtonMethonRoot = MethodsForNE.newtonMethod(function, derivativeFunction, initialApproximation, 0.001);
-            System.out.println("метод Ньютона: " + newtonMethonRoot[0] + " | " + newtonMethonRoot[1] + " | " + newtonMethonRoot[2]);
+            System.out.println("метод Ньютона: " + newtonMethonRoot[0] + " | " + newtonMethonRoot[1] + " | " + newtonMethonRoot[1]);
 
         } else if (modeChoice == 2) {
-
 
             System.out.println("Выберите систему нелинейных уравнений:");
             System.out.println("1\n" + FunctionsSystemsNE.system1ToString() + "\n");

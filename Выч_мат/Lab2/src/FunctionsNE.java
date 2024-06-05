@@ -1,15 +1,15 @@
 public class FunctionsNE {
     public static double function1(double x) {
-            return 2*x*x*x + 3.41*x*x - 23.74*x + 2.95;
+            return x*x*x - 2.561*x*x - 1.325*x + 4.395;
     }
     public static String function1ToString() {
             return "2*x*x*x + 3.41*x*x - 23.74*x + 2.95";
     }
     public static double derivativeFunction1(double x) {
-            return 6*x*x + 6.82*x - 23.74;
+            return 3*x*x - 5.122*x - 1.325;
     }
     public static double derivativeDerivativeFunction1(double x) {
-            return 12*x + 6.82;
+            return 6*x -5.122;
     }
 
     public static double function2(double x) {
@@ -26,28 +26,28 @@ public class FunctionsNE {
     }
 
     public static double function3(double x) {
-        return x*x*x + 2.84*x*x - 5.606*x - 14.766;
+        return -2.4*x*x*x + 1.27*x*x - 8.63*x + 2.31;
     }
     public static String function3ToString() {
-        return "x*x*x + 2.84*x*x - 5.606*x - 14.766";
+        return "-2.4*x*x*x + 1.27*x*x - 8.63*x + 2.31";
     }
     public static double derivativeFunction3(double x) {
-        return 3*x*x + 5.68*x - 5.606;
+        return -7.2*x*x + 2.54*x - 8.63;
     }
     public static double derivativeDerivativeFunction3(double x) {
-        return 6*x - 5.68;
+        return -14.4*x + 2.54;
     }
 
     public static double function4(double x) {
-        return x*x*x - 1.89*x*x - 2*x + 1.76;
+        return -1.8*x*x*x - 2.94*x*x + 10.37*x + 5.38;
     }
     public static String function4ToString() {
-        return "x*x*x - 1.89*x*x - 2*x + 1.76";
+        return "-1.8*x*x*x - 2.94*x*x + 10.37*x + 5.38";
     }
     public static double derivativeFunction4(double x) {
-        return 3*x*x - 3.78*x - 2;
+        return -5.4*x*x - 5.88*x + 10.37;
     }
     public static double derivativeDerivativeFunction4(double x) {
-        return 6*x - 3.78;
+        return -10.8*x - 5.88;
     }
 }
