@@ -15,8 +15,7 @@ public class MethodsForNE {
         int iterations = 0;
         double mid = (a + b) / 2;
 
-        // Условие для продолжения цикла, учитывающее точность eps
-        while (Math.abs(b - a)*4 > eps) {
+        while (Math.abs(b - a) > eps) {
             mid = (a + b) / 2;
             double fMid = function.apply(mid);
 
@@ -38,6 +37,7 @@ public class MethodsForNE {
 
         return result;
     }
+
 
     public static double[] secantMethod(Function<Double, Double> function, double a, double b, double eps) {
         double[] result = new double[3];

@@ -55,14 +55,14 @@ public class Main {
             int a = -1;
             int b = 2;
             double[] bisectionMethodRoot = MethodsForNE.bisectionMethod(function, a, b, 0.001);
-            System.out.println("метод пд: " + bisectionMethodRoot[0] + " | " + bisectionMethodRoot[1] + " | " + bisectionMethodRoot[1]);
+            System.out.println("метод дихотомии:\n\tитераций = " + bisectionMethodRoot[2] + "\n\tx = " + bisectionMethodRoot[0] + "\n\tf(x) =  " + function.apply(bisectionMethodRoot[0]) );
 
             double[] chordMethodRoot = MethodsForNE.secantMethod(function, a, b, 0.001);
-            System.out.println("метод хорд: " + chordMethodRoot[0] + " | " + chordMethodRoot[1] + " | " + chordMethodRoot[1]);
+            System.out.println("метод хорд:\n\tитераций = " + chordMethodRoot[2] + "\n\tx = " + chordMethodRoot[0] + "\n\tf(x) =  " + function.apply(chordMethodRoot[0]) );
 
             double initialApproximation = MethodsForNE.findInitialApproximation(function, derivativeDerivativeFunction, a, b);
             double[] newtonMethonRoot = MethodsForNE.newtonMethod(function, derivativeFunction, initialApproximation, 0.001);
-            System.out.println("метод Ньютона: " + newtonMethonRoot[0] + " | " + newtonMethonRoot[1] + " | " + newtonMethonRoot[1]);
+            System.out.println("метод Ньютона:\n\tитераций = " + newtonMethonRoot[2] + "\n\tx = " + newtonMethonRoot[0] + "\n\tf(x) =  " + function.apply(newtonMethonRoot[0]) );
 
         } else if (modeChoice == 2) {
 
