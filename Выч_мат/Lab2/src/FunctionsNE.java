@@ -1,15 +1,15 @@
 public class FunctionsNE {
     public static double function1(double x) {
-            return 2.74*x*x*x - 1.93*x*x - 15.28*x -3.72;
+            return 2*x*x*x + 3.41*x*x - 23.74*x + 2.95;
     }
     public static String function1ToString() {
-            return "2.74*x*x*x - 1.93*x*x - 15.28*x -3.72";
+            return "2*x*x*x + 3.41*x*x - 23.74*x + 2.95";
     }
     public static double derivativeFunction1(double x) {
-            return 8.22*x*x - 3.86*x - 15.28;
+            return 6*x*x + 6.82*x - 23.74;
     }
     public static double derivativeDerivativeFunction1(double x) {
-            return 16.44*x - 3.68;
+            return 12*x + 6.82;
     }
 
     public static double function2(double x) {

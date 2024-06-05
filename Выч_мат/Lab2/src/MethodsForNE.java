@@ -10,62 +10,78 @@ import java.util.function.Function;
 public class MethodsForNE {
 
     public static double[] bisectionMethod(Function<Double, Double> function, double a, double b, double eps) {
-        double c;
+        double[] result = new double[3];
         int iterations = 0;
-        while (function.apply((b - a)/2) > eps) {
-            iterations++;
-            c = (a + b) / 2;
-            if (function.apply(c) * function.apply(c) < 0) {
-                b = c;
+        double mid = 0;
+
+        while ((b - a) / 2 > eps) {
+            mid = (a + b) / 2;
+            if (function.apply(mid) == 0) {
+                break;
+            } else if (function.apply(a) * function.apply(mid) < 0) {
+                b = mid;
             } else {
-                a = c;
+                a = mid;
             }
+            iterations++;
         }
-        return new double[]{(a + b) / 2, function.apply((a + b) / 2), iterations};
+
+        result[0] = mid;
+        result[1] = function.apply(mid);
+        result[2] = iterations;
+
+        return result;
     }
 
 
-    public static double[] chordMethod(Function<Double, Double> function, double a, double b, double eps) {
-        double x, y;
-        double x0, x1;
+
+    public static double[] secantMethod(Function<Double, Double> function, double a, double b, double eps) {
+        double[] result = new double[3];
+        double fa = function.apply(a);
+        double fb = function.apply(b);
         int iterations = 0;
+        double c = 0;
 
-        while (b - a > eps) {
+        while (Math.abs(b - a) > eps) {
+            c = b - fb * (b - a) / (fb - fa);
+            a = b;
+            fa = fb;
+            b = c;
+            fb = function.apply(b);
             iterations++;
-
-            x0 = a;
-            x1 = b;
-
-            y = function.apply(x1) - function.apply(x0);
-            x = x1 - (function.apply(x1) * (x1 - x0)) / y;
-
-            if (Math.abs(function.apply(x)) <= eps) {
-                return new double[]{x, function.apply(x), iterations};
-            } else if (function.apply(a) * function.apply(x) < 0) {
-                b = x;
-            } else {
-                a = x;
-            }
         }
 
-        return new double[]{(a + b) / 2, function.apply((a + b) / 2), iterations};
+        result[0] = c;
+        result[1] = function.apply(c);
+        result[2] = iterations;
+
+        return result;
     }
 
-    public static double[] newtonMethod(Function<Double, Double> function, Function<Double, Double> derivativeFunction, double x0, double eps) {
+    public static double[] newtonMethod(Function<Double, Double> function, Function<Double, Double> derivative, double x0, double eps) {
+        double[] result = new double[3];
+        int iterations = 0;
         double x = x0;
-        int iterations = 0;
-        while (Math.abs(function.apply(x)) > eps && iterations <= 100) {
-            iterations++;
+        double fx = function.apply(x);
+        double dfx;
 
-            x = x - function.apply(x) / derivativeFunction.apply(x);
-
-            if (Math.abs(function.apply(x)) <= eps) {
-                return new double[]{x, function.apply(x), iterations};
+        while (Math.abs(fx) > eps) {
+            dfx = derivative.apply(x);
+            if (dfx == 0) {
+                throw new ArithmeticException("Derivative is zero, method fails.");
             }
+            x = x - fx / dfx;
+            fx = function.apply(x);
+            iterations++;
         }
 
-        return new double[]{x, function.apply(x), iterations};
+        result[0] = x;
+        result[1] = fx;
+        result[2] = iterations;
+
+        return result;
     }
+
 
     public static double findInitialApproximation(Function<Double, Double> function, Function<Double, Double> derivativeDerivativeFunction, double a, double b) {
 

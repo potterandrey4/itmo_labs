@@ -52,16 +52,16 @@ public class Main {
                     return;
             }
 
+            int a = -1;
+            int b = 2;
+            double[] bisectionMethodRoot = MethodsForNE.bisectionMethod(function, a, b, 0.001);
+            System.out.println("метод пд: " + bisectionMethodRoot[0] + " | " + bisectionMethodRoot[1] + " | " + bisectionMethodRoot[2]);
 
-            double[] bisectionMethodRoot = MethodsForNE.bisectionMethod(function, 0, 1, 0.01);
-            System.out.println("метод дихотомии: " + bisectionMethodRoot[0] + " | " + bisectionMethodRoot[1] + " | " + bisectionMethodRoot[2]);
-
-            double[] chordMethodRoot = MethodsForNE.chordMethod(function, 0, 1, 0.01);
+            double[] chordMethodRoot = MethodsForNE.secantMethod(function, a, b, 0.001);
             System.out.println("метод хорд: " + chordMethodRoot[0] + " | " + chordMethodRoot[1] + " | " + chordMethodRoot[2]);
 
-            double initialApproximation = MethodsForNE.findInitialApproximation(function, derivativeDerivativeFunction, 0, 1);
-            double[] newtonMethonRoot = MethodsForNE.newtonMethod(function, derivativeFunction, initialApproximation, 0.01);
-//                System.out.println("approxim: " + initialApproximation);
+            double initialApproximation = MethodsForNE.findInitialApproximation(function, derivativeDerivativeFunction, a, b);
+            double[] newtonMethonRoot = MethodsForNE.newtonMethod(function, derivativeFunction, initialApproximation, 0.001);
             System.out.println("метод Ньютона: " + newtonMethonRoot[0] + " | " + newtonMethonRoot[1] + " | " + newtonMethonRoot[2]);
 
         } else if (modeChoice == 2) {
