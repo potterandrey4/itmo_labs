@@ -1,7 +1,11 @@
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.Scanner;
 import java.util.function.Function;
 
 public class Main {
+    private static final MathContext mc = new MathContext(30); // Установим точность вычислений
+
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
@@ -23,9 +27,9 @@ public class Main {
                 functionChoice = scanner.nextInt();
             }
 
-            Function<Double, Double> function;
-            Function<Double, Double> derivativeFunction;
-            Function<Double, Double> derivativeDerivativeFunction;
+            Function<BigDecimal, BigDecimal> function;
+            Function<BigDecimal, BigDecimal> derivativeFunction;
+            Function<BigDecimal, BigDecimal> derivativeDerivativeFunction;
             switch (functionChoice) {
                 case 1:
                     function = FunctionsNE::function1;
@@ -54,14 +58,14 @@ public class Main {
 
             int a = -1;
             int b = 2;
-            double[] bisectionMethodRoot = MethodsForNE.bisectionMethod(function, a, b, 0.001);
+            BigDecimal[] bisectionMethodRoot = MethodsForNE.bisectionMethod(function, BigDecimal.valueOf(a), BigDecimal.valueOf(b), new BigDecimal("0.001"));
             System.out.println("метод дихотомии:\n\tитераций = " + bisectionMethodRoot[2] + "\n\tx = " + bisectionMethodRoot[0] + "\n\tf(x) =  " + function.apply(bisectionMethodRoot[0]) );
 
-            double[] chordMethodRoot = MethodsForNE.secantMethod(function, a, b, 0.001);
+            BigDecimal[] chordMethodRoot = MethodsForNE.secantMethod(function, BigDecimal.valueOf(a), BigDecimal.valueOf(b), new BigDecimal("0.001"));
             System.out.println("метод хорд:\n\tитераций = " + chordMethodRoot[2] + "\n\tx = " + chordMethodRoot[0] + "\n\tf(x) =  " + function.apply(chordMethodRoot[0]) );
 
-            double initialApproximation = MethodsForNE.findInitialApproximation(function, derivativeDerivativeFunction, a, b);
-            double[] newtonMethonRoot = MethodsForNE.newtonMethod(function, derivativeFunction, initialApproximation, 0.001);
+            BigDecimal initialApproximation = MethodsForNE.findInitialApproximation(function, derivativeDerivativeFunction, BigDecimal.valueOf(a), BigDecimal.valueOf(b));
+            BigDecimal[] newtonMethonRoot = MethodsForNE.newtonMethod(function, derivativeFunction, initialApproximation, new BigDecimal("0.001"));
             System.out.println("метод Ньютона:\n\tитераций = " + newtonMethonRoot[2] + "\n\tx = " + newtonMethonRoot[0] + "\n\tf(x) =  " + function.apply(newtonMethonRoot[0]) );
 
         } else if (modeChoice == 2) {
@@ -72,8 +76,9 @@ public class Main {
 
             int choice = scanner.nextInt();
 
-            double epsilon = 1e-2;
-            double x = 1.0, y = 1.0;        // первое (текущее) приближение
+            BigDecimal epsilon = new BigDecimal("0.01");
+            BigDecimal x = new BigDecimal("1.0");
+            BigDecimal y = new BigDecimal("1.0"); // первое (текущее) приближение
 
 
             while (choice != 1 && choice != 2) {
@@ -81,7 +86,7 @@ public class Main {
                 choice = scanner.nextInt();
             }
 
-            double[] simpleIterationsRoot = MethodsForSystemsNE.methodOfSimpleIterations(choice, x, y, epsilon);
+            BigDecimal[] simpleIterationsRoot = MethodsForSystemsNE.methodOfSimpleIterations(choice, x, y, epsilon);
             System.out.printf("Решение найдено за %.0f итераций: x = %.4f, y = %.4f%n", simpleIterationsRoot[0], simpleIterationsRoot[1], simpleIterationsRoot[2]);
 
         }

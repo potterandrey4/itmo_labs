@@ -1,9 +1,12 @@
-import java.util.function.Function;
+import java.math.BigDecimal;
+import java.math.MathContext;
 
 public class MethodsForSystemsNE {
-    public static double[] methodOfSimpleIterations(int choice, double x, double y, double eps) {
+    private static final MathContext mc = new MathContext(30); // Установим точность вычислений
+
+    public static BigDecimal[] methodOfSimpleIterations(int choice, BigDecimal x, BigDecimal y, BigDecimal eps) {
         int iteration = 0;
-        double xNew, yNew;              // следующее приближение
+        BigDecimal xNew, yNew;  // следующее приближение
 
         if (choice == 1) {
             while (true) {
@@ -12,7 +15,7 @@ public class MethodsForSystemsNE {
                 iteration++;
                 System.out.printf("Итерация %d: x = %.4f, y = %.4f%n", iteration, xNew, yNew);
 
-                if (Math.abs(xNew - x) <= eps && Math.abs(yNew - y) <= eps) {
+                if (xNew.subtract(x, mc).abs(mc).compareTo(eps) <= 0 && yNew.subtract(y, mc).abs(mc).compareTo(eps) <= 0) {
                     break;
                 }
                 x = xNew;
@@ -25,13 +28,13 @@ public class MethodsForSystemsNE {
                 iteration++;
                 System.out.printf("Итерация %d: x = %.4f, y = %.4f%n", iteration, xNew, yNew);
 
-                if (Math.abs(xNew - x) <= eps && Math.abs(yNew - y) <= eps) {
+                if (xNew.subtract(x, mc).abs(mc).compareTo(eps) <= 0 && yNew.subtract(y, mc).abs(mc).compareTo(eps) <= 0) {
                     break;
                 }
                 x = xNew;
                 y = yNew;
             }
         }
-        return new double[]{iteration, x, y};
+        return new BigDecimal[]{new BigDecimal(iteration), x, y};
     }
 }
