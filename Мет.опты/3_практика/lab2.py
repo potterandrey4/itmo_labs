@@ -114,3 +114,17 @@ print(f"Приближенное точка и значение минимума
 result4 = newton_method(f, df, ddf, 1, 0.03)
 print("метод Ньютона")
 print(f"Приближенное точка и значение минимума: {result4}", "\n")
+
+
+print("-"*20)
+
+x_values = [1.509, 1.5091, 1.5092]
+
+def function1(x):
+    return x**3 - 2.561*x**2 - 1.325*x + 4.395
+
+def function2(x):
+    return x**2 + x - 1.306  # Пример другой функции для проверки
+
+results = [function1(x) for x in x_values]
+print(results)
