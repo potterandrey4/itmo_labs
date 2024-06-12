@@ -1,3 +1,8 @@
+// TODO: 12.06.2024 СДЕЛАТЬ БЛОК-СХЕМЫ
+// TODO: 12.06.2024 ПОСЧИТАТЬ РУКАМИ (МЕТОДЫ)
+// TODO: 12.06.2024 Добавить интеграл, нерешающийся волфрам
+
+import java.text.DecimalFormat;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -122,31 +127,39 @@ public class Main {
 		}
 
 		CustomFunction method;
+		int orderOfAccuracy = 2;
 
 		switch (methodNum) {
 			case 1:
-				method = Methods::midpointRule;
+				method = Methods::midRectangleMethod;
 				break;
 			case 2:
-				method = Methods::rightRectangleRule;
+				method = Methods::rightRectangleMethod;
 				break;
 			case 3:
-				method = Methods::leftRectangleRule;
+				method = Methods::leftRectangleMethod;
 				break;
 			case 4:
-				method = Methods::trapezoidalRule;
+				method = Methods::trapezoidalMethod;
 				break;
 			case 5:
-				method = Methods::simpsonRule;
+				method = Methods::simpsonMethod;
+				orderOfAccuracy = 4;
 				break;
 			default:
 				throw new IllegalStateException("Неверный выбор метода");
 		}
 
-		System.out.println("Точное значение: " + Methods.exactIntegral(integ, a, b));
+		double accuratelyIntegralValue = Methods.exactIntegral(integ, a, b);
+		System.out.println("Точное значение: " + accuratelyIntegralValue);
 
 		double integralValue = Methods.calculateIntegral(method, func, a, b, e, n);
 		System.out.println("Значение интеграла: " + integralValue);
+
+		DecimalFormat df = new DecimalFormat("##.#######");
+		double error = Methods.runge(integralValue, accuratelyIntegralValue, orderOfAccuracy);
+		System.out.println("Погрешность: " + df.format(error*100) + "%");
+
 	}
 
 }

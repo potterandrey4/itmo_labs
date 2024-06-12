@@ -2,7 +2,7 @@ import java.util.function.Function;
 
 public enum FunctionsEnum {
 	FUNCTION_1(x -> x * x),
-	FUNCTION_2(Math::sin),
+	FUNCTION_2(x -> Math.sin(x)),
 	FUNCTION_3(x -> 1.0 / x),
 	FUNCTION_4(x -> Math.log(x + 1));
 
