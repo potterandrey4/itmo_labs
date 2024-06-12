@@ -1,5 +1,4 @@
 import java.util.Scanner;
-import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -9,9 +8,10 @@ public class Main {
 
 		int s = 0;
 		double a = 0, b = 0, e = -1;
-		int n = 100;        // максимальное количество итераций
+		int n = 4;        // Начальное значение числа разбиения интервала интегрирования
 
-		Pattern pattern = Pattern.compile("\\d*\\.?\\d+|\\d+,\\d*");
+		Pattern patternPlus = Pattern.compile("\\d+.\\d*|\\d+,\\d*|\\d+");
+		Pattern patternMinus = Pattern.compile("\\-\\d+.\\d*|\\-\\d+,\\d*|\\-\\d+");
 		while (true) {
 			System.out.print("Введите номер функции (1-4): ");
 			if (scanner.hasNextInt()) {
@@ -28,17 +28,20 @@ public class Main {
 			}
 		}
 
+		Matcher matcherPlus;
+		Matcher matcherMinus;
 		while (b <= a) {
 			System.out.println("[a, b]; b<=a");
 			System.out.print("Введите значение a: ");
-			String input = scanner.nextLine();
+			String inputA = scanner.nextLine();
+			matcherPlus = patternPlus.matcher(inputA);
+			matcherMinus = patternMinus.matcher(inputA);
 
-			Matcher matcher = pattern.matcher(input);
 
-			if (matcher.matches()) {
+			if (matcherPlus.matches() || matcherMinus.matches()) {
 				try {
-					a = Double.parseDouble(input.replace(',', '.'));
-				} catch (NumberFormatException exception) {
+					a = Double.parseDouble(inputA.replace(',', '.'));
+				} catch (NumberFormatException e1) {
 					System.out.println("Неверный формат ввода. Пожалуйста, введите число с плавающей точкой.");
 					continue;
 				}
@@ -48,14 +51,14 @@ public class Main {
 			}
 
 			System.out.print("Введите значение b: ");
-			input = scanner.nextLine();
+			String inputB = scanner.nextLine();
+			matcherPlus = patternPlus.matcher(inputB);
+			matcherMinus = patternMinus.matcher(inputB);
 
-			matcher = pattern.matcher(input);
-
-			if (matcher.matches()) {
+			if (matcherPlus.matches() || matcherMinus.matches()) {
 				try {
-					b = Double.parseDouble(input.replace(',', '.'));
-				} catch (NumberFormatException exception) {
+					b = Double.parseDouble(inputB.replace(',', '.'));
+				} catch (NumberFormatException e2) {
 					System.out.println("Неверный формат ввода. Пожалуйста, введите число с плавающей точкой.");
 					continue;
 				}
@@ -69,25 +72,23 @@ public class Main {
 			}
 		}
 
-		while (true) {
+		// Чтение точности e
+		while (e <= 0 || e >= 1) {
 			System.out.print("Введите точность (0 < e < 1): ");
-			String input = scanner.nextLine();
-
-			Matcher matcher = pattern.matcher(input);
+			String inputE = scanner.nextLine();
+			Matcher matcher = patternPlus.matcher(inputE);
 
 			if (matcher.matches()) {
 				try {
-					e = Double.parseDouble(input);
-					if (e >= 1 || e <= 0) {
+					e = Double.parseDouble(inputE.replace(',', '.'));
+					if (e <= 0 || e >= 1) {
 						System.out.println("Точность должна быть в диапазоне от 0 до 1. Попробуйте еще раз.");
-					} else {
-						break;
 					}
-				} catch (NumberFormatException exception) {
-					System.out.println("Неверный формат ввода. Пожалуйста, введите число с плавающей точкой.");
+				} catch (NumberFormatException e3) {
+					System.out.println("Неверный формат ввода. Пожалуйста, введите число с плавающей точкой в интервале (0, 1).");
 				}
 			} else {
-				System.out.println("Неверный формат ввода. Пожалуйста, введите число с плавающей точкой.");
+				System.out.println("Неверный формат ввода. Пожалуйста, введите число с плавающей точкой в интервале (0, 1).");
 			}
 		}
 

@@ -5,7 +5,7 @@ public class Methods {
 				System.out.println("Интеграл расходится.");
 				System.exit(0);
 			}
-		} else if (s == 5) {
+		} else if (s == 4) {
 			if (a < -1 || b < -1) {
 				System.out.println("Интеграл расходится.");
 				System.exit(0);
