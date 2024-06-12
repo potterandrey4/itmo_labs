@@ -1,7 +1,3 @@
-// TODO: 12.06.2024 СДЕЛАТЬ БЛОК-СХЕМЫ
-// TODO: 12.06.2024 ПОСЧИТАТЬ РУКАМИ (МЕТОДЫ)
-// TODO: 12.06.2024 Добавить интеграл, нерешающийся волфрам
-
 import java.text.DecimalFormat;
 import java.util.Scanner;
 import java.util.regex.Matcher;
