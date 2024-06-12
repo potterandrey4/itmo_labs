@@ -1,5 +1,6 @@
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.text.DecimalFormat;
 import java.util.Scanner;
 import java.util.function.Function;
 
@@ -56,17 +57,19 @@ public class Main {
                     return;
             }
 
-            int a = -1;
-            int b = 2;
+            int a = 1;
+            int b = 3;
+            DecimalFormat df = new DecimalFormat("##.####################");
+
             BigDecimal[] bisectionMethodRoot = MethodsForNE.bisectionMethod(function, BigDecimal.valueOf(a), BigDecimal.valueOf(b), new BigDecimal("0.001"));
-            System.out.println("метод дихотомии:\n\tитераций = " + bisectionMethodRoot[2] + "\n\tx = " + bisectionMethodRoot[0] + "\n\tf(x) =  " + function.apply(bisectionMethodRoot[0]) );
+            System.out.println("метод дихотомии:\n\tитераций = " + bisectionMethodRoot[2] + "\n\tx = " + bisectionMethodRoot[0] + "\n\tf(x) = " + df.format(function.apply(bisectionMethodRoot[0])) );
 
             BigDecimal[] chordMethodRoot = MethodsForNE.secantMethod(function, BigDecimal.valueOf(a), BigDecimal.valueOf(b), new BigDecimal("0.001"));
-            System.out.println("метод хорд:\n\tитераций = " + chordMethodRoot[2] + "\n\tx = " + chordMethodRoot[0] + "\n\tf(x) =  " + function.apply(chordMethodRoot[0]) );
+            System.out.println("метод хорд:\n\tитераций = " + chordMethodRoot[2] + "\n\tx = " + df.format(chordMethodRoot[0]) + "\n\tf(x) = " + df.format(function.apply(chordMethodRoot[0])) );
 
             BigDecimal initialApproximation = MethodsForNE.findInitialApproximation(function, derivativeDerivativeFunction, BigDecimal.valueOf(a), BigDecimal.valueOf(b));
             BigDecimal[] newtonMethonRoot = MethodsForNE.newtonMethod(function, derivativeFunction, initialApproximation, new BigDecimal("0.001"));
-            System.out.println("метод Ньютона:\n\tитераций = " + newtonMethonRoot[2] + "\n\tx = " + newtonMethonRoot[0] + "\n\tf(x) =  " + function.apply(newtonMethonRoot[0]) );
+            System.out.println("метод Ньютона:\n\tитераций = " + newtonMethonRoot[2] + "\n\tx = " + df.format(newtonMethonRoot[0]) + "\n\tf(x) = " + df.format(function.apply(newtonMethonRoot[0])) );
 
         } else if (modeChoice == 2) {
 
@@ -76,9 +79,9 @@ public class Main {
 
             int choice = scanner.nextInt();
 
-            BigDecimal epsilon = new BigDecimal("0.01");
+            BigDecimal epsilon = new BigDecimal("0.02");
             BigDecimal x = new BigDecimal("1.0");
-            BigDecimal y = new BigDecimal("1.0"); // первое (текущее) приближение
+            BigDecimal y = new BigDecimal("2.0"); // первое (текущее) приближение
 
 
             while (choice != 1 && choice != 2) {

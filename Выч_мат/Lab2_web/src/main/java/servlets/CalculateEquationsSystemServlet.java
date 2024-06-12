@@ -7,7 +7,7 @@ import tools.MethodsForSystemsNE;
 
 import java.math.BigDecimal;
 
-@WebServlet("/calculateEquation")
+@WebServlet("/calculateEquationsSystem")
 public class CalculateEquationsSystemServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
         int choiceSystemEquations = Integer.parseInt(request.getParameter("choiceSystemEquations"));

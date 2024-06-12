@@ -1,5 +1,10 @@
+.btn-choice {
+    width: 35vw;
+    padding: 1%
+}
+
 canvas {
-    marin-bottom: 3%;
+    margin-bottom: 3%;
 }
 
 .form-control {
@@ -74,7 +79,7 @@ body {
 
 
 body {
-    background-color: #0103;
+    background-color: #0103 !important;
 }
 
 

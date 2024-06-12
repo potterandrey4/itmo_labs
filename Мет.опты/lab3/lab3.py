@@ -40,14 +40,13 @@ def find_extremum(f, a, b, tol, max_iter=100):
 
     return x_extremum, f(x_extremum)
 
-# Пример использования
-def example_function(x):
+def f(x):
     return x*x / 2 - math.sin(x)
 
 a = 0
 b = 1
 eps = 0.0001
 
-extremum_x, extremum_y = find_extremum(example_function, a, b, eps)
+extremum_x, extremum_y = find_extremum(f, a, b, eps)
 print(f"Минимум функции f(x) на отрезке [{a}, {b}] достигается в точке x = {extremum_x:.5f}, где f(x) = {extremum_y:.5f}\n\n")
 

@@ -21,17 +21,22 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.7.1'
 }
-mainClassName = 'App'
 
 sourceSets {
     main {
         java {
             srcDir 'src/main/java'
         }
+        test {
+            java {
+                srcDirs = ['src/test/java']
+            }
+        }
         resources {
             srcDir 'src/main/resources'
         }
         webAppDirName = 'src/main/webapp'
+
     }
 }
 
@@ -69,7 +74,7 @@ task cleanTestReports(type: Delete) {
 }
 
 task customTest(type: Test) {
-    dependsOn 'cleanTestReports'
+    dependsOn 'cleanTestReports', 'testClasses'
     testClassesDirs = sourceSets.test.output.classesDirs
     classpath = sourceSets.test.runtimeClasspath
     include 'beans/ResultBeanTest.class'
@@ -78,7 +83,6 @@ task customTest(type: Test) {
         junitXml.outputLocation.set(file("${buildDir}/test-results/test"))
     }
 }
-
 
 // 5 - scp
 task scp(type: Exec, dependsOn: customBuild) {
@@ -135,7 +139,7 @@ task doc(type: War, dependsOn: 'compile') {
 
 
 // 7 - xml validation
-task xmlValidation {
+task xml {
     description = 'Validate all XML files in the project'
     group = 'verification'
 
