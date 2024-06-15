@@ -1,11 +1,13 @@
 package com.example.lab2_gui.controllers;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
-import javafx.beans.value.ChangeListener;
+import com.example.lab2_gui.math.FunctionsNE;
+import com.example.lab2_gui.math.MethodsForNE;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -101,41 +103,98 @@ public class EquationController {
 			double epsValue = Double.parseDouble(eps.getText());
 
 			if (!isValidEps(eps.getText())) {
-				showAlert("Ошибка", "Значение eps должно быть больше 0 и меньше 1.");
+				showErrorAlert("Значение eps должно быть больше 0 и меньше 1.");
 				return;
 			}
 
 			if (!isValidRange(aValue, bValue)) {
-				showAlert("Ошибка", "Значение a должно быть строго больше b");
+				showErrorAlert("Значение a должно быть строго больше b");
 				return;
 			}
 
 			String selectedId = getSelectedEquationId();
-			System.out.println(selectedId);
+			Function<Double, Double> function;
+			Function<Double, Double> derivativeFunction;
+			Function<Double, Double> derivativeDerivativeFunction;
+
+			DecimalFormat df = new DecimalFormat("##.#######");
+
+			double[] bisectionMethodRoot;
+			double[] chordMethodRoot;
+			double[] newtonMethonRoot;
+			double initialApproximation;
+
 
 			switch (selectedId) {
 				case "choiceEquation1":
-					System.out.println("Выбрано уравнение: " + "x^3 - 2.561x^2 - 1.325x + 4.395 = 0");
+
+					function = FunctionsNE::function1;
+					derivativeFunction = FunctionsNE::derivativeFunction1;
+					derivativeDerivativeFunction = FunctionsNE::derivativeDerivativeFunction1;
+
+					bisectionMethodRoot = MethodsForNE.bisectionMethod(function, aValue, bValue, epsValue);
+					chordMethodRoot = MethodsForNE.secantMethod(function, aValue, bValue, epsValue);
+					initialApproximation = MethodsForNE.findInitialApproximation(function, derivativeDerivativeFunction, aValue, bValue);
+					newtonMethonRoot = MethodsForNE.newtonMethod(function, derivativeFunction, initialApproximation, epsValue);
+
 					break;
+
 				case "choiceEquation2":
-					System.out.println("Выбрано уравнение: " + "-1.8x^3 - 2.94x^2 + 10.37x + 5.38 = 0");
+
+					function = FunctionsNE::function2;
+					derivativeFunction = FunctionsNE::derivativeFunction2;
+					derivativeDerivativeFunction = FunctionsNE::derivativeDerivativeFunction2;
+
+					bisectionMethodRoot = MethodsForNE.bisectionMethod(function, aValue, bValue, epsValue);
+					chordMethodRoot = MethodsForNE.secantMethod(function, aValue, bValue, epsValue);
+					initialApproximation = MethodsForNE.findInitialApproximation(function, derivativeDerivativeFunction, aValue, bValue);
+					newtonMethonRoot = MethodsForNE.newtonMethod(function, derivativeFunction, initialApproximation, epsValue);
+
 					break;
+
 				case "choiceEquation3":
-					System.out.println("Выбрано уравнение: " + "-2.4x^3 + 1.27x^2 - 8.63x + 2.31 = 0");
+
+					function = FunctionsNE::function3;
+					derivativeFunction = FunctionsNE::derivativeFunction3;
+					derivativeDerivativeFunction = FunctionsNE::derivativeDerivativeFunction4;
+
+					bisectionMethodRoot = MethodsForNE.bisectionMethod(function, aValue, bValue, epsValue);
+					chordMethodRoot = MethodsForNE.secantMethod(function, aValue, bValue, epsValue);
+					initialApproximation = MethodsForNE.findInitialApproximation(function, derivativeDerivativeFunction, aValue, bValue);
+					newtonMethonRoot = MethodsForNE.newtonMethod(function, derivativeFunction, initialApproximation, epsValue);
+
 					break;
+
 				case "choiceEquation4":
-					System.out.println("Выбрано уравнение: " + "-1.38x^3 - 5.42x^2 + 2.57x + 10.95 = 0");
+
+					function = FunctionsNE::function4;
+					derivativeFunction = FunctionsNE::derivativeFunction4;
+					derivativeDerivativeFunction = FunctionsNE::derivativeDerivativeFunction4;
+
+					bisectionMethodRoot = MethodsForNE.bisectionMethod(function, aValue, bValue, epsValue);
+					chordMethodRoot = MethodsForNE.secantMethod(function, aValue, bValue, epsValue);
+					initialApproximation = MethodsForNE.findInitialApproximation(function, derivativeDerivativeFunction, aValue, bValue);
+					newtonMethonRoot = MethodsForNE.newtonMethod(function, derivativeFunction, initialApproximation, epsValue);
+
 					break;
+				default:
+					throw new IllegalStateException("мяу");
 			}
 
+//			System.out.println("метод дихотомии:\n\tитераций = " + bisectionMethodRoot[2] + "\n\tx = " + bisectionMethodRoot[0] + "\n\tf(x) =  " + function.apply(bisectionMethodRoot[0]));
+//			System.out.println("метод хорд:\n\tитераций = " + chordMethodRoot[2] + "\n\tx = " + chordMethodRoot[0] + "\n\tf(x) =  " + function.apply(chordMethodRoot[0]));
+//			System.out.println("метод Ньютона:\n\tитераций = " + newtonMethonRoot[2] + "\n\tx = " + newtonMethonRoot[0] + "\n\tf(x) =  " + function.apply(newtonMethonRoot[0]));
+//			System.out.println("------------------");
+
 		} catch (NumberFormatException e) {
-			showAlert("Ошибка", "Пожалуйста, введите корректные значения для a, b и eps.");
+			showErrorAlert("Пожалуйста, введите корректные значения для a, b и eps.");
 		}
+
 	}
 
-	private void showAlert(String title, String message) {
+	private void showErrorAlert(String message) {
 		Alert alert = new Alert(Alert.AlertType.ERROR, message, ButtonType.OK);
-		alert.setTitle(title);
+		alert.setTitle("Ошибка");
 		alert.setHeaderText(null);
 		alert.showAndWait();
 	}

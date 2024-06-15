@@ -1,6 +1,6 @@
 package com.example.lab2_gui.controllers;
 
-import javafx.beans.property.DoubleProperty;
+import com.example.lab2_gui.math.MethodsForSystemsNE;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -86,30 +86,35 @@ public class SystemEquationsController {
 			double epsValue = Double.parseDouble(eps.getText());
 
 			if (!isValidEps(eps.getText())) {
-				showAlert("Ошибка", "Значение eps должно быть больше 0 и меньше 1.");
+				showErrorAlert("Значение eps должно быть больше 0 и меньше 1.");
 				return;
 			}
 
 			String selectedId = getSelectedSystemId();
-			System.out.println(selectedId);
+
+			double[] simpleIterationsRoot;
 
 			switch (selectedId) {
-				case "choiceEquation1":
-					// calculate first system
+				case "choiceSystem1":
+					simpleIterationsRoot = MethodsForSystemsNE.methodOfSimpleIterations(1, xValue, yValue, epsValue);
+					System.out.printf("Решение найдено за %.0f итераций: x = %.4f, y = %.4f%n", simpleIterationsRoot[0], simpleIterationsRoot[1], simpleIterationsRoot[2]);
 					break;
-				case "choiceEquation2":
-					// calculate second system
+
+				case "choiceSystem2":
+					simpleIterationsRoot = MethodsForSystemsNE.methodOfSimpleIterations(2, xValue, yValue, epsValue);
+					System.out.printf("Решение найдено за %.0f итераций: x = %.4f, y = %.4f%n", simpleIterationsRoot[0], simpleIterationsRoot[1], simpleIterationsRoot[2]);
 					break;
+
 			}
 
 		} catch (NumberFormatException e) {
-			showAlert("Ошибка", "Пожалуйста, введите корректные значения для a, b и eps.");
+			showErrorAlert("Пожалуйста, введите корректные значения для a, b и eps.");
 		}
 	}
 
-	private void showAlert(String title, String message) {
+	private void showErrorAlert(String message) {
 		Alert alert = new Alert(Alert.AlertType.ERROR, message, ButtonType.OK);
-		alert.setTitle(title);
+		alert.setTitle("Ошибка");
 		alert.setHeaderText(null);
 		alert.showAndWait();
 	}
