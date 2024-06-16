@@ -33,7 +33,7 @@ public class ResultSystemController {
 
 	@FXML
 	private void handleReturn(ActionEvent actionEvent) {
-		switchScene(actionEvent, "/com/example/lab2_gui/views/index-view.fxml");
+		switchScene(actionEvent, "/com/example/lab2_gui/views/systemEquations-view.fxml");
 	}
 
 	private void switchScene(ActionEvent event, String fxmlFilePath) {

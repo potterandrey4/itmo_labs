@@ -97,12 +97,11 @@ public class SystemEquationsController {
 			switch (selectedId) {
 				case "choiceSystem1":
 					simpleIterationsRoot = MethodsForSystemsNE.methodOfSimpleIterations(1, xValue, yValue, epsValue);
-					System.out.printf("Решение найдено за %.0f итераций: x = %.4f, y = %.4f%n", simpleIterationsRoot[0], simpleIterationsRoot[1], simpleIterationsRoot[2]);
 					break;
 
 				case "choiceSystem2":
 					simpleIterationsRoot = MethodsForSystemsNE.methodOfSimpleIterations(2, xValue, yValue, epsValue);
-					System.out.printf("Решение найдено за %.0f итераций: x = %.4f, y = %.4f%n", simpleIterationsRoot[0], simpleIterationsRoot[1], simpleIterationsRoot[2]);
+//					System.out.printf("Решение найдено за %.0f итераций: x = %.4f, y = %.4f%n", simpleIterationsRoot[0], simpleIterationsRoot[1], simpleIterationsRoot[2]);
 					break;
 				default:
 					throw new IllegalStateException("мяу");

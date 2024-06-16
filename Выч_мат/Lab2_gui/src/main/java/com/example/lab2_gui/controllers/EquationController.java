@@ -107,7 +107,7 @@ public class EquationController {
 			}
 
 			if (!isValidRange(aValue, bValue)) {
-				showErrorAlert("Значение a должно быть строго больше b");
+				showErrorAlert("Значение b должно быть строго больше a");
 				return;
 			}
 
@@ -155,18 +155,18 @@ public class EquationController {
 					throw new IllegalStateException("мяу");
 			}
 
-			// вызываем методы
+			// Вызов методов
 			bisectionMethodRoot = MethodsForNE.bisectionMethod(function, aValue, bValue, epsValue);
-			initialApproximation = MethodsForNE.findInitialApproximation(function, derivativeDerivativeFunction, aValue, bValue);
-			newtonMethonRoot = MethodsForNE.newtonMethod(function, derivativeFunction, initialApproximation, epsValue);
+			initialApproximation = MethodsForNE.findInitialApproximation(function, derivativeFunction, aValue, bValue);
+			double[] newtonMethodRoot = MethodsForNE.newtonMethod(function, derivativeFunction, initialApproximation, epsValue);
 			simpleIterRoot = MethodsForNE.simpleIterationsMethod(function, derivativeFunction, aValue, bValue, epsValue);
 
-			// отправляем данные на новую страницу
+			// Отправка данных на новую страницу
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/lab2_gui/views/result-equation-view.fxml"));
 			Parent root = loader.load();
 
 			ResultEquationController resultController = loader.getController();
-			resultController.setResultData(bisectionMethodRoot, newtonMethonRoot, simpleIterRoot);
+			resultController.setResultData(bisectionMethodRoot, newtonMethodRoot, simpleIterRoot, aValue, bValue, function);
 
 			Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
 			stage.setScene(new Scene(root));

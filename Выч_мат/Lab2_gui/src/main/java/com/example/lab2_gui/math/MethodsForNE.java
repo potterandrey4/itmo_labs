@@ -32,10 +32,10 @@ public class MethodsForNE {
 		return result;
 	}
 
-	private static double phi(Function<Double, Double> function, Function<Double, Double> deritiveFunction, double x, double a, double b, double sign) {
-		double lambda = sign * Math.max(Math.abs(deritiveFunction.apply(a)), Math.abs(deritiveFunction.apply(b)));
-		return x + lambda * function.apply(x);
-	}
+//	private static double phi(Function<Double, Double> function, Function<Double, Double> deritiveFunction, double x, double a, double b, double sign) {
+//		double lambda = sign * Math.max(Math.abs(deritiveFunction.apply(a)), Math.abs(deritiveFunction.apply(b)));
+//		return x + lambda * function.apply(x);
+//	}
 
 	public static double[] simpleIterationsMethod(Function<Double, Double> function, Function<Double, Double> derivativeFunction, double a, double b, double eps) {
 		double[] result = new double[3];
@@ -45,7 +45,6 @@ public class MethodsForNE {
 		int max_iter = 100;
 
 		// Вычисляем lambda
-//		double lambda = -1.0 / Math.max(Math.abs(derivativeFunction.apply(a)), Math.abs(derivativeFunction.apply(b)));
 		double maxDerivative = Math.max(Math.abs(derivativeFunction.apply(a)), Math.abs(derivativeFunction.apply(b)));
 		double lambda = 1 / maxDerivative;
 
@@ -53,10 +52,9 @@ public class MethodsForNE {
 			lambda = -lambda;
 		}
 
-		Function<Double, Double> phi = (x) -> x + 1 / 23.005 * function.apply(x);
+//		Function<Double, Double> phi = (x) -> x + 1 / 23.005 * function.apply(x);
 
 		while (true) {
-			// Определяем функцию φ(x)
 			x_curr = x_prev + lambda * function.apply(x_prev);
 
 			// Проверяем условие выхода

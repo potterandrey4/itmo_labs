@@ -11,7 +11,7 @@ public class Application extends javafx.application.Application {
 	public void start(Stage stage) throws IOException {
 		FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("/com/example/lab2_gui/views/index-view.fxml"));
 		Scene scene = new Scene(fxmlLoader.load(), 800, 600);
-		stage.setTitle("Инициацициация");
+		stage.setTitle("Численное решение нелинейных уравнений и систем");
 		stage.setScene(scene);
 		stage.show();
 	}
