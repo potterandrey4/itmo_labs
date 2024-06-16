@@ -45,14 +45,14 @@ public class SystemEquationsController {
 		addDoubleValidation(y);
 		y.setText("2");
 		addDoubleValidation(eps);
-		eps.setText("0.5");
+		eps.setText("0.001");
 	}
 
 
 	private void addDoubleValidation(TextField textField) {
 		UnaryOperator<TextFormatter.Change> filter = change -> {
 			String newText = change.getControlNewText();
-			if (newText.matches("\\d*\\.?\\d*")) {
+			if (newText.matches("\\d*\\.?\\d*") || newText.matches("-\\d*\\.?\\d*")) {
 				return change;
 			}
 			return null;
@@ -104,11 +104,24 @@ public class SystemEquationsController {
 					simpleIterationsRoot = MethodsForSystemsNE.methodOfSimpleIterations(2, xValue, yValue, epsValue);
 					System.out.printf("Решение найдено за %.0f итераций: x = %.4f, y = %.4f%n", simpleIterationsRoot[0], simpleIterationsRoot[1], simpleIterationsRoot[2]);
 					break;
-
+				default:
+					throw new IllegalStateException("мяу");
 			}
 
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/lab2_gui/views/result-systemEquations-view.fxml"));
+			Parent root = loader.load();
+
+			ResultSystemController resultController = loader.getController();
+			resultController.setResultData(simpleIterationsRoot[1], simpleIterationsRoot[2], 0, 0, simpleIterationsRoot[0]);
+
+			Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+			stage.setScene(new Scene(root));
+			stage.show();
+
 		} catch (NumberFormatException e) {
-			showErrorAlert("Пожалуйста, введите корректные значения для a, b и eps.");
+			showErrorAlert("Пожалуйста, введите корректные значения для x, y и eps.");
+		} catch (IOException e) {
+			throw new RuntimeException(e);
 		}
 	}
 

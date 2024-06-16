@@ -32,26 +32,51 @@ public class MethodsForNE {
 		return result;
 	}
 
+	private static double phi(Function<Double, Double> function, Function<Double, Double> deritiveFunction, double x, double a, double b, double sign) {
+		double lambda = sign * Math.max(Math.abs(deritiveFunction.apply(a)), Math.abs(deritiveFunction.apply(b)));
+		return x + lambda * function.apply(x);
+	}
 
-	public static double[] secantMethod(Function<Double, Double> function, double a, double b, double eps) {
+	public static double[] simpleIterationsMethod(Function<Double, Double> function, Function<Double, Double> derivativeFunction, double a, double b, double eps) {
 		double[] result = new double[3];
-		double fa = function.apply(a);
-		double fb = function.apply(b);
+		double x_prev = (a + b) / 2;  // начальное приближение
+		double x_curr;
 		int iterations = 0;
-		double c = 0;
+		int max_iter = 100;
 
-		while (Math.abs(b - a) > eps) {
-			c = b - fb * (b - a) / (fb - fa);
-			a = b;
-			fa = fb;
-			b = c;
-			fb = function.apply(b);
+		// Вычисляем lambda
+//		double lambda = -1.0 / Math.max(Math.abs(derivativeFunction.apply(a)), Math.abs(derivativeFunction.apply(b)));
+		double maxDerivative = Math.max(Math.abs(derivativeFunction.apply(a)), Math.abs(derivativeFunction.apply(b)));
+		double lambda = 1 / maxDerivative;
+
+		if (derivativeFunction.apply(x_prev) > 0) {
+			lambda = -lambda;
+		}
+
+		Function<Double, Double> phi = (x) -> x + 1 / 23.005 * function.apply(x);
+
+		while (true) {
+			// Определяем функцию φ(x)
+			x_curr = x_prev + lambda * function.apply(x_prev);
+
+			// Проверяем условие выхода
+			if (Math.abs(x_curr - x_prev) <= eps || iterations >= max_iter) {
+				break;
+			}
+
+			// Проверка на бесконечные и NaN значения
+			if (Double.isNaN(x_prev) || Double.isInfinite(x_prev)) {
+				System.out.println("Warning: function returned NaN or Infinite value.");
+				break;
+			}
+
+			x_prev = x_curr;
 			iterations++;
 		}
 
-		result[0] = c;
-		result[1] = function.apply(c);
-		result[2] = iterations;
+		result[0] = x_curr; // найденное решение
+		result[1] = function.apply(x_curr); // значение функции в найденной точке
+		result[2] = iterations; // количество итераций
 
 		return result;
 	}

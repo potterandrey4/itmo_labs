@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #2e1440;" xmlns="http://javafx.com/javafx/17.0.6" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.lab2_gui.controllers.ResultSystemController">
+    <children>
+        <AnchorPane prefHeight="96.0" prefWidth="800.0" style="-fx-background-color: #fafafa;">
+            <children>
+                <Text fontSmoothingType="LCD" layoutX="256.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Дьячков Андрей P3209. Лаба 2" textAlignment="CENTER" wrappingWidth="288.44677734375">
+                    <font>
+                        <Font name="Ubuntu Condensed" size="31.0" />
+                    </font>
+                </Text>
+                <Button fx:id="return_btn" layoutX="712.0" layoutY="33.0" mnemonicParsing="false" onAction="#handleReturn" style="-fx-background-color: #7434eb;" text="Назад" textAlignment="CENTER" textFill="WHITE">
+                    <font>
+                        <Font size="16.0" />
+                    </font>
+                </Button>
+            </children>
+        </AnchorPane>
+        <Text fill="WHITE" layoutX="93.0" layoutY="221.0" strokeType="OUTSIDE" strokeWidth="0.0" text="x1">
+            <font>
+                <Font size="25.0" />
+            </font>
+        </Text>
+        <Text fill="WHITE" layoutX="266.0" layoutY="221.0" strokeType="OUTSIDE" strokeWidth="0.0" text="x2">
+            <font>
+                <Font size="25.0" />
+            </font>
+        </Text>
+        <Line endY="445.0" layoutX="400.0" layoutY="135.0" startY="3.0" stroke="#4b5aab" />
+        <TextArea editable="false" layoutX="38.0" layoutY="233.0" prefHeight="38.0" prefWidth="140.0" fx:id="x1_val" />
+        <TextArea editable="false" layoutX="211.0" layoutY="233.0" prefHeight="38.0" prefWidth="140.0" fx:id="x2_val" />
+        <Text fill="WHITE" layoutX="56.0" layoutY="172.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Вектор неизвестных" textAlignment="CENTER">
+            <font>
+                <Font size="26.0" />
+            </font>
+        </Text>
+        <Text fill="WHITE" layoutX="96.0" layoutY="390.0" strokeType="OUTSIDE" strokeWidth="0.0" text="x1">
+            <font>
+                <Font size="25.0" />
+            </font>
+        </Text>
+        <Text fill="WHITE" layoutX="269.0" layoutY="390.0" strokeType="OUTSIDE" strokeWidth="0.0" text="x2">
+            <font>
+                <Font size="25.0" />
+            </font>
+        </Text>
+        <TextArea editable="false" layoutX="41.0" layoutY="402.0" prefHeight="38.0" prefWidth="140.0" fx:id="x1_eps" />
+        <TextArea editable="false" layoutX="214.0" layoutY="402.0" prefHeight="38.0" prefWidth="140.0" fx:id="x2_eps" />
+        <Text fill="WHITE" layoutX="45.0" layoutY="342.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Вектор погрешностей" textAlignment="CENTER">
+            <font>
+                <Font size="26.0" />
+            </font>
+        </Text>
+        <Text fill="WHITE" layoutX="14.0" layoutY="531.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Количество итераций:" textAlignment="CENTER" wrappingWidth="294.75">
+            <font>
+                <Font size="24.0" />
+            </font>
+        </Text>
+<!--        <TextArea fx:id="iter" editable="false" layoutX="145.0" layoutY="534.0" prefHeight="31.0" prefWidth="103.0"/>-->
+        <Text fx:id="iter" fill="WHITE" fontSmoothingType="LCD" layoutX="322.0" layoutY="522.0" smooth="false" stroke="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="5" textAlignment="CENTER" textOrigin="CENTER">
+            <font>
+                <Font size="26.0" />
+            </font>
+        </Text>
+        <LineChart layoutX="396.0" layoutY="177.0" prefHeight="364.0" prefWidth="381.0">
+            <xAxis>
+                <CategoryAxis side="BOTTOM" />
+            </xAxis>
+            <yAxis>
+                <NumberAxis side="LEFT" />
+            </yAxis>
+        </LineChart>
+        <Text fill="WHITE" layoutX="224.0" layoutY="130.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Метод простых итераций">
+            <font>
+                <Font size="26.0" />
+            </font>
+        </Text>
+    </children>
+</AnchorPane>

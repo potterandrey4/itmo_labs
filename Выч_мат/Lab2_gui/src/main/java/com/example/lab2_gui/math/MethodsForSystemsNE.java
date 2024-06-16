@@ -14,7 +14,7 @@ public class MethodsForSystemsNE {
                 xNew = FunctionsSystemsNE.system1EquationX(x, y);
                 yNew = FunctionsSystemsNE.system1EquationY(x, y);
                 iteration++;
-                System.out.printf("Итерация %d: x = %.4f, y = %.4f%n", iteration, xNew, yNew);
+//                System.out.printf("Итерация %d: x = %.4f, y = %.4f%n", iteration, xNew, yNew);
 
                 if (Math.abs(xNew - x) <= eps && Math.abs(yNew - y) <= eps) {
                     break;
@@ -27,7 +27,7 @@ public class MethodsForSystemsNE {
                 xNew = FunctionsSystemsNE.system2EquationX(x, y);
                 yNew = FunctionsSystemsNE.system2EquationY(x, y);
                 iteration++;
-                System.out.printf("Итерация %d: x = %.4f, y = %.4f%n", iteration, xNew, yNew);
+//                System.out.printf("Итерация %d: x = %.4f, y = %.4f%n", iteration, xNew, yNew);
 
                 if (Math.abs(xNew - x) <= eps && Math.abs(yNew - y) <= eps) {
                     break;

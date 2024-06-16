@@ -6,10 +6,6 @@ public class FunctionsNE {
 		return Math.pow(x, 3) - 2.561 * Math.pow(x, 2) - 1.325 * x + 4.395;
 	}
 
-	public static String function1ToString() {
-		return "x*x*x - 2.561*x*x - 1.325*x + 4.395";
-	}
-
 	public static double derivativeFunction1(double x) {
 		return 3 * Math.pow(x, 2) - 5.122 * x - 1.325;
 	}
@@ -20,10 +16,6 @@ public class FunctionsNE {
 
 	public static double function2(double x) {
 		return -1.38 * Math.pow(x, 3) - 5.42 * Math.pow(x, 2) + 2.57 * x + 10.95;
-	}
-
-	public static String function2ToString() {
-		return "-1.38*x*x*x - 5.42*x*x + 2.57*x + 10.95";
 	}
 
 	public static double derivativeFunction2(double x) {
@@ -38,10 +30,6 @@ public class FunctionsNE {
 		return -2.4 * Math.pow(x, 3) + 1.27 * Math.pow(x, 2) - 8.63 * x + 2.31;
 	}
 
-	public static String function3ToString() {
-		return "-2.4*x*x*x + 1.27*x*x - 8.63*x + 2.31";
-	}
-
 	public static double derivativeFunction3(double x) {
 		return -7.2 * Math.pow(x, 2) + 2.54 * x - 8.63;
 	}
@@ -52,10 +40,6 @@ public class FunctionsNE {
 
 	public static double function4(double x) {
 		return -1.8 * Math.pow(x, 3) - 2.94 * Math.pow(x, 2) + 10.37 * x + 5.38;
-	}
-
-	public static String function4ToString() {
-		return "-1.8*x*x*x - 2.94*x*x + 10.37*x + 5.38";
 	}
 
 	public static double derivativeFunction4(double x) {
