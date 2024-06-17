@@ -10,8 +10,13 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.DecimalFormat;
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Function;
 
 public class ResultEquationController {
@@ -42,55 +47,80 @@ public class ResultEquationController {
 
 	DecimalFormat df = new DecimalFormat("###.#########");
 
-	public void setResultData(double[] bisectionMethodRoot, double[] newtonMethodRoot, double[] simpleIterRoot, double a, double b, Function<Double, Double> function) {
-		dih_x.setText("x: " + df.format(bisectionMethodRoot[0]));
-		dih_f.setText("f(x): " + df.format(bisectionMethodRoot[1]));
-		dih_iter.setText("Итерации: " + bisectionMethodRoot[2]);
+	public void setResultData(double[][] bisectionMethodRoot, double[][] newtonMethodData, double[][] simpleIterRoot, double a, double b, Function<Double, Double> function) {
+		dih_x.setText("x: " + df.format(bisectionMethodRoot[0][0]));
+		dih_f.setText("f(x): " + df.format(bisectionMethodRoot[0][1]));
+		dih_iter.setText("Итерации: " + bisectionMethodRoot[0][2]);
 
-		newt_x.setText("x: " + df.format(newtonMethodRoot[0]));
-		newt_f.setText("f(x): " + df.format(newtonMethodRoot[1]));
-		newt_iter.setText("Итерации: " + newtonMethodRoot[2]);
+		newt_x.setText("x: " + df.format(newtonMethodData[0][0]));
+		newt_f.setText("f(x): " + df.format(newtonMethodData[0][1]));
+		newt_iter.setText("Итерации: " + newtonMethodData[0][2]);
 
-		simple_x.setText("x: " + df.format(simpleIterRoot[0]));
-		simple_f.setText("f(x): " + df.format(simpleIterRoot[1]));
-		simple_iter.setText("Итерации: " + simpleIterRoot[2]);
+		simple_x.setText("x: " + df.format(simpleIterRoot[0][0]));
+		simple_f.setText("f(x): " + df.format(simpleIterRoot[0][1]));
+		simple_iter.setText("Итерации: " + simpleIterRoot[0][2]);
 
 		ab.setText("[a; b] = [" + a + "; " + b + "]");
 
-		// Clear previous data
 		lineChart.getData().clear();
 
-		// Add function graph
+		// График функции
 		XYChart.Series<Number, Number> functionSeries = new XYChart.Series<>();
-		functionSeries.setName("Function");
-		double step = (b - a) / 100;
-		for (double x = a; x <= b; x += step) {
+		functionSeries.setName("Функция");
+		double step = (b - a) / 50;
+		double coefficient = Math.abs(a+b)/2/20;
+		double[][] valuesGraph = new double[100][];
+		int iter = 0;
+		for (double x = a-coefficient; x <= b+coefficient; x += step) {
+			valuesGraph[iter] = new double[]{x, function.apply(x)};
 			functionSeries.getData().add(new XYChart.Data<>(x, function.apply(x)));
+			iter++;
 		}
 		lineChart.getData().add(functionSeries);
+		for (XYChart.Data<Number, Number> data : functionSeries.getData()) {
+			data.getNode().setVisible(false);
+		}
 
-		// Add Bisection Method root
-		XYChart.Series<Number, Number> bisectionSeries = new XYChart.Series<>();
-		bisectionSeries.setName("Bisection Method");
-		bisectionSeries.getData().add(new XYChart.Data<>(bisectionMethodRoot[0], bisectionMethodRoot[1]));
-		lineChart.getData().add(bisectionSeries);
+		// График метода дихотомии
+		XYChart.Series<Number, Number> bisectionSeries = convertToSeries(newtonMethodData, "График дихотомии");
+		setDataLineChart(newtonMethodData, bisectionSeries);
 
-		// Add Newton Method root
-		XYChart.Series<Number, Number> newtonSeries = new XYChart.Series<>();
-		newtonSeries.setName("Newton Method");
-		newtonSeries.getData().add(new XYChart.Data<>(newtonMethodRoot[0], newtonMethodRoot[1]));
-		lineChart.getData().add(newtonSeries);
+		// Метод Ньютона
+		XYChart.Series<Number, Number> newtonSeries = convertToSeries(newtonMethodData, "График Ньютона");
+		setDataLineChart(newtonMethodData, newtonSeries);
 
-		// Add Simple Iteration Method root
-		XYChart.Series<Number, Number> simpleIterSeries = new XYChart.Series<>();
-		simpleIterSeries.setName("Simple Iteration Method");
-		simpleIterSeries.getData().add(new XYChart.Data<>(simpleIterRoot[0], simpleIterRoot[1]));
-		lineChart.getData().add(simpleIterSeries);
+		// Метод простых итераций
+		XYChart.Series<Number, Number> simpleIterSeries = convertToSeries(newtonMethodData, "График простых итераций");
+		setDataLineChart(simpleIterRoot, simpleIterSeries);
+
+//		runPlotPy(Arrays.toString(newtonMethodData[1]), Arrays.toString(newtonMethodData[2]));
 	}
+
+	private void setDataLineChart(double[][] newtonMethodData, XYChart.Series<Number, Number> bisectionSeries) {
+		XYChart.Data<Number, Number> bisectionRootPoint = new XYChart.Data<>(newtonMethodData[0][0], newtonMethodData[0][1]);
+		bisectionSeries.getData().add(bisectionRootPoint);
+		lineChart.getData().add(bisectionSeries);
+		for (XYChart.Data<Number, Number> data : bisectionSeries.getData()) {
+			if (data != bisectionRootPoint) {
+				data.getNode().setVisible(false);
+			}
+		}
+	}
+
+	public static XYChart.Series<Number, Number> convertToSeries(double[][] result, String name) {
+		XYChart.Series<Number, Number> series = new XYChart.Series<>();
+		series.setName(name);
+
+		for (int i = 0; i <= result[2][2]; i++) {
+			series.getData().add(new XYChart.Data<>(result[1][i], result[2][i]));
+		}
+		return series;
+	}
+
 
 	@FXML
 	private void handleReturn(ActionEvent actionEvent) {
-		switchScene(actionEvent, "/com/example/lab2_gui/views/index-view.fxml");
+		switchScene(actionEvent, "/com/example/lab2_gui/views/equation-view.fxml");
 	}
 
 	private void switchScene(ActionEvent event, String fxmlFilePath) {
@@ -104,4 +134,31 @@ public class ResultEquationController {
 			e.printStackTrace();
 		}
 	}
+
+	private static void runPlotPy(String xArg, String yArg) {
+		String pythonInterpreter = "./venv/bin/python";
+		String scriptPath = "/home/andrey/Документы/itmo_labs/Выч_мат/Lab2_gui/plot.py";
+
+		List<String> command = Arrays.asList(pythonInterpreter, scriptPath, xArg, yArg, "title");
+
+		ProcessBuilder pb = new ProcessBuilder(command);
+		pb.directory(new File("/home/andrey/Документы/itmo_labs/Выч_мат/Lab2_gui"));
+		pb.redirectErrorStream(true);
+
+		try {
+			Process process = pb.start();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+			String line;
+			while ((line = reader.readLine()) != null) {
+				System.out.println(line);
+			}
+			int exitCode = process.waitFor();
+			System.out.println("Exited with code: " + exitCode);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+
+
 }

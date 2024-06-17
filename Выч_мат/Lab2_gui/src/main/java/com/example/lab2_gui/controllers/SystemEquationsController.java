@@ -41,9 +41,9 @@ public class SystemEquationsController {
 		choiceSystem1.setSelected(true);
 
 		addDoubleValidation(x);
-		x.setText("1");
+		x.setText("-5");
 		addDoubleValidation(y);
-		y.setText("2");
+		y.setText("5");
 		addDoubleValidation(eps);
 		eps.setText("0.001");
 	}
@@ -101,7 +101,6 @@ public class SystemEquationsController {
 
 				case "choiceSystem2":
 					simpleIterationsRoot = MethodsForSystemsNE.methodOfSimpleIterations(2, xValue, yValue, epsValue);
-//					System.out.printf("Решение найдено за %.0f итераций: x = %.4f, y = %.4f%n", simpleIterationsRoot[0], simpleIterationsRoot[1], simpleIterationsRoot[2]);
 					break;
 				default:
 					throw new IllegalStateException("мяу");

@@ -53,9 +53,9 @@ public class EquationController {
 		choiceEquation1.setSelected(true);
 
 		addDoubleValidation(a);
-		a.setText("1");
+		a.setText("-5");
 		addDoubleValidation(b);
-		b.setText("2");
+		b.setText("5");
 		addDoubleValidation(eps);
 		eps.setText("0.001");
 	}
@@ -116,24 +116,14 @@ public class EquationController {
 			Function<Double, Double> derivativeFunction;
 			Function<Double, Double> derivativeDerivativeFunction;
 
-			DecimalFormat df = new DecimalFormat("##.#######");
-
-			double[] bisectionMethodRoot;
-			double[] newtonMethonRoot;
-			double initialApproximation;
-			double[] simpleIterRoot;
-
-
 			switch (selectedId) {
 				case "choiceEquation1":
-
 					function = FunctionsNE::function1;
 					derivativeFunction = FunctionsNE::derivativeFunction1;
 					derivativeDerivativeFunction = FunctionsNE::derivativeDerivativeFunction1;
 					break;
 
 				case "choiceEquation2":
-
 					function = FunctionsNE::function2;
 					derivativeFunction = FunctionsNE::derivativeFunction2;
 					derivativeDerivativeFunction = FunctionsNE::derivativeDerivativeFunction2;
@@ -142,7 +132,7 @@ public class EquationController {
 				case "choiceEquation3":
 					function = FunctionsNE::function3;
 					derivativeFunction = FunctionsNE::derivativeFunction3;
-					derivativeDerivativeFunction = FunctionsNE::derivativeDerivativeFunction4;
+					derivativeDerivativeFunction = FunctionsNE::derivativeDerivativeFunction3;
 					break;
 
 				case "choiceEquation4":
@@ -156,10 +146,10 @@ public class EquationController {
 			}
 
 			// Вызов методов
-			bisectionMethodRoot = MethodsForNE.bisectionMethod(function, aValue, bValue, epsValue);
-			initialApproximation = MethodsForNE.findInitialApproximation(function, derivativeFunction, aValue, bValue);
-			double[] newtonMethodRoot = MethodsForNE.newtonMethod(function, derivativeFunction, initialApproximation, epsValue);
-			simpleIterRoot = MethodsForNE.simpleIterationsMethod(function, derivativeFunction, aValue, bValue, epsValue);
+			double[][] bisectionMethodRoot = MethodsForNE.bisectionMethod(function, aValue, bValue, epsValue);
+			double initialApproximation = MethodsForNE.findInitialApproximation(function, derivativeDerivativeFunction, aValue, bValue);
+			double[][] newtonMethodRoot = MethodsForNE.newtonMethod(function, derivativeFunction, initialApproximation, epsValue);
+			double[][] simpleIterRoot = MethodsForNE.simpleIterationsMethod(function, derivativeFunction, aValue, bValue, epsValue);
 
 			// Отправка данных на новую страницу
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/lab2_gui/views/result-equation-view.fxml"));

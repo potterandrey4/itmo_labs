@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
@@ -9,120 +8,101 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0"
-            prefWidth="800.0" style="-fx-background-color: #2e1440;" xmlns="http://javafx.com/javafx/17.0.6"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.example.lab2_gui.controllers.ResultEquationController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #2e1440;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.lab2_gui.controllers.ResultEquationController">
     <children>
         <AnchorPane prefHeight="96.0" prefWidth="800.0" style="-fx-background-color: #fafafa;">
             <children>
-                <Text fontSmoothingType="LCD" layoutX="256.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                      text="Дьячков Андрей P3209. Лаба 2" textAlignment="CENTER" wrappingWidth="288.44677734375">
+                <Text fontSmoothingType="LCD" layoutX="256.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Дьячков Андрей P3209. Лаба 2" textAlignment="CENTER" wrappingWidth="288.44677734375">
                     <font>
-                        <Font name="Ubuntu Condensed" size="31.0"/>
+                        <Font name="Ubuntu Condensed" size="31.0" />
                     </font>
                 </Text>
-                <Button fx:id="return_btn" layoutX="712.0" layoutY="33.0" mnemonicParsing="false"
-                        onAction="#handleReturn" style="-fx-background-color: #7434eb;" text="Назад"
-                        textAlignment="CENTER" textFill="WHITE">
+                <Button fx:id="return_btn" layoutX="712.0" layoutY="33.0" mnemonicParsing="false" onAction="#handleReturn" style="-fx-background-color: #7434eb;" text="Назад" textAlignment="CENTER" textFill="WHITE">
                     <font>
-                        <Font size="16.0"/>
+                        <Font size="16.0" />
                     </font>
                 </Button>
             </children>
         </AnchorPane>
-        <Text fx:id="dih_x" fill="WHITE" layoutX="56.0" layoutY="175.0" strokeType="OUTSIDE" strokeWidth="0.0"
-              text="x: ">
+        <Text fx:id="dih_x" fill="WHITE" layoutX="56.0" layoutY="175.0" strokeType="OUTSIDE" strokeWidth="0.0" text="x: ">
             <font>
-                <Font size="20.0"/>
+                <Font size="20.0" />
             </font>
         </Text>
-        <Text fx:id="dih_f" fill="WHITE" layoutX="56.0" layoutY="216.0" strokeType="OUTSIDE" strokeWidth="0.0"
-              text="f(x):">
+        <Text fx:id="dih_f" fill="WHITE" layoutX="56.0" layoutY="216.0" strokeType="OUTSIDE" strokeWidth="0.0" text="f(x):">
             <font>
-                <Font size="21.0"/>
+                <Font size="21.0" />
             </font>
         </Text>
         <Text fill="WHITE" layoutX="26.0" layoutY="147.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Метод дихотомии">
             <font>
-                <Font size="22.0"/>
+                <Font size="22.0" />
             </font>
         </Text>
-        <Text fx:id="dih_iter" fill="WHITE" layoutX="56.0" layoutY="255.0" strokeType="OUTSIDE" strokeWidth="0.0"
-              text="Итераций: ">
+        <Text fx:id="dih_iter" fill="WHITE" layoutX="56.0" layoutY="255.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Итераций: ">
             <font>
-                <Font size="21.0"/>
+                <Font size="21.0" />
             </font>
         </Text>
-        <Text fx:id="newt_x" fill="WHITE" layoutX="56.0" layoutY="339.0" strokeType="OUTSIDE" strokeWidth="0.0"
-              text="x:">
+        <Text fx:id="newt_x" fill="WHITE" layoutX="56.0" layoutY="339.0" strokeType="OUTSIDE" strokeWidth="0.0" text="x:">
             <font>
-                <Font size="20.0"/>
+                <Font size="20.0" />
             </font>
         </Text>
-        <Text fx:id="newt_f" fill="WHITE" layoutX="56.0" layoutY="380.0" strokeType="OUTSIDE" strokeWidth="0.0"
-              text="f(x):">
+        <Text fx:id="newt_f" fill="WHITE" layoutX="56.0" layoutY="380.0" strokeType="OUTSIDE" strokeWidth="0.0" text="f(x):">
             <font>
-                <Font size="21.0"/>
+                <Font size="21.0" />
             </font>
         </Text>
         <Text fill="WHITE" layoutX="26.0" layoutY="311.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Метод Ньютона">
             <font>
-                <Font size="22.0"/>
+                <Font size="22.0" />
             </font>
         </Text>
-        <Text fx:id="newt_iter" fill="WHITE" layoutX="56.0" layoutY="419.0" strokeType="OUTSIDE" strokeWidth="0.0"
-              text="Итераций: ">
+        <Text fx:id="newt_iter" fill="WHITE" layoutX="56.0" layoutY="419.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Итераций: ">
             <font>
-                <Font size="21.0"/>
+                <Font size="21.0" />
             </font>
         </Text>
-        <Text fx:id="simple_x" fill="WHITE" layoutX="56.0" layoutY="494.0" strokeType="OUTSIDE" strokeWidth="0.0"
-              text="x:">
+        <Text fx:id="simple_x" fill="WHITE" layoutX="56.0" layoutY="494.0" strokeType="OUTSIDE" strokeWidth="0.0" text="x:">
             <font>
-                <Font size="20.0"/>
+                <Font size="20.0" />
             </font>
         </Text>
-        <Text fx:id="simple_f" fill="WHITE" layoutX="56.0" layoutY="535.0" strokeType="OUTSIDE" strokeWidth="0.0"
-              text="f(x):">
+        <Text fx:id="simple_f" fill="WHITE" layoutX="56.0" layoutY="535.0" strokeType="OUTSIDE" strokeWidth="0.0" text="f(x):">
             <font>
-                <Font size="21.0"/>
+                <Font size="21.0" />
             </font>
         </Text>
-        <Text fill="WHITE" layoutX="26.0" layoutY="466.0" strokeType="OUTSIDE" strokeWidth="0.0"
-              text="Метод простых итераций">
+        <Text fill="WHITE" layoutX="26.0" layoutY="466.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Метод простых итераций">
             <font>
-                <Font size="22.0"/>
+                <Font size="22.0" />
             </font>
         </Text>
-        <Text fx:id="simple_iter" fill="WHITE" layoutX="56.0" layoutY="574.0" strokeType="OUTSIDE" strokeWidth="0.0"
-              text="Итераций: ">
+        <Text fx:id="simple_iter" fill="WHITE" layoutX="56.0" layoutY="574.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Итераций: ">
             <font>
-                <Font size="21.0"/>
+                <Font size="21.0" />
             </font>
         </Text>
-        <Line endX="240.0" layoutX="127.0" layoutY="270.0" startX="-100.0" stroke="#ee55d7"/>
-        <Line endX="240.0" layoutX="127.0" layoutY="436.0" startX="-100.0" stroke="#ee55d7"/>
-        <Line endX="240.0" endY="-118.0" layoutX="160.0" layoutY="228.0" startX="240.0" startY="348.0"
-              stroke="#ee55d7"/>
-        <LineChart fx:id="lineChart" layoutX="400.0" layoutY="160.0" prefHeight="368.0" prefWidth="395.0">
+        <Line endX="240.0" layoutX="127.0" layoutY="270.0" startX="-100.0" stroke="#ee55d7" />
+        <Line endX="240.0" layoutX="127.0" layoutY="436.0" startX="-100.0" stroke="#ee55d7" />
+        <Line endX="240.0" endY="-118.0" layoutX="160.0" layoutY="228.0" startX="240.0" startY="348.0" stroke="#ee55d7" />
+        <LineChart fx:id="lineChart" layoutX="401.0" layoutY="167.0" prefHeight="354.0" prefWidth="368.0">
             <xAxis>
-                <NumberAxis label="X"/>
+                <NumberAxis label="X" />
             </xAxis>
             <yAxis>
-                <NumberAxis label="Y"/>
+                <NumberAxis label="Y" />
             </yAxis>
         </LineChart>
-        <Text fx:id="ab" fill="WHITE" layoutX="448.0" layoutY="132.0" strokeType="OUTSIDE" strokeWidth="0.0"
-              text="[a, b] = ">
+        <Text fx:id="ab" fill="WHITE" layoutX="448.0" layoutY="132.0" strokeType="OUTSIDE" strokeWidth="0.0" text="[a, b] = ">
             <font>
-                <Font size="18.0"/>
+                <Font size="18.0" />
             </font>
         </Text>
-        <Text fx:id="isRange" fill="WHITE" layoutX="448.0" layoutY="560.0" strokeType="OUTSIDE" strokeWidth="0.0"
-              text="[a, b] = ">
+        <Text fx:id="isRange" fill="WHITE" layoutX="448.0" layoutY="572.0" strokeType="OUTSIDE" strokeWidth="0.0" text="[a, b] = ">
             <font>
-                <Font size="18.0"/>
+                <Font size="18.0" />
             </font>
         </Text>
     </children>
