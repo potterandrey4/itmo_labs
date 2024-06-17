@@ -1,5 +1,6 @@
 package com.example.lab2_gui.controllers;
 
+import com.example.lab2_gui.GraphData;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
@@ -47,18 +49,18 @@ public class ResultEquationController {
 
 	DecimalFormat df = new DecimalFormat("###.#########");
 
-	public void setResultData(double[][] bisectionMethodRoot, double[][] newtonMethodData, double[][] simpleIterRoot, double a, double b, Function<Double, Double> function) {
-		dih_x.setText("x: " + df.format(bisectionMethodRoot[0][0]));
-		dih_f.setText("f(x): " + df.format(bisectionMethodRoot[0][1]));
-		dih_iter.setText("Итерации: " + bisectionMethodRoot[0][2]);
+	public void setResultData(GraphData bisectionMethodRoot, GraphData newtonMethodData, GraphData simpleIterRoot, double a, double b, Function<Double, Double> function) {
+		dih_x.setText("x: " + df.format(bisectionMethodRoot.rootX));
+		dih_f.setText("f(x): " + df.format(bisectionMethodRoot.rootY));
+		dih_iter.setText("Итерации: " + bisectionMethodRoot.iterations);
 
-		newt_x.setText("x: " + df.format(newtonMethodData[0][0]));
-		newt_f.setText("f(x): " + df.format(newtonMethodData[0][1]));
-		newt_iter.setText("Итерации: " + newtonMethodData[0][2]);
+		newt_x.setText("x: " + df.format(newtonMethodData.rootX));
+		newt_f.setText("f(x): " + df.format(newtonMethodData.rootY));
+		newt_iter.setText("Итерации: " + newtonMethodData.iterations);
 
-		simple_x.setText("x: " + df.format(simpleIterRoot[0][0]));
-		simple_f.setText("f(x): " + df.format(simpleIterRoot[0][1]));
-		simple_iter.setText("Итерации: " + simpleIterRoot[0][2]);
+		simple_x.setText("x: " + df.format(simpleIterRoot.rootX));
+		simple_f.setText("f(x): " + df.format(simpleIterRoot.rootY));
+		simple_iter.setText("Итерации: " + simpleIterRoot.iterations);
 
 		ab.setText("[a; b] = [" + a + "; " + b + "]");
 
@@ -82,22 +84,22 @@ public class ResultEquationController {
 		}
 
 		// График метода дихотомии
-		XYChart.Series<Number, Number> bisectionSeries = convertToSeries(newtonMethodData, "График дихотомии");
-		setDataLineChart(newtonMethodData, bisectionSeries);
+		XYChart.Series<Number, Number> bisectionSeries = convertToSeries(bisectionMethodRoot.xValues, bisectionMethodRoot.yValues, "График дихотомии");
+		setDataLineChart(bisectionMethodRoot.rootX, bisectionMethodRoot.rootY, bisectionSeries);
 
 		// Метод Ньютона
-		XYChart.Series<Number, Number> newtonSeries = convertToSeries(newtonMethodData, "График Ньютона");
-		setDataLineChart(newtonMethodData, newtonSeries);
+		XYChart.Series<Number, Number> newtonSeries = convertToSeries(newtonMethodData.xValues, newtonMethodData.yValues, "График Ньютона");
+		setDataLineChart(newtonMethodData.rootX, newtonMethodData.rootY, newtonSeries);
 
 		// Метод простых итераций
-		XYChart.Series<Number, Number> simpleIterSeries = convertToSeries(newtonMethodData, "График простых итераций");
-		setDataLineChart(simpleIterRoot, simpleIterSeries);
+		XYChart.Series<Number, Number> simpleIterSeries = convertToSeries(simpleIterRoot.xValues, simpleIterRoot.yValues, "График простых итераций");
+		setDataLineChart(simpleIterRoot.rootX, simpleIterRoot.rootY, simpleIterSeries);
 
 //		runPlotPy(Arrays.toString(newtonMethodData[1]), Arrays.toString(newtonMethodData[2]));
 	}
 
-	private void setDataLineChart(double[][] newtonMethodData, XYChart.Series<Number, Number> bisectionSeries) {
-		XYChart.Data<Number, Number> bisectionRootPoint = new XYChart.Data<>(newtonMethodData[0][0], newtonMethodData[0][1]);
+	private void setDataLineChart(double xRoot, double yRoot, XYChart.Series<Number, Number> bisectionSeries) {
+		XYChart.Data<Number, Number> bisectionRootPoint = new XYChart.Data<>(xRoot, yRoot);
 		bisectionSeries.getData().add(bisectionRootPoint);
 		lineChart.getData().add(bisectionSeries);
 		for (XYChart.Data<Number, Number> data : bisectionSeries.getData()) {
@@ -107,12 +109,12 @@ public class ResultEquationController {
 		}
 	}
 
-	public static XYChart.Series<Number, Number> convertToSeries(double[][] result, String name) {
+	public static XYChart.Series<Number, Number> convertToSeries(List<Double> xValues, List<Double> yValues, String name) {
 		XYChart.Series<Number, Number> series = new XYChart.Series<>();
 		series.setName(name);
 
-		for (int i = 0; i <= result[2][2]; i++) {
-			series.getData().add(new XYChart.Data<>(result[1][i], result[2][i]));
+		for (int i = 0; i < xValues.size(); i++) {
+			series.getData().add(new XYChart.Data<>(xValues.get(i), yValues.get(i)));
 		}
 		return series;
 	}
@@ -158,7 +160,4 @@ public class ResultEquationController {
 			e.printStackTrace();
 		}
 	}
-
-
-
 }

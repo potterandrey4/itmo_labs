@@ -5,6 +5,7 @@ import java.text.DecimalFormat;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
+import com.example.lab2_gui.GraphData;
 import com.example.lab2_gui.math.FunctionsNE;
 import com.example.lab2_gui.math.MethodsForNE;
 import javafx.event.ActionEvent;
@@ -146,10 +147,10 @@ public class EquationController {
 			}
 
 			// Вызов методов
-			double[][] bisectionMethodRoot = MethodsForNE.bisectionMethod(function, aValue, bValue, epsValue);
+			GraphData bisectionMethodRoot = MethodsForNE.bisectionMethod(function, aValue, bValue, epsValue);
 			double initialApproximation = MethodsForNE.findInitialApproximation(function, derivativeDerivativeFunction, aValue, bValue);
-			double[][] newtonMethodRoot = MethodsForNE.newtonMethod(function, derivativeFunction, initialApproximation, epsValue);
-			double[][] simpleIterRoot = MethodsForNE.simpleIterationsMethod(function, derivativeFunction, aValue, bValue, epsValue);
+			GraphData newtonMethodRoot = MethodsForNE.newtonMethod(function, derivativeFunction, initialApproximation, epsValue);
+			GraphData simpleIterRoot = MethodsForNE.simpleIterationsMethod(function, derivativeFunction, aValue, bValue, epsValue);
 
 			// Отправка данных на новую страницу
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/lab2_gui/views/result-equation-view.fxml"));

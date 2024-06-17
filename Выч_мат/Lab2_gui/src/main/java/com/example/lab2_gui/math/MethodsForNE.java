@@ -1,22 +1,21 @@
 package com.example.lab2_gui.math;
 
+import com.example.lab2_gui.GraphData;
+
 import java.text.DecimalFormat;
 import java.util.function.Function;
 
 public class MethodsForNE {
 
-	DecimalFormat df = new DecimalFormat("##.########");
-
-	public static double[][] bisectionMethod(Function<Double, Double> function, double a, double b, double eps) {
-		double[][] result = new double[2][100];
+	public static GraphData bisectionMethod(Function<Double, Double> function, double a, double b, double eps) {
+		GraphData data = new GraphData("Bisection Method");
 		int iterations = 0;
 		double mid = (a + b) / 2;
 
 		while (Math.abs(b - a) > eps) {
 			mid = (a + b) / 2;
 			double fMid = function.apply(mid);
-			result[1][iterations] = mid;
-			result[2][iterations] = fMid;
+			data.addPoint(mid, fMid);
 
 			if (Math.abs(fMid) < eps) {
 				break;
@@ -30,15 +29,14 @@ public class MethodsForNE {
 			iterations++;
 		}
 
-		result[0][0] = mid;
-		result[0][1] = function.apply(mid);
-		result[0][2] = iterations;
+		data.setRoot(mid, function.apply(mid));
+		data.setIterations(iterations);
 
-		return result;
+		return data;
 	}
 
-	public static double[][] simpleIterationsMethod(Function<Double, Double> function, Function<Double, Double> derivativeFunction, double a, double b, double eps) {
-		double[][] result = new double[3][100];
+	public static GraphData simpleIterationsMethod(Function<Double, Double> function, Function<Double, Double> derivativeFunction, double a, double b, double eps) {
+		GraphData data = new GraphData("Simple Iteration Method");
 		double x_prev = (a + b) / 2;  // начальное приближение
 		double x_curr;
 		int iterations = 0;
@@ -67,32 +65,25 @@ public class MethodsForNE {
 			}
 
 			x_prev = x_curr;
-			result[1][iterations] = x_curr;
-			result[2][iterations] = function.apply(x_curr);
+			data.addPoint(x_curr, function.apply(x_curr));
 			iterations++;
 		}
 
-		result[0][0] = x_curr; // найденное решение
-		result[0][1] = function.apply(x_curr); // значение функции в найденной точке
-		result[0][2] = iterations; // количество итераций
+		data.setRoot(x_curr, function.apply(x_curr));
+		data.setIterations(iterations);
 
-		return result;
+		return data;
 	}
 
-	public static double[][] newtonMethod(Function<Double, Double> function, Function<Double, Double> derivative, double x0, double eps) {
-		double[][] result = new double[3][100];
-		// result[0] - x, fx, iterations
-		// result[1] - x values for graph
-		// result[2] - y values for graph
-
+	public static GraphData newtonMethod(Function<Double, Double> function, Function<Double, Double> derivative, double x0, double eps) {
+		GraphData data = new GraphData("Newton Method");
 		int maxIterations = 100; // Maximum number of iterations for safety
 
 		double x = x0;
 		double fx = function.apply(x);
 		int iterations = 0;
 
-		result[1][iterations] = x;
-		result[2][iterations] = fx;
+		data.addPoint(x, fx);
 
 		while (Math.abs(fx) > eps && iterations < maxIterations) {
 			double dfx = derivative.apply(x);
@@ -104,17 +95,15 @@ public class MethodsForNE {
 			x = x - fx / dfx;
 			fx = function.apply(x);
 
-			// Store data for graph
-			result[1][iterations] = x;
-			result[2][iterations] = fx;
+			data.addPoint(x, fx);
 		}
 
-		result[0][0] = x;
-		result[0][1] = fx;
-		result[0][2] = iterations;
+		data.setRoot(x, fx);
+		data.setIterations(iterations);
 
-		return result;
+		return data;
 	}
+
 
 	public static double findInitialApproximation(Function<Double, Double> function, Function<Double, Double> derivative, double a, double b) {
 		double fa = function.apply(a);
