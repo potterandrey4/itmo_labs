@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GraphDataEquation {
-	public List<Double> xValues;
-	public List<Double> yValues;
+	public List<Double[]> dotsValues;
 	public double rootX;
 	public double rootY;
 	public String name;
@@ -13,13 +12,11 @@ public class GraphDataEquation {
 
 	public GraphDataEquation(String name) {
 		this.name = name;
-		this.xValues = new ArrayList<>();
-		this.yValues = new ArrayList<>();
+		this.dotsValues = new ArrayList<>();
 	}
 
 	public void addPoint(double x, double y) {
-		this.xValues.add(x);
-		this.yValues.add(y);
+		this.dotsValues.add(new Double[]{x, y});
 	}
 
 	public void setRoot(double x, double y) {

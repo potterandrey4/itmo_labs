@@ -8,16 +8,16 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #2e1440;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.lab2_gui.controllers.ResultEquationController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="803.0" prefWidth="1115.0" style="-fx-background-color: #2e1440;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.lab2_gui.controllers.ResultEquationController">
     <children>
-        <AnchorPane prefHeight="96.0" prefWidth="800.0" style="-fx-background-color: #fafafa;">
+        <AnchorPane prefHeight="96.0" prefWidth="1115.0" style="-fx-background-color: #fafafa;">
             <children>
-                <Text fontSmoothingType="LCD" layoutX="256.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Дьячков Андрей P3209. Лаба 2" textAlignment="CENTER" wrappingWidth="288.44677734375">
+                <Text fontSmoothingType="LCD" layoutX="413.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Дьячков Андрей P3209. Лаба 2" textAlignment="CENTER" wrappingWidth="288.44677734375">
                     <font>
                         <Font name="Ubuntu Condensed" size="31.0" />
                     </font>
                 </Text>
-                <Button fx:id="return_btn" layoutX="712.0" layoutY="33.0" mnemonicParsing="false" onAction="#handleReturn" style="-fx-background-color: #7434eb;" text="Назад" textAlignment="CENTER" textFill="WHITE">
+                <Button fx:id="return_btn" layoutX="969.0" layoutY="33.0" mnemonicParsing="false" onAction="#handleReturn" style="-fx-background-color: #7434eb;" text="Назад" textAlignment="CENTER" textFill="WHITE">
                     <font>
                         <Font size="16.0" />
                     </font>
@@ -87,7 +87,7 @@
         <Line endX="240.0" layoutX="127.0" layoutY="270.0" startX="-100.0" stroke="#ee55d7" />
         <Line endX="240.0" layoutX="127.0" layoutY="436.0" startX="-100.0" stroke="#ee55d7" />
         <Line endX="240.0" endY="-118.0" layoutX="160.0" layoutY="228.0" startX="240.0" startY="348.0" stroke="#ee55d7" />
-        <LineChart fx:id="lineChart" layoutX="401.0" layoutY="167.0" prefHeight="354.0" prefWidth="368.0">
+        <LineChart fx:id="lineChart" layoutX="369.0" layoutY="159.0" prefHeight="640.0" prefWidth="750.0">
             <xAxis>
                 <NumberAxis label="X" />
             </xAxis>
@@ -100,7 +100,7 @@
                 <Font size="18.0" />
             </font>
         </Text>
-        <Text fx:id="isRange" fill="WHITE" layoutX="448.0" layoutY="572.0" strokeType="OUTSIDE" strokeWidth="0.0" text="[a, b] = ">
+        <Text fx:id="isRange" fill="WHITE" layoutX="137.0" layoutY="701.0" strokeType="OUTSIDE" strokeWidth="0.0" text="[a, b] = ">
             <font>
                 <Font size="18.0" />
             </font>

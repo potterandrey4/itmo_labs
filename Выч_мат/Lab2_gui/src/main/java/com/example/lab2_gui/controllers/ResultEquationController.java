@@ -17,8 +17,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class ResultEquationController {
 	@FXML
@@ -72,8 +75,8 @@ public class ResultEquationController {
 		XYChart.Series<Number, Number> functionSeries = new XYChart.Series<>();
 		functionSeries.setName("Функция");
 		double step = (b - a) / 50;
-		double coefficient = Math.abs(a+b)/2/20;
-		for (double x = a-coefficient; x <= b+coefficient; x += step) {
+		double coefficient = Math.abs(a + b) / 2 / 20;
+		for (double x = a - coefficient; x <= b + coefficient; x += step) {
 			functionSeries.getData().add(new XYChart.Data<>(x, function.apply(x)));
 			functionData.addPoint(x, function.apply(x));
 		}
@@ -83,28 +86,22 @@ public class ResultEquationController {
 		}
 
 		// График метода дихотомии
-		XYChart.Series<Number, Number> bisectionSeries = convertToSeries(bisectionMethodRoot.xValues, bisectionMethodRoot.yValues, "График дихотомии");
+		XYChart.Series<Number, Number> bisectionSeries = convertToSeries(bisectionMethodRoot.dotsValues, "График дихотомии");
 		setDataLineChart(bisectionMethodRoot.rootX, bisectionMethodRoot.rootY, bisectionSeries);
 
 		// Метод Ньютона
-		XYChart.Series<Number, Number> newtonSeries = convertToSeries(newtonMethodData.xValues, newtonMethodData.yValues, "График Ньютона");
+		XYChart.Series<Number, Number> newtonSeries = convertToSeries(newtonMethodData.dotsValues, "График Ньютона");
 		setDataLineChart(newtonMethodData.rootX, newtonMethodData.rootY, newtonSeries);
 
 		// Метод простых итераций
-		XYChart.Series<Number, Number> simpleIterSeries = convertToSeries(simpleIterRoot.xValues, simpleIterRoot.yValues, "График простых итераций");
+		XYChart.Series<Number, Number> simpleIterSeries = convertToSeries(simpleIterRoot.dotsValues, "График простых итераций");
 		setDataLineChart(simpleIterRoot.rootX, simpleIterRoot.rootY, simpleIterSeries);
 
-
-		// Добавление метода дихотомии
+		graphDataList.add(functionData);
 		graphDataList.add(bisectionMethodRoot);
-
-		// Добавление метода Ньютона
 		graphDataList.add(newtonMethodData);
-
-		// Добавление метода простых итераций
 		graphDataList.add(simpleIterRoot);
 
-		// Отправка данных в Python-скрипт
 		runPlotPy(graphDataList);
 	}
 
@@ -119,12 +116,12 @@ public class ResultEquationController {
 		}
 	}
 
-	public static XYChart.Series<Number, Number> convertToSeries(List<Double> xValues, List<Double> yValues, String name) {
+	public static XYChart.Series<Number, Number> convertToSeries(List<Double[]> dotsValues, String name) {
 		XYChart.Series<Number, Number> series = new XYChart.Series<>();
 		series.setName(name);
 
-		for (int i = 0; i < xValues.size(); i++) {
-			series.getData().add(new XYChart.Data<>(xValues.get(i), yValues.get(i)));
+		for (Double[] dotsValue : dotsValues) {
+			series.getData().add(new XYChart.Data<>(dotsValue[0], dotsValue[1]));
 		}
 		return series;
 	}
@@ -156,12 +153,22 @@ public class ResultEquationController {
 		command.add(scriptPath);
 
 		for (GraphDataEquation data : graphDataList) {
-			command.add(data.name);
-			command.add(data.xValues.toString());
-			command.add(data.yValues.toString());
-			command.add(Double.toString(data.rootX));
-			command.add(Double.toString(data.rootY));
-			command.add(Integer.toString(data.iterations));
+			if (Objects.equals(data.name, "Функция")){
+				command.add(data.name);
+				command.add("NaN");
+				command.add("NaN");
+			}
+			else {
+				command.add(data.name);
+				command.add(Double.toString(data.rootX));
+				command.add(Double.toString(data.rootY));
+			}
+			command.add("[" +
+					data.dotsValues.stream()
+							.map(Arrays::toString)
+							.collect(Collectors.joining(", "))
+					+ "]"
+			);
 		}
 
 		ProcessBuilder pb = new ProcessBuilder(command);
@@ -181,5 +188,6 @@ public class ResultEquationController {
 			e.printStackTrace();
 		}
 	}
+
 
 }

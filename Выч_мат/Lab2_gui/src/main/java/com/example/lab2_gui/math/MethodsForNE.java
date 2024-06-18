@@ -7,14 +7,14 @@ import java.util.function.Function;
 public class MethodsForNE {
 
 	public static GraphDataEquation bisectionMethod(Function<Double, Double> function, double a, double b, double eps) {
-		GraphDataEquation data = new GraphDataEquation("Bisection Method");
+		GraphDataEquation data = new GraphDataEquation("Bisection");
 		int iterations = 0;
 		double mid = (a + b) / 2;
 
 		while (Math.abs(b - a) > eps) {
 			mid = (a + b) / 2;
 			double fMid = function.apply(mid);
-			data.addPoint(mid, fMid);
+
 
 			if (Math.abs(fMid) < eps) {
 				break;
@@ -26,6 +26,7 @@ public class MethodsForNE {
 				a = mid;
 			}
 			iterations++;
+			data.addPoint(mid, function.apply(mid));
 		}
 
 		data.setRoot(mid, function.apply(mid));
@@ -35,7 +36,7 @@ public class MethodsForNE {
 	}
 
 	public static GraphDataEquation simpleIterationsMethod(Function<Double, Double> function, Function<Double, Double> derivativeFunction, double a, double b, double eps) {
-		GraphDataEquation data = new GraphDataEquation("Simple Iteration Method");
+		GraphDataEquation data = new GraphDataEquation("Simple Iteration");
 		double x_prev = (a + b) / 2;  // начальное приближение
 		double x_curr;
 		int iterations = 0;
@@ -75,14 +76,12 @@ public class MethodsForNE {
 	}
 
 	public static GraphDataEquation newtonMethod(Function<Double, Double> function, Function<Double, Double> derivative, double x0, double eps) {
-		GraphDataEquation data = new GraphDataEquation("Newton Method");
+		GraphDataEquation data = new GraphDataEquation("Newton");
 		int maxIterations = 100; // Maximum number of iterations for safety
 
 		double x = x0;
 		double fx = function.apply(x);
 		int iterations = 0;
-
-		data.addPoint(x, fx);
 
 		while (Math.abs(fx) > eps && iterations < maxIterations) {
 			double dfx = derivative.apply(x);
