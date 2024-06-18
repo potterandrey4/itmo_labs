@@ -1,6 +1,6 @@
 package com.example.lab2_gui.controllers;
 
-import com.example.lab2_gui.GraphData;
+import com.example.lab2_gui.GraphDataEquation;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,7 +17,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 
@@ -49,7 +48,7 @@ public class ResultEquationController {
 
 	DecimalFormat df = new DecimalFormat("###.#########");
 
-	public void setResultData(GraphData bisectionMethodRoot, GraphData newtonMethodData, GraphData simpleIterRoot, double a, double b, Function<Double, Double> function) {
+	public void setResultData(GraphDataEquation bisectionMethodRoot, GraphDataEquation newtonMethodData, GraphDataEquation simpleIterRoot, double a, double b, Function<Double, Double> function) {
 		dih_x.setText("x: " + df.format(bisectionMethodRoot.rootX));
 		dih_f.setText("f(x): " + df.format(bisectionMethodRoot.rootY));
 		dih_iter.setText("Итерации: " + bisectionMethodRoot.iterations);
@@ -66,17 +65,17 @@ public class ResultEquationController {
 
 		lineChart.getData().clear();
 
+		List<GraphDataEquation> graphDataList = new ArrayList<>();
+
 		// График функции
+		GraphDataEquation functionData = new GraphDataEquation("Функция");
 		XYChart.Series<Number, Number> functionSeries = new XYChart.Series<>();
 		functionSeries.setName("Функция");
 		double step = (b - a) / 50;
 		double coefficient = Math.abs(a+b)/2/20;
-		double[][] valuesGraph = new double[100][];
-		int iter = 0;
 		for (double x = a-coefficient; x <= b+coefficient; x += step) {
-			valuesGraph[iter] = new double[]{x, function.apply(x)};
 			functionSeries.getData().add(new XYChart.Data<>(x, function.apply(x)));
-			iter++;
+			functionData.addPoint(x, function.apply(x));
 		}
 		lineChart.getData().add(functionSeries);
 		for (XYChart.Data<Number, Number> data : functionSeries.getData()) {
@@ -95,7 +94,18 @@ public class ResultEquationController {
 		XYChart.Series<Number, Number> simpleIterSeries = convertToSeries(simpleIterRoot.xValues, simpleIterRoot.yValues, "График простых итераций");
 		setDataLineChart(simpleIterRoot.rootX, simpleIterRoot.rootY, simpleIterSeries);
 
-//		runPlotPy(Arrays.toString(newtonMethodData[1]), Arrays.toString(newtonMethodData[2]));
+
+		// Добавление метода дихотомии
+		graphDataList.add(bisectionMethodRoot);
+
+		// Добавление метода Ньютона
+		graphDataList.add(newtonMethodData);
+
+		// Добавление метода простых итераций
+		graphDataList.add(simpleIterRoot);
+
+		// Отправка данных в Python-скрипт
+		runPlotPy(graphDataList);
 	}
 
 	private void setDataLineChart(double xRoot, double yRoot, XYChart.Series<Number, Number> bisectionSeries) {
@@ -137,11 +147,22 @@ public class ResultEquationController {
 		}
 	}
 
-	private static void runPlotPy(String xArg, String yArg) {
+	private static void runPlotPy(List<GraphDataEquation> graphDataList) {
 		String pythonInterpreter = "./venv/bin/python";
 		String scriptPath = "/home/andrey/Документы/itmo_labs/Выч_мат/Lab2_gui/plot.py";
 
-		List<String> command = Arrays.asList(pythonInterpreter, scriptPath, xArg, yArg, "title");
+		List<String> command = new ArrayList<>();
+		command.add(pythonInterpreter);
+		command.add(scriptPath);
+
+		for (GraphDataEquation data : graphDataList) {
+			command.add(data.name);
+			command.add(data.xValues.toString());
+			command.add(data.yValues.toString());
+			command.add(Double.toString(data.rootX));
+			command.add(Double.toString(data.rootY));
+			command.add(Integer.toString(data.iterations));
+		}
 
 		ProcessBuilder pb = new ProcessBuilder(command);
 		pb.directory(new File("/home/andrey/Документы/itmo_labs/Выч_мат/Lab2_gui"));
@@ -160,4 +181,5 @@ public class ResultEquationController {
 			e.printStackTrace();
 		}
 	}
+
 }

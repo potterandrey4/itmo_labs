@@ -3,7 +3,7 @@ package com.example.lab2_gui;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GraphData {
+public class GraphDataEquation {
 	public List<Double> xValues;
 	public List<Double> yValues;
 	public double rootX;
@@ -11,7 +11,7 @@ public class GraphData {
 	public String name;
 	public int iterations;
 
-	public GraphData(String name) {
+	public GraphDataEquation(String name) {
 		this.name = name;
 		this.xValues = new ArrayList<>();
 		this.yValues = new ArrayList<>();
