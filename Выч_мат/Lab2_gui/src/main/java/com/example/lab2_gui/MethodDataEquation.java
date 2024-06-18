@@ -3,14 +3,17 @@ package com.example.lab2_gui;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GraphDataEquation {
+public class MethodDataEquation {
 	public List<Double[]> dotsValues;
 	public double rootX;
 	public double rootY;
 	public String name;
 	public int iterations;
 
-	public GraphDataEquation(String name) {
+	public double errorX;
+	public double errorY;
+
+	public MethodDataEquation(String name) {
 		this.name = name;
 		this.dotsValues = new ArrayList<>();
 	}

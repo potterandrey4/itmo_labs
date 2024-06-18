@@ -1,6 +1,6 @@
 package com.example.lab2_gui.controllers;
 
-import com.example.lab2_gui.GraphDataEquation;
+import com.example.lab2_gui.MethodDataEquation;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -51,7 +51,7 @@ public class ResultEquationController {
 
 	DecimalFormat df = new DecimalFormat("###.#########");
 
-	public void setResultData(GraphDataEquation bisectionMethodRoot, GraphDataEquation newtonMethodData, GraphDataEquation simpleIterRoot, double a, double b, Function<Double, Double> function) {
+	public void setResultData(MethodDataEquation bisectionMethodRoot, MethodDataEquation newtonMethodData, MethodDataEquation simpleIterRoot, double a, double b, Function<Double, Double> function) {
 		dih_x.setText("x: " + df.format(bisectionMethodRoot.rootX));
 		dih_f.setText("f(x): " + df.format(bisectionMethodRoot.rootY));
 		dih_iter.setText("Итерации: " + bisectionMethodRoot.iterations);
@@ -68,10 +68,10 @@ public class ResultEquationController {
 
 		lineChart.getData().clear();
 
-		List<GraphDataEquation> graphDataList = new ArrayList<>();
+		List<MethodDataEquation> graphDataList = new ArrayList<>();
 
 		// График функции
-		GraphDataEquation functionData = new GraphDataEquation("Функция");
+		MethodDataEquation functionData = new MethodDataEquation("Функция");
 		XYChart.Series<Number, Number> functionSeries = new XYChart.Series<>();
 		functionSeries.setName("Функция");
 		double step = (b - a) / 50;
@@ -144,7 +144,7 @@ public class ResultEquationController {
 		}
 	}
 
-	private static void runPlotPy(List<GraphDataEquation> graphDataList) {
+	private static void runPlotPy(List<MethodDataEquation> graphDataList) {
 		String pythonInterpreter = "./venv/bin/python";
 		String scriptPath = "/home/andrey/Документы/itmo_labs/Выч_мат/Lab2_gui/plot.py";
 
@@ -152,7 +152,7 @@ public class ResultEquationController {
 		command.add(pythonInterpreter);
 		command.add(scriptPath);
 
-		for (GraphDataEquation data : graphDataList) {
+		for (MethodDataEquation data : graphDataList) {
 			if (Objects.equals(data.name, "Функция")){
 				command.add(data.name);
 				command.add("NaN");

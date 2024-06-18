@@ -1,13 +1,13 @@
 package com.example.lab2_gui.math;
 
-import com.example.lab2_gui.GraphDataEquation;
+import com.example.lab2_gui.MethodDataEquation;
 
 import java.util.function.Function;
 
 public class MethodsForNE {
 
-	public static GraphDataEquation bisectionMethod(Function<Double, Double> function, double a, double b, double eps) {
-		GraphDataEquation data = new GraphDataEquation("Bisection");
+	public static MethodDataEquation bisectionMethod(Function<Double, Double> function, double a, double b, double eps) {
+		MethodDataEquation data = new MethodDataEquation("дихотомии");
 		int iterations = 0;
 		double mid = (a + b) / 2;
 
@@ -35,8 +35,8 @@ public class MethodsForNE {
 		return data;
 	}
 
-	public static GraphDataEquation simpleIterationsMethod(Function<Double, Double> function, Function<Double, Double> derivativeFunction, double a, double b, double eps) {
-		GraphDataEquation data = new GraphDataEquation("Simple Iteration");
+	public static MethodDataEquation simpleIterationsMethod(Function<Double, Double> function, Function<Double, Double> derivativeFunction, double a, double b, double eps) {
+		MethodDataEquation data = new MethodDataEquation("простых итераций");
 		double x_prev = (a + b) / 2;  // начальное приближение
 		double x_curr;
 		int iterations = 0;
@@ -75,8 +75,8 @@ public class MethodsForNE {
 		return data;
 	}
 
-	public static GraphDataEquation newtonMethod(Function<Double, Double> function, Function<Double, Double> derivative, double x0, double eps) {
-		GraphDataEquation data = new GraphDataEquation("Newton");
+	public static MethodDataEquation newtonMethod(Function<Double, Double> function, Function<Double, Double> derivative, double x0, double eps) {
+		MethodDataEquation data = new MethodDataEquation("Ньютона");
 		int maxIterations = 100; // Maximum number of iterations for safety
 
 		double x = x0;

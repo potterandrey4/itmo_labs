@@ -16,7 +16,6 @@ def parse_points(points_str):
 if __name__ == "__main__":
     dataArr = sys.argv
 
-
     for i in range(1, len(dataArr), 4):
         plt.figure()
         name = dataArr[i]
@@ -29,20 +28,20 @@ if __name__ == "__main__":
         if name == "Функция":
             plt.plot(x_values, y_values, label=f'{name}', color='black')
         else:
-            plt.plot(x_values, y_values, label=f'{name} method')
-            plt.scatter(rootX, rootY, marker='o', label=f'Root {name} method')
+            plt.plot(x_values, y_values, label=f'Метод {name}')
+            plt.scatter(rootX, rootY, marker='o', label=f'Корень метода {name}')
 
-            if name != "Simple Iteration":
-                # print(name)
-                # print(rootX, rootY)
-                # print(x_values)
-                # print(y_values)
-                continue
+            # if name != "простых итераций":
+            #     # print(name)
+            #     # print(rootX, rootY)
+            #     # print(x_values)
+            #     # print(y_values)
+            #     continue
 
         plt.xlabel('X')
         plt.ylabel('Y')
-        plt.title(f'График {name} метода')
+        plt.title(f'График метода {name}')
         plt.legend()
         plt.grid(True)
 
-        plt.savefig(f'plots/plot_{name}.png')
+        plt.savefig(f'plots/график метода {name}.png')

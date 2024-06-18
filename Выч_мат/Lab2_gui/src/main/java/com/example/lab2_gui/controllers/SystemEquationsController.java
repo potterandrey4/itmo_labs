@@ -1,5 +1,7 @@
 package com.example.lab2_gui.controllers;
 
+import com.example.lab2_gui.MethodDataEquation;
+import com.example.lab2_gui.MethodDataSystem;
 import com.example.lab2_gui.math.MethodsForSystemsNE;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -91,26 +93,29 @@ public class SystemEquationsController {
 			}
 
 			String selectedId = getSelectedSystemId();
-
-			double[] simpleIterationsRoot;
+			int choice;
+			MethodDataSystem simpleIterationsRoot;
 
 			switch (selectedId) {
 				case "choiceSystem1":
-					simpleIterationsRoot = MethodsForSystemsNE.methodOfSimpleIterations(1, xValue, yValue, epsValue);
+					choice = 1;
+					simpleIterationsRoot = MethodsForSystemsNE.methodOfSimpleIterations(choice, xValue, yValue, epsValue);
 					break;
 
 				case "choiceSystem2":
-					simpleIterationsRoot = MethodsForSystemsNE.methodOfSimpleIterations(2, xValue, yValue, epsValue);
+					choice = 2;
+					simpleIterationsRoot = MethodsForSystemsNE.methodOfSimpleIterations(choice, xValue, yValue, epsValue);
 					break;
 				default:
 					throw new IllegalStateException("мяу");
 			}
 
+			// Отправка данных на новую страницу
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/lab2_gui/views/result-systemEquations-view.fxml"));
 			Parent root = loader.load();
 
 			ResultSystemController resultController = loader.getController();
-			resultController.setResultData(simpleIterationsRoot[1], simpleIterationsRoot[2], 0, 0, simpleIterationsRoot[0]);
+			resultController.setResultData(simpleIterationsRoot, choice);
 
 			Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
 			stage.setScene(new Scene(root));
