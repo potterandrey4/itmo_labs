@@ -5,38 +5,30 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0"
-            prefWidth="800.0" style="-fx-background-color: #2e1440;" xmlns="http://javafx.com/javafx/17.0.6"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.lab2_gui.controllers.InitChoiceController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="803.0" prefWidth="1115.0" style="-fx-background-color: #2e1440;" xmlns="http://javafx.com/javafx/17.0.6" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.lab2_gui.controllers.InitChoiceController">
     <children>
-        <AnchorPane prefHeight="96.0" prefWidth="800.0" style="-fx-background-color: #fafafa;">
+        <AnchorPane prefHeight="96.0" prefWidth="1115.0" style="-fx-background-color: #fafafa;">
             <children>
-                <Text fontSmoothingType="LCD" layoutX="256.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                      text="Дьячков Андрей P3209. Лаба 2" textAlignment="CENTER" wrappingWidth="288.44677734375">
+                <Text fontSmoothingType="LCD" layoutX="413.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Дьячков Андрей P3209 Лаба 2" textAlignment="CENTER" wrappingWidth="288.44677734375">
                     <font>
-                        <Font name="Ubuntu Condensed" size="31.0"/>
+                        <Font name="Ubuntu Condensed" size="31.0" />
                     </font>
                 </Text>
             </children>
         </AnchorPane>
-        <Text fill="WHITE" layoutX="218.0" layoutY="216.0" strokeType="OUTSIDE" strokeWidth="0.0"
-              text="Выберете режим работы" textAlignment="CENTER" wrappingWidth="364.2470703125">
+        <Text fill="WHITE" layoutX="356.0" layoutY="305.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Выберете режим работы" textAlignment="CENTER" wrappingWidth="403.2470703125">
             <font>
-                <Font size="27.0"/>
+                <Font size="36.0" />
             </font>
         </Text>
-        <Button fx:id="choice1" layoutX="110.0" layoutY="300.0" mnemonicParsing="false" prefHeight="70.0"
-                prefWidth="240.0" text="Нелинейные уравнения" textAlignment="CENTER" textOverrun="CENTER_ELLIPSIS"
-                onAction="#handleChoice1">
+        <Button fx:id="choice1" layoutX="182.0" layoutY="462.0" mnemonicParsing="false" onAction="#handleChoice1" prefHeight="70.0" prefWidth="320.0" text="Нелинейные уравнения" textAlignment="CENTER" textOverrun="CENTER_ELLIPSIS">
             <font>
-                <Font size="16.0"/>
+                <Font size="20.0" />
             </font>
         </Button>
-        <Button fx:id="choice2" layoutX="462.0" layoutY="300.0" mnemonicParsing="false" prefHeight="70.0"
-                prefWidth="240.0" text="Системы нелинейных уравнений" textAlignment="CENTER" wrapText="true"
-                onAction="#handleChoice2">
+        <Button fx:id="choice2" layoutX="614.0" layoutY="462.0" mnemonicParsing="false" onAction="#handleChoice2" prefHeight="70.0" prefWidth="320.0" text="Системы нелинейных уравнений" textAlignment="CENTER" wrapText="true">
             <font>
-                <Font size="16.0"/>
+                <Font size="20.0" />
             </font>
         </Button>
     </children>

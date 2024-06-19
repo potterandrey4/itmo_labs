@@ -22,12 +22,15 @@ public class MethodsForSystemsNE {
                 }
                 x = xNew;
                 y = yNew;
-				data.addPoint(x, y);
 
 				if (iterations >= maxIterations) {
 					break;
 				}
             }
+			data.setRoot(xNew, yNew);
+			data.setErrorX(5.794 - xNew);
+			data.setErrorY(0.794 - yNew);
+
         } else {
 			while (true) {
 				xNew = FunctionsSystemsNE.system2EquationX(y);
@@ -39,15 +42,16 @@ public class MethodsForSystemsNE {
 				}
 				x = xNew;
 				y = yNew;
-				data.addPoint(x, y);
 
 				if (iterations >= maxIterations) {
 					break;
 				}
 			}
-        }
 
-		data.setRoot(xNew, yNew);
+			data.setRoot(xNew, yNew);
+			data.setErrorX(0.6 - xNew);
+			data.setErrorY(3.2 - yNew);
+		}
 		data.setIterations(iterations);
 
 		return data;

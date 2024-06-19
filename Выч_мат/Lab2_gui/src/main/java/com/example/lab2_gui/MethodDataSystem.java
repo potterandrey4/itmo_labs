@@ -4,10 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MethodDataSystem {
-	public List<Double[]> dotsValuesSystem1;
-	public List<Double[]> dotsValuesSystem2;
-
-	public List<Double[]> dotsSimpleIterations;
 	public double rootX;
 	public double rootY;
 	public String name;
@@ -17,21 +13,6 @@ public class MethodDataSystem {
 
 	public MethodDataSystem(String name) {
 		this.name = name;
-		this.dotsValuesSystem1 = new ArrayList<>();
-		this.dotsValuesSystem2 = new ArrayList<>();
-		this.dotsSimpleIterations = new ArrayList<>();
-	}
-
-	public void addPointSystem1(double x, double y) {
-		this.dotsValuesSystem1.add(new Double[]{x, y});
-	}
-
-	public void addPointSystem2(double x, double y) {
-		this.dotsValuesSystem2.add(new Double[]{x, y});
-	}
-
-	public void addPoint(double x, double y) {
-		this.dotsSimpleIterations.add(new Double[]{x, y});
 	}
 
 	public void setRoot(double x, double y) {

@@ -7,68 +7,61 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0"
-            prefWidth="800.0" style="-fx-background-color: #2e1440;" xmlns="http://javafx.com/javafx/17.0.6"
-            xmlns:fx="http://javafx.com/fxml/1"
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="803.0" prefWidth="1115.0"
+            style="-fx-background-color: #2e1440;" xmlns="http://javafx.com/javafx/17.0.6" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.example.lab2_gui.controllers.SystemEquationsController">
     <children>
-        <AnchorPane prefHeight="96.0" prefWidth="800.0" style="-fx-background-color: #fafafa;">
+        <AnchorPane prefHeight="96.0" prefWidth="1115.0" style="-fx-background-color: #fafafa;">
             <children>
-                <Text fontSmoothingType="LCD" layoutX="256.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                      text="Дьячков Андрей P3209. Лаба 2" textAlignment="CENTER" wrappingWidth="288.44677734375">
+                <Text fontSmoothingType="LCD" layoutX="413.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Дьячков Андрей P3209 Лаба 2" textAlignment="CENTER" wrappingWidth="288.44677734375">
                     <font>
-                        <Font name="Ubuntu Condensed" size="31.0"/>
+                        <Font name="Ubuntu Condensed" size="31.0" />
                     </font>
                 </Text>
-                <Button fx:id="return_btn" layoutX="712.0" layoutY="33.0" mnemonicParsing="false"
-                        style="-fx-background-color: #7434eb;" text="Назад" textAlignment="CENTER" textFill="WHITE"
-                        onAction="#handleReturn">
+                <Button fx:id="return_btn" layoutX="969.0" layoutY="33.0" mnemonicParsing="false" onAction="#handleReturn" style="-fx-background-color: #7434eb;" text="Назад" textAlignment="CENTER" textFill="WHITE">
                     <font>
-                        <Font size="16.0"/>
+                        <Font size="16.0" />
                     </font>
                 </Button>
             </children>
         </AnchorPane>
-        <Text fill="WHITE" layoutX="300.0" layoutY="158.0" strokeType="OUTSIDE" strokeWidth="0.0"
-              text="Выберете уравнение" textAlignment="CENTER">
+        <Text fill="WHITE" layoutX="380.0" layoutY="160.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Выберете систему" textAlignment="CENTER" wrappingWidth="357.6171875">
             <font>
-                <Font size="18.0"/>
+                <Font size="30.0" />
             </font>
         </Text>
-        <RadioButton fx:id="choiceSystem1" layoutX="236.0" layoutY="186.0" mnemonicParsing="false"
-                     text="x^3 - 2.561x^2 - 1.325x + 4.395 = 0" textAlignment="CENTER" textFill="WHITE">
+        <RadioButton fx:id="choiceSystem1" layoutX="440.0" layoutY="203.0" mnemonicParsing="false" text="y - x + 5 = 0&#10;y + cos(x-2) = 0" textAlignment="CENTER" textFill="WHITE">
             <font>
-                <Font name="DejaVuMathTeXGyre-Regular" size="16.0"/>
+                <Font name="MathJax_AMS-Regular" size="24.0" />
             </font>
         </RadioButton>
-        <RadioButton fx:id="choiceSystem2" layoutX="236.0" layoutY="322.0" mnemonicParsing="false"
-                     text="-1.8x^3 - 2.94x^2 + 10.37x + 5.38 = 0" textAlignment="CENTER" textFill="WHITE">
+        <RadioButton fx:id="choiceSystem2" layoutX="442.0" layoutY="324.0" mnemonicParsing="false" text="x/3 + 3 - y = 0&#10;1 + x - y/2 = 0" textAlignment="CENTER" textFill="WHITE">
             <font>
-                <Font name="DejaVuMathTeXGyre-Regular" size="16.0"/>
+                <Font name="MathJax_AMS-Regular" size="24.0" />
             </font>
         </RadioButton>
-        <Text fill="WHITE" layoutX="155.0" layoutY="396.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Введите eps"
-              textAlignment="CENTER">
+        <Text fill="WHITE" layoutX="292.0" layoutY="484.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Введите eps" textAlignment="CENTER">
             <font>
-                <Font size="18.0"/>
+                <Font size="18.0" />
             </font>
         </Text>
 
-        <Text fill="WHITE" layoutX="352.0" layoutY="395.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Введите x">
+        <Text fill="WHITE" layoutX="508.0" layoutY="485.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Введите x">
             <font>
-                <Font size="18.0"/>
+                <Font size="18.0" />
             </font>
         </Text>
-        <Text fill="WHITE" layoutX="544.0" layoutY="395.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Введите y">
+        <Text fill="WHITE" layoutX="719.0" layoutY="484.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Введите y">
             <font>
-                <Font size="18.0"/>
+                <Font size="18.0" />
             </font>
         </Text>
-        <TextField fx:id="eps" layoutX="155.0" layoutY="419.0" maxWidth="300.0" prefHeight="24.0"
-                   prefWidth="117.0"/>
-        <TextField fx:id="x" layoutX="341.0" layoutY="419.0" maxWidth="300.0" prefHeight="24.0" prefWidth="117.0"/>
-        <TextField fx:id="y" layoutX="534.0" layoutY="419.0" maxWidth="300.0" prefHeight="24.0" prefWidth="117.0"/>
-        <Button layoutX="344.0" layoutY="494.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="111.0"
-                text="Вычислить" onAction="#handleCalculate"/>
+        <TextField fx:id="eps" layoutX="273.0" layoutY="509.0" maxWidth="300.0" prefHeight="41.0" prefWidth="155.0" />
+        <TextField layoutX="482.0" layoutY="509.0" maxWidth="300.0" prefHeight="41.0" prefWidth="155.0" fx:id="x" />
+        <TextField fx:id="y" layoutX="690.0" layoutY="509.0" maxWidth="300.0" prefHeight="41.0" prefWidth="155.0" />
+        <Button layoutX="479.0" layoutY="619.0" mnemonicParsing="false" onAction="#handleCalculate" prefHeight="41.0" prefWidth="155.0" text="Вычислить" textAlignment="CENTER" textFill="#050505a8">
+         <font>
+            <Font size="21.0" />
+         </font></Button>
     </children>
 </AnchorPane>

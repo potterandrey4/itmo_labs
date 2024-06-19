@@ -1,6 +1,5 @@
 package com.example.lab2_gui.controllers;
 
-import com.example.lab2_gui.MethodDataEquation;
 import com.example.lab2_gui.MethodDataSystem;
 import com.example.lab2_gui.math.MethodsForSystemsNE;
 import javafx.event.ActionEvent;
