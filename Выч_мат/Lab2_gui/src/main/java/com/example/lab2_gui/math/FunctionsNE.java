@@ -27,27 +27,31 @@ public class FunctionsNE {
 	}
 
 	public static double function3(double x) {
-		return -2.4 * Math.pow(x, 3) + 1.27 * Math.pow(x, 2) - 8.63 * x + 2.31;
+		return Math.pow(Math.sin(x), 3);
 	}
 
 	public static double derivativeFunction3(double x) {
-		return -7.2 * Math.pow(x, 2) + 2.54 * x - 8.63;
+		return Math.pow(Math.sin(x), 2);
 	}
 
 	public static double derivativeDerivativeFunction3(double x) {
-		return -14.4 * x + 2.54;
+		return Math.sin(x);
 	}
 
 	public static double function4(double x) {
-		return -1.8 * Math.pow(x, 3) - 2.94 * Math.pow(x, 2) + 10.37 * x + 5.38;
+		return Math.abs(Math.pow(x, 3) - 3 * x);
 	}
 
 	public static double derivativeFunction4(double x) {
-		return -5.4 * Math.pow(x, 2) - 5.88 * x + 10.37;
+		if (x >= 0) {
+			return 3 * Math.pow(x, 2);
+		} else {
+			return -3 * Math.pow(x, 2);
+		}
 	}
 
 	public static double derivativeDerivativeFunction4(double x) {
-		return -10.8 * x - 5.88;
+		return 6 * x;
 	}
 
 }

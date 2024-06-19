@@ -51,18 +51,33 @@ public class ResultEquationController {
 
 	DecimalFormat df = new DecimalFormat("###.#########");
 
-	public void setResultData(MethodDataEquation bisectionMethodRoot, MethodDataEquation newtonMethodData, MethodDataEquation simpleIterRoot, double a, double b, Function<Double, Double> function) {
-		dih_x.setText("x: " + df.format(bisectionMethodRoot.rootX));
-		dih_f.setText("f(x): " + df.format(bisectionMethodRoot.rootY));
-		dih_iter.setText("Итерации: " + bisectionMethodRoot.iterations);
+	private String checkIsTrue(double x, double a, double b, double eps) {
+		if ( (Math.abs(b - x) <= eps || Math.abs(x - a) <= eps) || ( x > b || x < a)) {
+			return "не найдено";
+		}
+		return df.format(x);
+	}
 
-		newt_x.setText("x: " + df.format(newtonMethodData.rootX));
-		newt_f.setText("f(x): " + df.format(newtonMethodData.rootY));
+	private String printIsTrue(double fx, double x, double a, double b, double eps) {
+		if (checkIsTrue(x, a, b, eps).equals("не найдено")) {
+			return "не найдено";
+		}
+		return df.format(fx);
+	}
+
+	public void setResultData(MethodDataEquation bisectionMethodData, MethodDataEquation newtonMethodData, MethodDataEquation simpleIterData, double a, double b, double eps, Function<Double, Double> function) {
+		printIsTrue(bisectionMethodData.rootY, bisectionMethodData.rootX, a, b, eps);
+		dih_x.setText("x: " + checkIsTrue(bisectionMethodData.rootX, a, b, eps));
+		dih_f.setText("f(x): " + printIsTrue(bisectionMethodData.rootY, bisectionMethodData.rootX, a, b, eps));
+		dih_iter.setText("Итерации: " + bisectionMethodData.iterations);
+
+		newt_x.setText("x: " + checkIsTrue(newtonMethodData.rootX, a, b, eps));
+		newt_f.setText("f(x): " + printIsTrue(newtonMethodData.rootY, newtonMethodData.rootX, a, b, eps));
 		newt_iter.setText("Итерации: " + newtonMethodData.iterations);
 
-		simple_x.setText("x: " + df.format(simpleIterRoot.rootX));
-		simple_f.setText("f(x): " + df.format(simpleIterRoot.rootY));
-		simple_iter.setText("Итерации: " + simpleIterRoot.iterations);
+		simple_x.setText("x: " + checkIsTrue(simpleIterData.rootX, a, b, eps));
+		simple_f.setText("f(x): " + printIsTrue(simpleIterData.rootY, simpleIterData.rootX, a, b, eps));
+		simple_iter.setText("Итерации: " + simpleIterData.iterations);
 
 		ab.setText("[a; b] = [" + a + "; " + b + "]");
 
@@ -86,21 +101,21 @@ public class ResultEquationController {
 		}
 
 		// График метода дихотомии
-		XYChart.Series<Number, Number> bisectionSeries = convertToSeries(bisectionMethodRoot.dotsValues, "График дихотомии");
-		setDataLineChart(bisectionMethodRoot.rootX, bisectionMethodRoot.rootY, bisectionSeries);
+		XYChart.Series<Number, Number> bisectionSeries = convertToSeries(bisectionMethodData.dotsValues, "График дихотомии");
+		setDataLineChart(bisectionMethodData.rootX, bisectionMethodData.rootY, bisectionSeries);
 
 		// Метод Ньютона
 		XYChart.Series<Number, Number> newtonSeries = convertToSeries(newtonMethodData.dotsValues, "График Ньютона");
 		setDataLineChart(newtonMethodData.rootX, newtonMethodData.rootY, newtonSeries);
 
 		// Метод простых итераций
-		XYChart.Series<Number, Number> simpleIterSeries = convertToSeries(simpleIterRoot.dotsValues, "График простых итераций");
-		setDataLineChart(simpleIterRoot.rootX, simpleIterRoot.rootY, simpleIterSeries);
+		XYChart.Series<Number, Number> simpleIterSeries = convertToSeries(simpleIterData.dotsValues, "График простых итераций");
+		setDataLineChart(simpleIterData.rootX, simpleIterData.rootY, simpleIterSeries);
 
 		graphDataList.add(functionData);
-		graphDataList.add(bisectionMethodRoot);
+		graphDataList.add(bisectionMethodData);
 		graphDataList.add(newtonMethodData);
-		graphDataList.add(simpleIterRoot);
+		graphDataList.add(simpleIterData);
 
 		runPlotPy(graphDataList);
 	}

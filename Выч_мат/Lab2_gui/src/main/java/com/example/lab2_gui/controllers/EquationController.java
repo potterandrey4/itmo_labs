@@ -156,7 +156,7 @@ public class EquationController {
 			Parent root = loader.load();
 
 			ResultEquationController resultController = loader.getController();
-			resultController.setResultData(bisectionMethodRoot, newtonMethodRoot, simpleIterRoot, aValue, bValue, function);
+			resultController.setResultData(bisectionMethodRoot, newtonMethodRoot, simpleIterRoot, aValue, bValue, epsValue, function);
 
 			Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
 			stage.setScene(new Scene(root));
