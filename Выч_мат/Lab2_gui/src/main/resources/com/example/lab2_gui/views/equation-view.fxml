@@ -38,12 +38,12 @@
                 <Font name="DejaVuMathTeXGyre-Regular" size="22.0" />
             </font>
         </RadioButton>
-        <RadioButton fx:id="choiceEquation3" layoutX="337.0" layoutY="325.0" mnemonicParsing="false" text="-2.4𝘟³ + 1.27𝘟² - 8.63𝘟 + 2.31 = 0" textAlignment="CENTER" textFill="WHITE">
+        <RadioButton fx:id="choiceEquation3" layoutX="337.0" layoutY="325.0" mnemonicParsing="false" text="sin(𝘟)³ = 0" textAlignment="CENTER" textFill="WHITE">
             <font>
                 <Font name="DejaVuMathTeXGyre-Regular" size="22.0" />
             </font>
         </RadioButton>
-        <RadioButton fx:id="choiceEquation4" layoutX="336.0" layoutY="387.0" mnemonicParsing="false" text="-1.8𝘟³ - 2.94𝘟² + 10.37x + 5.38 = 0" textAlignment="CENTER" textFill="WHITE">
+        <RadioButton fx:id="choiceEquation4" layoutX="336.0" layoutY="387.0" mnemonicParsing="false" text="|𝘟³ - 3𝘟| = 0" textAlignment="CENTER" textFill="WHITE">
             <font>
                 <Font name="DejaVuMathTeXGyre-Regular" size="22.0" />
             </font>
