@@ -100,10 +100,5 @@
                 <Font size="18.0" />
             </font>
         </Text>
-        <Text fx:id="isRange" fill="WHITE" layoutX="137.0" layoutY="701.0" strokeType="OUTSIDE" strokeWidth="0.0" text="[a, b] = ">
-            <font>
-                <Font size="18.0" />
-            </font>
-        </Text>
     </children>
 </AnchorPane>
