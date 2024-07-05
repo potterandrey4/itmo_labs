@@ -1,21 +1,20 @@
-/АЯ/
-/Физика/
+/Algorithms/
+/English/
+/Physics/
 /Отчёты/
 /НЕ_ДЛЯ_ГИТА/
-/Алгосы/
-/Теор. вер./
 .gitignore
 
-/ОПИ/lab3
-/ОПИ/lab3_working_copy/build/
-/ОПИ/lab3_working_copy/tests/
-/ОПИ/lab3_working_copy/.idea/
-/ОПИ/lab3_working_copy/.svn/
+/MISPI/lab3
+/MISPI/lab3_working_copy/build/
+/MISPI/lab3_working_copy/tests/
+/MISPI/lab3_working_copy/.idea/
+/MISPI/lab3_working_copy/.svn/
 
-/Веб/lab3/.idea/
-/Веб/lab3/.gitgnore
+/Web/lab3/.idea/
+/Web/lab3/.gitgnore
 
-/Веб/lab4/.gitgnore
-/Веб/lab4/mvnw.cmd
-/Веб/lab4/mvnw
-/Веб/lab4/.mvn/wrapper/
+/Web/lab4/.gitgnore
+/Web/lab4/mvnw.cmd
+/Web/lab4/mvnw
+/Web/lab4/.mvn/wrapper/
