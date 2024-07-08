@@ -11,7 +11,7 @@
     <children>
         <AnchorPane prefHeight="96.0" prefWidth="1115.0" style="-fx-background-color: #fafafa;">
             <children>
-                <Text fontSmoothingType="LCD" layoutX="413.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Дьячков Андрей P3209 Лаба 2" textAlignment="CENTER" wrappingWidth="288.44677734375">
+                <Text fontSmoothingType="LCD" layoutX="413.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Дьячков Андрей P3209 Лаба 4" textAlignment="CENTER" wrappingWidth="288.44677734375">
                     <font>
                         <Font name="Ubuntu Condensed" size="31.0" />
                     </font>
@@ -66,9 +66,5 @@
         <TextField fx:id="eps" layoutX="248.0" layoutY="558.0" maxWidth="300.0" prefHeight="41.0" prefWidth="155.0" />
         <TextField fx:id="a" layoutX="469.0" layoutY="558.0" maxWidth="300.0" prefHeight="41.0" prefWidth="155.0" />
         <TextField fx:id="b" layoutX="694.0" layoutY="558.0" maxWidth="300.0" prefHeight="41.0" prefWidth="155.0" />
-        <Button layoutX="469.0" layoutY="643.0" mnemonicParsing="false" onAction="#handleCalculate" prefHeight="41.0" prefWidth="155.0" text="Вычислить">
-         <font>
-            <Font size="21.0" />
-         </font></Button>
     </children>
 </AnchorPane>

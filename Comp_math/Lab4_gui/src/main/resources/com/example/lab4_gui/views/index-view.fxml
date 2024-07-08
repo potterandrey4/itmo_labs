@@ -11,12 +11,12 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="803.0" prefWidth="1115.0" style="-fx-background-color: #2e1440;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.lab4_gui.controllers.InputController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="870.0" prefWidth="1303.0" style="-fx-background-color: #2e1440;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.lab4_gui.controllers.InputController">
     <children>
         <!-- Текстовое описание -->
-        <AnchorPane prefHeight="96.0" prefWidth="1115.0" style="-fx-background-color: #fafafa;">
+        <AnchorPane prefHeight="96.0" prefWidth="1303.0" style="-fx-background-color: #fafafa;">
             <children>
-                <Text fontSmoothingType="LCD" layoutX="413.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Дьячков Андрей P3209 Лаба 2" textAlignment="CENTER" wrappingWidth="288.44677734375">
+                <Text fontSmoothingType="LCD" layoutX="507.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Дьячков Андрей P3209 Лаба 4" textAlignment="CENTER" wrappingWidth="288.44677734375">
                     <font>
                         <Font name="Ubuntu Condensed" size="31.0" />
                     </font>
@@ -25,13 +25,14 @@
         </AnchorPane>
 
         <!-- Ввод данных -->
-        <VBox alignment="CENTER" layoutX="116.0" layoutY="155.0" spacing="10">
-            <TextField promptText="Введите x" fx:id="xInput" />
-            <TextField fx:id="yInput" promptText="Введите y" />
-            <Button fx:id="addPointButton" onAction="#addPoint" text="Добавить точку" />
+        <VBox alignment="CENTER" layoutX="400.0" layoutY="178.0" prefHeight="132.0" prefWidth="135.0" spacing="10">
+            <TextField alignment="TOP_CENTER" prefHeight="30.0" prefWidth="130.0" promptText="Введите x" fx:id="xInput" />
+            <TextField fx:id="yInput" alignment="TOP_CENTER" prefHeight="30.0" prefWidth="130.0" promptText="Введите y" />
+            <Button fx:id="addPointButton" onAction="#addPoint" prefHeight="30.0" prefWidth="130.0" text="Добавить точку" />
+            <Button onAction="#clearAll" prefHeight="30.0" prefWidth="130.0" text="Очистить данные" />
         </VBox>
         <!-- Таблица данных -->
-        <TableView fx:id="dataTable" layoutX="50.0" layoutY="353.0" prefHeight="327.0" prefWidth="282.0">
+        <TableView fx:id="dataTable" layoutX="327.0" layoutY="365.0" prefHeight="327.0" prefWidth="282.0">
             <columns>
                 <TableColumn prefWidth="140.79999542236328" text="X" fx:id="xColumn" />
                 <TableColumn fx:id="yColumn" prefWidth="140.79998779296875" text="Y" />
@@ -39,7 +40,7 @@
         </TableView>
 
         <!-- График -->
-        <LineChart fx:id="lineChart" layoutX="379.0" layoutY="130.0" prefHeight="608.0" prefWidth="699.0">
+        <LineChart fx:id="lineChart" layoutX="609.0" layoutY="197.0" prefHeight="608.0" prefWidth="699.0">
             <xAxis>
                 <NumberAxis label="X" />
             </xAxis>
@@ -47,5 +48,23 @@
                 <NumberAxis label="Y" />
             </yAxis>
         </LineChart>
+
+        <Button layoutX="391.0" layoutY="754.0" mnemonicParsing="false" onAction="#handleCalculate" prefHeight="41.0" prefWidth="155.0" text="Вычислить">
+            <font>
+                <Font size="21.0" />
+            </font>
+        </Button>
+
+        <Text fill="WHITE" fontSmoothingType="LCD" layoutX="24.0" layoutY="254.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Заполнить псведослучайными значениями" textAlignment="CENTER" wrappingWidth="288.44677734375">
+            <font>
+                <Font size="24.0" />
+            </font>
+        </Text>
+        <Button fx:id="line" layoutX="100.0" layoutY="338.0" onAction="#fillTable" prefHeight="30.0" prefWidth="135.0" text="Линейная" />
+        <Button fx:id="polinom_2" layoutX="100.0" layoutY="391.0" onAction="#fillTable" prefHeight="30.0" prefWidth="135.0" text="Полином 2й ст." />
+        <Button fx:id="polinom_3" layoutX="100.0" layoutY="446.0" onAction="#fillTable" prefHeight="30.0" prefWidth="135.0" text="Полином 3й ст." />
+        <Button fx:id="exponenta" layoutX="100.0" layoutY="501.0" onAction="#fillTable" text="Экспоненциальная" />
+        <Button fx:id="logarifm" layoutX="100.0" layoutY="554.0" onAction="#fillTable" prefHeight="30.0" prefWidth="135.0" text="Логарифмическая" />
+        <Button fx:id="degree" layoutX="100.0" layoutY="607.0" onAction="#fillTable" prefHeight="30.0" prefWidth="135.0" text="Степенная" />
     </children>
 </AnchorPane>

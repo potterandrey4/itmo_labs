@@ -1,20 +1,5 @@
 package com.example.lab4_gui.controllers;
 
-import java.io.IOException;
-import java.util.function.Function;
-import java.util.function.UnaryOperator;
-
-import com.example.lab4_gui.MethodDataEquation;
-import com.example.lab4_gui.math.FunctionsNE;
-import com.example.lab4_gui.math.MethodsForNE;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.stage.Stage;
-
 public class ResultController {
 
 //	@FXML
