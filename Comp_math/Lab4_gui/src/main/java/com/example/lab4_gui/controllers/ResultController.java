@@ -1,6 +1,8 @@
 package com.example.lab4_gui.controllers;
 
-import com.example.lab4_gui.DataBean;
+import com.example.lab4_gui.beans.DataPointBean;
+import com.example.lab4_gui.beans.DataBean;
+import com.example.lab4_gui.beans.FunctionBean;
 import com.example.lab4_gui.math.CalculateData;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,17 +18,18 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.Arrays;
+
+import static java.lang.Double.NaN;
 
 public class ResultController {
     @FXML
-    public TableColumn<DataPoint, Double> columnX, columnY, columnYBest, columnEBest;
+    private TableView<FunctionBean> general_table;
     @FXML
-    public TableColumn<FunctionData, String> columnFunctionName, columnCoeffs, columnMSE;
+    public TableColumn<FunctionBean, String> columnFunctionName, a, b, c, d, columnMSE;
     @FXML
-    private TableView<FunctionData> general_table;
+    private TableView<DataPointBean> best_table;
     @FXML
-    private TableView<DataPoint> dataTable;
+    public TableColumn<DataPointBean, String> columnX, columnY, columnYBest, columnEBest;
     @FXML
     private LineChart<Number, Number> lineChart;
     @FXML
@@ -47,32 +50,27 @@ public class ResultController {
         this.yArray = yArray;
     }
 
-    @FXML
-    void initialize() {
-        // Ничего не делаем в initialize, так как данные могут быть еще не установлены
-    }
-
     public void initializeData() {
-        if (xArray == null || yArray == null) {
-            throw new IllegalStateException("xArray и yArray должны быть установлены перед инициализацией данных.");
-        }
-
         data = CalculateData.apply(xArray, yArray);
+        lineChart.getData().clear();
 
         // Установить значения для колонок general_table
         columnFunctionName.setCellValueFactory(new PropertyValueFactory<>("functionName"));
-        columnCoeffs.setCellValueFactory(new PropertyValueFactory<>("coeffs"));
+        a.setCellValueFactory(new PropertyValueFactory<>("a"));
+        b.setCellValueFactory(new PropertyValueFactory<>("b"));
+        c.setCellValueFactory(new PropertyValueFactory<>("c"));
+        d.setCellValueFactory(new PropertyValueFactory<>("d"));
         columnMSE.setCellValueFactory(new PropertyValueFactory<>("mse"));
 
         // Заполнение general_table
         general_table.getItems().clear();
         general_table.getItems().addAll(
-                new FunctionData("Линейная", data.getCoeffsLinear(), data.getMseLinear()),
-                new FunctionData("Квадратичная", data.getQuadCoeffs(), data.getMseQuad()),
-                new FunctionData("Кубическая", data.getCubicCoeffs(), data.getMseCubic()),
-                new FunctionData("Экспоненциальная", data.getExpCoeffs(), data.getMseExp()),
-                new FunctionData("Логарифмическая", data.getLogCoeffs(), data.getMseLog()),
-                new FunctionData("Степенная", data.getPowerCoeffs(), data.getMsePower())
+                new FunctionBean("Линейная", data.getCoeffsLinear(), data.getMseLinear()),
+                new FunctionBean("Квадратичная", data.getQuadCoeffs(), data.getMseQuad()),
+                new FunctionBean("Кубическая", data.getCubicCoeffs(), data.getMseCubic()),
+                new FunctionBean("Экспоненциальная", data.getExpCoeffs(), data.getMseExp()),
+                new FunctionBean("Логарифмическая", data.getLogCoeffs(), data.getMseLog()),
+                new FunctionBean("Степенная", data.getPowerCoeffs(), data.getMsePower())
         );
 
         // Установить значения для колонок dataTable
@@ -82,80 +80,83 @@ public class ResultController {
         columnEBest.setCellValueFactory(new PropertyValueFactory<>("eBest"));
 
         // Заполнение dataTable
-        dataTable.getItems().clear();
+        best_table.getItems().clear();
         for (int i = 0; i < xArray.length; i++) {
-            dataTable.getItems().add(new DataPoint(xArray[i], yArray[i], data.getYBest()[i], data.getEBest()[i]));
+            best_table.getItems().add(new DataPointBean(xArray[i], yArray[i], data.getYBest()[i], data.getEBest()[i]));
         }
-
-        // Заполнение графика lineChart
-        XYChart.Series<Number, Number> series = new XYChart.Series<>();
-        for (int i = 0; i < xArray.length; i++) {
-            series.getData().add(new XYChart.Data<>(xArray[i], data.getYBest()[i]));
-        }
-        lineChart.getData().clear();
-        lineChart.getData().add(series);
 
         // Заполнение текстовых полей
         coeff_deter.setText(String.format("%.3f", data.getR2Linear()));
         text_coef_deter.setText(data.getTextR2());
         title_aprox_func.setText(data.getFunctionBest());
         val_pirson.setText(String.format("%.3f", data.getRPearsonLinear()));
+
+        // Заполнение графика lineChart
+//        addSeries("Лучшая функция", xArray, data.getYBest());
+//        addSeries("Линейная функция", xArray, data.getYLinear());
+//        addSeries("Квадратичная функция", xArray, data.getYQuad());
+//        addSeries("Кубическая функция", xArray, data.getYCubic());
+//        addSeries("Экспоненциальная функция", xArray, data.getYExp());
+//        addSeries("Логарифмическая функция", xArray, data.getYLog());
+//        addSeries("Степенная функция", xArray, data.getYPower());
+
+        String bestFunctionName = data.getFunctionBest();
+        switch (bestFunctionName) {
+            case "Линейная аппроксимация":
+                addSeries("Лучшая (Линейная) функция", xArray, data.getYLinear());
+                break;
+            case "Квадратичная аппроксимация":
+                addSeries("Лучшая (Квадратичная) функция", xArray, data.getYQuad());
+                break;
+            case "Кубическая аппроксимация":
+                addSeries("Лучшая (Кубическая) функция", xArray, data.getYCubic());
+                break;
+            case "Экспоненциальная аппроксимация":
+                addSeries("Лучшая (Экспоненциальная) функция", xArray, data.getYExp());
+                break;
+            case "Логарифмическая аппроксимация":
+                addSeries("Лучшая (Логарифмическая) функция", xArray, data.getYLog());
+                break;
+            case "Степенная аппроксимация":
+                addSeries("Лучшая (Степенная) функция", xArray, data.getYPower());
+                break;
+        }
+
+// Добавление остальных функций на график, исключая лучшую
+        if (!bestFunctionName.equals("Линейная аппроксимация")) {
+            addSeries("Линейная функция", xArray, data.getYLinear());
+        }
+        if (!bestFunctionName.equals("Квадратичная аппроксимация")) {
+            addSeries("Квадратичная функция", xArray, data.getYQuad());
+        }
+        if (!bestFunctionName.equals("Кубическая аппроксимация")) {
+            addSeries("Кубическая функция", xArray, data.getYCubic());
+        }
+        if (!bestFunctionName.equals("Экспоненциальная аппроксимация")) {
+            addSeries("Экспоненциальная функция", xArray, data.getYExp());
+        }
+        if (!bestFunctionName.equals("Логарифмическая аппроксимация")) {
+            addSeries("Логарифмическая функция", xArray, data.getYLog());
+        }
+        if (!bestFunctionName.equals("Степенная аппроксимация")) {
+            addSeries("Степенная функция", xArray, data.getYPower());
+        }
+
+        addSeries("Исходные данные", xArray, yArray);
+
     }
 
-    public static class FunctionData {
-        private final String functionName;
-        private final double[] coeffs;
-        private final double mse;
-
-        public FunctionData(String functionName, double[] coeffs, double mse) {
-            this.functionName = functionName;
-            this.coeffs = coeffs;
-            this.mse = mse;
+    private void addSeries(String name, double[] x, double[] y) {
+        XYChart.Series<Number, Number> series = new XYChart.Series<>();
+        series.setName(name);
+        for (int i = 0; i < x.length; i++) {
+            series.getData().add(new XYChart.Data<>(x[i], y[i]));
         }
-
-        public String getFunctionName() {
-            return functionName;
-        }
-
-        public String getCoeffs() {
-            if (coeffs == null) {
-                return "";
+        lineChart.getData().add(series);
+        if (!name.equals("Исходные данные")) {
+            for (XYChart.Data<Number, Number> data : series.getData()) {
+                data.getNode().setVisible(false);
             }
-            return Arrays.toString(coeffs);
-        }
-
-        public double getMse() {
-            return mse;
-        }
-    }
-
-    public static class DataPoint {
-        private final double x;
-        private final double y;
-        private final double yBest;
-        private final double eBest;
-
-        public DataPoint(double x, double y, double yBest, double eBest) {
-            this.x = x;
-            this.y = y;
-            this.yBest = yBest;
-            this.eBest = eBest;
-        }
-
-        public double getX() {
-            return x;
-        }
-
-        public double getY() {
-            return y;
-        }
-
-        public double getYBest() {
-            return yBest;
-        }
-
-        public double getEBest() {
-            return eBest;
         }
     }
 

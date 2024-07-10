@@ -1,6 +1,8 @@
 package com.example.lab4_gui.math;
 
-import com.example.lab4_gui.DataBean;
+import com.example.lab4_gui.beans.DataBean;
+
+import java.util.Arrays;
 
 import static com.example.lab4_gui.math.ApproximationMethods.calculateMSE;
 import static com.example.lab4_gui.math.ApproximationMethods.calculatePearsonCorrelation;
@@ -10,7 +12,7 @@ public class CalculateData {
     static String[] functionNames = {
             "Линейная аппроксимация",
             "Квадратичная аппроксимация",
-            "Полиномиальная аппроксимация 3-й степени",
+            "Кубическая аппроксимация",
             "Экспоненциальная аппроксимация",
             "Логарифмическая аппроксимация",
             "Степенная аппроксимация"
@@ -36,6 +38,9 @@ public class CalculateData {
         result.setRPearsonLinear(rPearson);
         result.setR2Linear(r2);
 
+        result.setYLinear(yLinear);
+        result.setELinear(eLinear);
+
         if (r2 >= 0.95) {
             result.setTextR2("модель хорошо описывает явление");
         } else if (r2 >= 0.75) {
@@ -57,6 +62,8 @@ public class CalculateData {
         mse[1] = calculateMSE(eQuad);
         result.setQuadCoeffs(quadCoeffs);
         result.setMseQuad(mse[1]);
+        result.setYQuad(yQuad);
+        result.setEQuad(eQuad);
 
         // Полиномиальная аппроксимация 3-й степени
         double[] cubicCoeffs = ApproximationMethods.fitCubic(x, y);
@@ -69,6 +76,8 @@ public class CalculateData {
         mse[2] = calculateMSE(eCubic);
         result.setCubicCoeffs(cubicCoeffs);
         result.setMseCubic(mse[2]);
+        result.setYCubic(yCubic);
+        result.setECubic(eCubic);
 
         // Экспоненциальная аппроксимация
         double[] expCoeffs = ApproximationMethods.fitExponential(x, y);
@@ -81,6 +90,8 @@ public class CalculateData {
         mse[3] = calculateMSE(eExp);
         result.setExpCoeffs(expCoeffs);
         result.setMseExp(mse[3]);
+        result.setYExp(yExp);
+        result.setYExp(eExp);
 
         // Логарифмическая аппроксимация
         double[] logCoeffs = ApproximationMethods.fitLogarithmic(x, y);
@@ -93,6 +104,8 @@ public class CalculateData {
         mse[4] = calculateMSE(eLog);
         result.setLogCoeffs(logCoeffs);
         result.setMseLog(mse[4]);
+        result.setYLog(yLog);
+        result.setELog(eLog);
 
         // Степенная аппроксимация
         double[] powerCoeffs = ApproximationMethods.fitPower(x, y);
@@ -105,6 +118,8 @@ public class CalculateData {
         mse[5] = calculateMSE(ePower);
         result.setPowerCoeffs(powerCoeffs);
         result.setMsePower(mse[5]);
+        result.setYPower(yPower);
+        result.setEPower(ePower);
 
         // Определение лучшей функции по MSE
         int bestIndex = 0;

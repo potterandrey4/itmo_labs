@@ -1,6 +1,5 @@
 package com.example.lab4_gui.controllers;
 
-import com.example.lab4_gui.math.CalculateData;
 import com.example.lab4_gui.math.RandomFunctionGenerator;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
@@ -31,15 +30,14 @@ public class InputController {
     @FXML
     private LineChart<Number, Number> lineChart;
     @FXML
-    private XYChart.Series<Number, Number> graphSeries;
+    private Button noiseButton;
 
     Alert alert = new Alert(Alert.AlertType.NONE);
-
+    XYChart.Series<Number, Number> graphSeries = new XYChart.Series<>();
     @FXML
     public void initialize() {
-        graphSeries = new XYChart.Series<>();
+
         dataTable.getItems().clear();
-        graphSeries.getData().clear();
         lineChart.getData().clear();
         // Инициализация TableView и LineChart
         xColumn.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue()[0])));
@@ -47,6 +45,7 @@ public class InputController {
 
         // Добавление слушателя к кнопке
         addPointButton.setOnAction(event -> addPoint());
+        noiseButton.setStyle("-fx-background-color: #ff8080;");
     }
 
     @FXML
@@ -75,7 +74,6 @@ public class InputController {
                 break;
             }
         }
-        // Если серия данных не существует, добавляем ее, иначе - обновляем существующую
         if (!seriesExists) {
             lineChart.getData().add(graphSeries);
         }
@@ -117,12 +115,28 @@ public class InputController {
 
     }
 
-    @FXML
-    private void fillTable(ActionEvent event) {
+    String fxId = "";
 
+    @FXML
+    private void setFxId(ActionEvent event) {
         Button clickedButton = (Button) event.getSource();
-        String fxId = clickedButton.getId();
-        Double[][] data = RandomFunctionGenerator.generateFunctionDataWithNoise(fxId, 12);
+        fxId = clickedButton.getId();
+        line.setStyle("");
+        polinom_2.setStyle("");
+        polinom_3.setStyle("");
+        exponenta.setStyle("");
+        logarifm.setStyle("");
+        degree.setStyle("");
+        clickedButton.setStyle(
+                "-fx-border-width: 2 ; \n" +
+                        "-fx-border-color: #5e9bff;" +
+                        "-fx-border-radius: 5px"
+        );
+        fillTable();
+    }
+
+    private void fillTable() {
+        Double[][] data = RandomFunctionGenerator.generateFunctionDataWithNoise(fxId, 12, isButtonPressed);
 
         // Очистка таблицы перед заполнением новыми данными
         dataTable.getItems().clear();
@@ -148,5 +162,14 @@ public class InputController {
         dataTable.getItems().clear();
         graphSeries.getData().clear();
         lineChart.getData().clear();
+    }
+
+    private boolean isButtonPressed = false;
+
+    public void setNoise() {
+        isButtonPressed = !isButtonPressed;
+        if (isButtonPressed) noiseButton.setStyle("-fx-background-color: #80ff80;");
+        else noiseButton.setStyle("-fx-background-color: #ff8080;");
+        if (fxId.length() > 0) fillTable();
     }
 }

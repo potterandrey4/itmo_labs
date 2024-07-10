@@ -24,11 +24,11 @@ public class RandomFunctionGenerator {
     /**
      * Генерирует псевдослучайные значения для указанной функции.
      *
-     * @param fxId Идентификатор функции
+     * @param fxId  Идентификатор функции
      * @param count Количество значений для генерации
      * @return Массив псевдослучайных значений
      */
-    public static Double[][] generateFunctionDataWithNoise(String fxId, int count) {
+    public static Double[][] generateFunctionDataWithNoise(String fxId, int count, boolean addNoise) {
         Function<Double, Double> function = functions.get(fxId);
         if (function == null) {
             throw new IllegalArgumentException("Функция с идентификатором '" + fxId + "' не найдена.");
@@ -38,8 +38,10 @@ public class RandomFunctionGenerator {
         for (int i = 0; i < count; i++) {
             double x = i + 1; // Предполагаем, что x начинается с 1
             double y = function.apply(x); // Применяем функцию
-            double noise = random.nextGaussian() * 0.15 * y; // Генерация соразмерного y случайного шума
-            y += noise; // Добавляем шум
+            if (addNoise) {
+                double noise = random.nextGaussian() * 0.05 * y; // Генерация соразмерного y случайного шума
+                y += noise; // Добавляем шум
+            }
             result[i][0] = x; // Значение x
             result[i][1] = y; // Значение y
         }

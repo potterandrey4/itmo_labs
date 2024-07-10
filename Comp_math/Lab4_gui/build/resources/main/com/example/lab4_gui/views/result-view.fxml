@@ -12,30 +12,28 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="870.0" prefWidth="1303.0" style="-fx-background-color: #2e1440;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.lab4_gui.controllers.ResultController">
     <children>
         <AnchorPane prefHeight="96.0" prefWidth="1303.0" style="-fx-background-color: #fafafa;">
-            <children>
-                <Text fontSmoothingType="LCD" layoutX="507.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Дьячков Андрей P3209 Лаба 4" textAlignment="CENTER" wrappingWidth="288.44677734375">
-                    <font>
-                        <Font name="Ubuntu Condensed" size="31.0" />
-                    </font>
-                </Text>
-                <Button layoutX="1175.0" layoutY="33.0" mnemonicParsing="false" onAction="#handleReturn" style="-fx-background-color: #7434eb;" text="Назад" textAlignment="CENTER" textFill="WHITE">
-                    <font>
-                        <Font size="16.0" />
-                    </font>
-                </Button>
-            </children>
+            <Text fontSmoothingType="LCD" layoutX="507.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Дьячков Андрей P3209 Лаба 4" textAlignment="CENTER" wrappingWidth="288.44677734375">
+                <font>
+                    <Font name="Ubuntu Condensed" size="31.0" />
+                </font>
+            </Text>
+            <Button layoutX="1175.0" layoutY="33.0" mnemonicParsing="false" onAction="#handleReturn" style="-fx-background-color: #7434eb;" text="Назад" textAlignment="CENTER" textFill="WHITE">
+                <font>
+                    <Font size="16.0" />
+                </font>
+            </Button>
         </AnchorPane>
-        <Text fill="WHITE" layoutX="30.0" layoutY="551.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Наилучшая апроксимирующая функция:">
+        <Text fill="WHITE" layoutX="14.0" layoutY="551.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Наилучшая функция:">
             <font>
                 <Font size="16.0" />
             </font>
         </Text>
-        <Text fx:id="title_aprox_func" fill="WHITE" layoutX="30.0" layoutY="582.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ЛИНЕЙНАЯ">
+        <Text fx:id="title_aprox_func" fill="WHITE" layoutX="14.0" layoutY="582.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ЛИНЕЙНАЯ">
             <font>
                 <Font size="17.0" />
             </font>
         </Text>
-        <LineChart fx:id="lineChart" layoutX="591.0" layoutY="112.0" prefHeight="787.0" prefWidth="706.0">
+        <LineChart fx:id="lineChart" layoutX="617.0" layoutY="112.0" prefHeight="633.0" prefWidth="649.0">
             <xAxis>
                 <NumberAxis label="X" />
             </xAxis>
@@ -44,46 +42,54 @@
             </yAxis>
         </LineChart>
 
-        <TableView fx:id="dataTable" layoutX="357.0" layoutY="538.0" prefHeight="305.0" prefWidth="266.0">
+        <TableView fx:id="best_table" layoutX="341.0" layoutY="506.0" prefHeight="313.0" prefWidth="262.0">
             <columns>
-                <TableColumn fx:id="columnX" prefWidth="75.0" text="x" />
-                <TableColumn fx:id="columnY" prefWidth="75.0" text="y" />
-                <TableColumn fx:id="columnYBest" prefWidth="75.0" text="φ(x)" />
-                <TableColumn fx:id="columnEBest" prefWidth="75.0" text="ε" />
+                <TableColumn fx:id="columnX" maxWidth="34.0" minWidth="34.0" prefWidth="34.0" text="x" />
+                <TableColumn fx:id="columnY" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" text="y" />
+                <TableColumn fx:id="columnYBest" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" text="φ(x)" />
+                <TableColumn fx:id="columnEBest" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" text="ε" />
             </columns>
         </TableView>
 
-        <Text fill="WHITE" layoutX="30.0" layoutY="636.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Коэффициент детерминации (R^2):">
+        <Text fill="WHITE" layoutX="17.0" layoutY="702.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Коэффициент детерминации (R^2):">
             <font>
-                <Font size="16.0" />
+                <Font size="13.0" />
             </font>
         </Text>
-        <Text fx:id="coeff_deter" fill="WHITE" layoutX="304.0" layoutY="636.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" text="0.999">
+        <Text fx:id="coeff_deter" fill="WHITE" layoutX="260.0" layoutY="701.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" text="0.999">
             <font>
-                <Font size="16.0" />
+                <Font size="13.0" />
             </font>
         </Text>
-        <Text fx:id="text_coef_deter" fill="WHITE" layoutX="30.0" layoutY="661.0" strokeType="OUTSIDE" strokeWidth="0.0" text="&gt; Сильная аппроксимация">
+        <Text fx:id="text_coef_deter" fill="WHITE" layoutX="17.0" layoutY="727.0" strokeType="OUTSIDE" strokeWidth="0.0" text="&gt; Сильная аппроксимация">
             <font>
-                <Font size="16.0" />
+                <Font size="13.0" />
             </font>
         </Text>
-        <Text fx:id="title_pirson" fill="WHITE" layoutX="30.0" layoutY="696.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Коэффициент корреляции Пирсона:">
+        <Text fill="WHITE" layoutX="17.0" layoutY="751.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Коэффициент корреляции Пирсона:">
             <font>
-                <Font size="16.0" />
+                <Font size="13.0" />
             </font>
         </Text>
-        <Text fx:id="val_pirson" fill="WHITE" layoutX="304.0" layoutY="696.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" text="0.999">
+        <Text fx:id="val_pirson" fill="WHITE" layoutX="260.0" layoutY="751.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" text="0.999">
             <font>
-                <Font size="16.0" />
+                <Font size="13.0" />
             </font>
         </Text>
-        <TableView fx:id="general_table" layoutX="30.0" layoutY="130.0" prefHeight="362.0" prefWidth="594.0">
+        <TableView fx:id="general_table" layoutX="14.0" layoutY="130.0" prefHeight="362.0" prefWidth="590.0">
             <columns>
-                <TableColumn fx:id="columnFunctionName" prefWidth="138.40005493164062" text="Функция" />
-                <TableColumn fx:id="columnCoeffs" prefWidth="75.199951171875" text="Коэффициенты" />
-                <TableColumn fx:id="columnMSE" prefWidth="148.0" text="СКО" />
+                <TableColumn fx:id="columnFunctionName" minWidth="-Infinity" prefWidth="138.0" text="Функция" />
+                <TableColumn fx:id="a" maxWidth="85.0" minWidth="85.0" prefWidth="85.0" text="a" />
+                <TableColumn fx:id="b" maxWidth="85.0" minWidth="85.0" prefWidth="85.0" text="b" />
+                <TableColumn fx:id="c" maxWidth="85.0" minWidth="85.0" prefWidth="85.0" text="c" />
+                <TableColumn fx:id="d" maxWidth="85.0" minWidth="85.0" prefWidth="85.0" text="d" />
+                <TableColumn fx:id="columnMSE" maxWidth="112.0" minWidth="112.0" prefWidth="112.0" text="СКО" />
             </columns>
         </TableView>
+      <Text fill="WHITE" layoutX="14.0" layoutY="669.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Данные для линейной апрокс. функции" textAlignment="CENTER">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Text>
     </children>
 </AnchorPane>
