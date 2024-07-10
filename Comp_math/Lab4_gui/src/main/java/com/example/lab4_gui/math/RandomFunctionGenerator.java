@@ -37,12 +37,13 @@ public class RandomFunctionGenerator {
         Double[][] result = new Double[count][2];
         for (int i = 0; i < count; i++) {
             double x = i + 1; // Предполагаем, что x начинается с 1
-            double noise = random.nextDouble() * 20 - 10; // Генерация случайного шума
-            double y = function.apply(x) + noise; // Применяем функцию и добавляем шум
+            double y = function.apply(x); // Применяем функцию
+            double noise = random.nextGaussian() * 0.15 * y; // Генерация соразмерного y случайного шума
+            y += noise; // Добавляем шум
             result[i][0] = x; // Значение x
             result[i][1] = y; // Значение y
         }
-        return result; // Возвращаем двумерный массив значений x и y
+        return result;
     }
 
 }

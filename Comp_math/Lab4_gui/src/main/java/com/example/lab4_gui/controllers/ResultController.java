@@ -1,182 +1,178 @@
 package com.example.lab4_gui.controllers;
 
+import com.example.lab4_gui.DataBean;
+import com.example.lab4_gui.math.CalculateData;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.XYChart;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
+
+import java.io.IOException;
+import java.util.Arrays;
+
 public class ResultController {
+    @FXML
+    public TableColumn<DataPoint, Double> columnX, columnY, columnYBest, columnEBest;
+    @FXML
+    public TableColumn<FunctionData, String> columnFunctionName, columnCoeffs, columnMSE;
+    @FXML
+    private TableView<FunctionData> general_table;
+    @FXML
+    private TableView<DataPoint> dataTable;
+    @FXML
+    private LineChart<Number, Number> lineChart;
+    @FXML
+    private Text coeff_deter;
+    @FXML
+    private Text text_coef_deter;
+    @FXML
+    private Text title_aprox_func;
+    @FXML
+    private Text val_pirson;
 
-//	@FXML
-//	private ToggleGroup equationGroup;
-//
-//	@FXML
-//	private RadioButton choiceEquation1;
-//
-//	@FXML
-//	private RadioButton choiceEquation2;
-//
-//	@FXML
-//	private RadioButton choiceEquation3;
-//
-//	@FXML
-//	private RadioButton choiceEquation4;
-//
-//	@FXML
-//	private TextField a;
-//
-//	@FXML
-//	private TextField b;
-//
-//	@FXML
-//	private TextField eps;
-//
-//	@FXML
-//	void initialize() {
-//		// Создание ToggleGroup и добавление RadioButton
-//		equationGroup = new ToggleGroup();
-//		choiceEquation1.setToggleGroup(equationGroup);
-//		choiceEquation2.setToggleGroup(equationGroup);
-//		choiceEquation3.setToggleGroup(equationGroup);
-//		choiceEquation4.setToggleGroup(equationGroup);
-//		// Установка первого уравнения по умолчанию
-//		choiceEquation1.setSelected(true);
-//
-//		addDoubleValidation(a);
-//		a.setText("-5");
-//		addDoubleValidation(b);
-//		b.setText("5");
-//		addDoubleValidation(eps);
-//		eps.setText("0.001");
-//	}
-//
-//
-//	private void addDoubleValidation(TextField textField) {
-//		UnaryOperator<TextFormatter.Change> filter = change -> {
-//			String newText = change.getControlNewText();
-//			if (newText.matches("\\d*\\.?\\d*") || newText.matches("-\\d*\\.?\\d*")) {
-//				return change;
-//			}
-//			return null;
-//		};
-//		textField.setTextFormatter(new TextFormatter<>(filter));
-//	}
-//
-//
-//	private boolean isValidEps(String value) {
-//		try {
-//			double epsValue = Double.parseDouble(value);
-//			return epsValue > 0 && epsValue < 1;
-//		} catch (NumberFormatException e) {
-//			return false;
-//		}
-//	}
-//
-//	private boolean isValidRange(double a, double b) {
-//		return b >= a;
-//	}
-//
-//	private String getSelectedEquationId() {
-//		RadioButton selectedRadioButton = (RadioButton) equationGroup.getSelectedToggle();
-//		if (selectedRadioButton == null) {
-//			return null;
-//		}
-//		return selectedRadioButton.getId();
-//	}
-//
-//	@FXML
-//	private void handleCalculate(ActionEvent event) {
-//		try {
-//			double aValue = Double.parseDouble(a.getText());
-//			double bValue = Double.parseDouble(b.getText());
-//			double epsValue = Double.parseDouble(eps.getText());
-//
-//			if (!isValidEps(eps.getText())) {
-//				showErrorAlert("Значение eps должно быть больше 0 и меньше 1.");
-//				return;
-//			}
-//
-//			if (!isValidRange(aValue, bValue)) {
-//				showErrorAlert("Значение b должно быть строго больше a");
-//				return;
-//			}
-//
-//			String selectedId = getSelectedEquationId();
-//			Function<Double, Double> function;
-//			Function<Double, Double> derivativeFunction;
-//			Function<Double, Double> derivativeDerivativeFunction;
-//
-//			switch (selectedId) {
-//				case "choiceEquation1":
-//					function = FunctionsNE::function1;
-//					derivativeFunction = FunctionsNE::derivativeFunction1;
-//					derivativeDerivativeFunction = FunctionsNE::derivativeDerivativeFunction1;
-//					break;
-//
-//				case "choiceEquation2":
-//					function = FunctionsNE::function2;
-//					derivativeFunction = FunctionsNE::derivativeFunction2;
-//					derivativeDerivativeFunction = FunctionsNE::derivativeDerivativeFunction2;
-//					break;
-//
-//				case "choiceEquation3":
-//					function = FunctionsNE::function3;
-//					derivativeFunction = FunctionsNE::derivativeFunction3;
-//					derivativeDerivativeFunction = FunctionsNE::derivativeDerivativeFunction3;
-//					break;
-//
-//				case "choiceEquation4":
-//					function = FunctionsNE::function4;
-//					derivativeFunction = FunctionsNE::derivativeFunction4;
-//					derivativeDerivativeFunction = FunctionsNE::derivativeDerivativeFunction4;
-//					break;
-//
-//				default:
-//					throw new IllegalStateException("мяу");
-//			}
-//
-//			// Вызов методов
-//			MethodDataEquation bisectionMethodRoot = MethodsForNE.bisectionMethod(function, aValue, bValue, epsValue);
-//			double initialApproximation = MethodsForNE.findInitialApproximation(function, derivativeDerivativeFunction, aValue, bValue);
-//			MethodDataEquation newtonMethodRoot = MethodsForNE.newtonMethod(function, derivativeFunction, initialApproximation, epsValue);
-//			MethodDataEquation simpleIterRoot = MethodsForNE.simpleIterationsMethod(function, derivativeFunction, aValue, bValue, epsValue);
-//
-//			// Отправка данных на новую страницу
-//			FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/lab4_gui/views/result-result-view.fxml"));
-//			Parent root = loader.load();
-//
-//			InputController resultController = loader.getController();
-//			resultController.setResultData(bisectionMethodRoot, newtonMethodRoot, simpleIterRoot, aValue, bValue, epsValue, function);
-//
-//			Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
-//			stage.setScene(new Scene(root));
-//			stage.show();
-//
-//		} catch (NumberFormatException e) {
-//			showErrorAlert("Пожалуйста, введите корректные значения для a, b и eps.");
-//		} catch (IOException e) {
-//			throw new RuntimeException(e);
-//		}
-//	}
-//
-//	private void showErrorAlert(String message) {
-//		Alert alert = new Alert(Alert.AlertType.ERROR, message, ButtonType.OK);
-//		alert.setTitle("Ошибка");
-//		alert.setHeaderText(null);
-//		alert.showAndWait();
-//	}
-//
-//
-//	@FXML
-//	private void handleReturn(ActionEvent actionEvent) {
-//		switchScene(actionEvent, "/com/example/lab4_gui/views/index-view.fxml");
-//	}
-//
-//	private void switchScene(ActionEvent event, String fxmlFilePath) {
-//		try {
-//			FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFilePath));
-//			Parent root = loader.load();
-//			Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
-//			stage.setScene(new Scene(root));
-//			stage.show();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//	}
+    private double[] xArray;
+    private double[] yArray;
+    private DataBean data;
 
+    public void setInputData(double[] xArray, double[] yArray) {
+        this.xArray = xArray;
+        this.yArray = yArray;
+    }
+
+    @FXML
+    void initialize() {
+        // Ничего не делаем в initialize, так как данные могут быть еще не установлены
+    }
+
+    public void initializeData() {
+        if (xArray == null || yArray == null) {
+            throw new IllegalStateException("xArray и yArray должны быть установлены перед инициализацией данных.");
+        }
+
+        data = CalculateData.apply(xArray, yArray);
+
+        // Установить значения для колонок general_table
+        columnFunctionName.setCellValueFactory(new PropertyValueFactory<>("functionName"));
+        columnCoeffs.setCellValueFactory(new PropertyValueFactory<>("coeffs"));
+        columnMSE.setCellValueFactory(new PropertyValueFactory<>("mse"));
+
+        // Заполнение general_table
+        general_table.getItems().clear();
+        general_table.getItems().addAll(
+                new FunctionData("Линейная", data.getCoeffsLinear(), data.getMseLinear()),
+                new FunctionData("Квадратичная", data.getQuadCoeffs(), data.getMseQuad()),
+                new FunctionData("Кубическая", data.getCubicCoeffs(), data.getMseCubic()),
+                new FunctionData("Экспоненциальная", data.getExpCoeffs(), data.getMseExp()),
+                new FunctionData("Логарифмическая", data.getLogCoeffs(), data.getMseLog()),
+                new FunctionData("Степенная", data.getPowerCoeffs(), data.getMsePower())
+        );
+
+        // Установить значения для колонок dataTable
+        columnX.setCellValueFactory(new PropertyValueFactory<>("x"));
+        columnY.setCellValueFactory(new PropertyValueFactory<>("y"));
+        columnYBest.setCellValueFactory(new PropertyValueFactory<>("yBest"));
+        columnEBest.setCellValueFactory(new PropertyValueFactory<>("eBest"));
+
+        // Заполнение dataTable
+        dataTable.getItems().clear();
+        for (int i = 0; i < xArray.length; i++) {
+            dataTable.getItems().add(new DataPoint(xArray[i], yArray[i], data.getYBest()[i], data.getEBest()[i]));
+        }
+
+        // Заполнение графика lineChart
+        XYChart.Series<Number, Number> series = new XYChart.Series<>();
+        for (int i = 0; i < xArray.length; i++) {
+            series.getData().add(new XYChart.Data<>(xArray[i], data.getYBest()[i]));
+        }
+        lineChart.getData().clear();
+        lineChart.getData().add(series);
+
+        // Заполнение текстовых полей
+        coeff_deter.setText(String.format("%.3f", data.getR2Linear()));
+        text_coef_deter.setText(data.getTextR2());
+        title_aprox_func.setText(data.getFunctionBest());
+        val_pirson.setText(String.format("%.3f", data.getRPearsonLinear()));
+    }
+
+    public static class FunctionData {
+        private final String functionName;
+        private final double[] coeffs;
+        private final double mse;
+
+        public FunctionData(String functionName, double[] coeffs, double mse) {
+            this.functionName = functionName;
+            this.coeffs = coeffs;
+            this.mse = mse;
+        }
+
+        public String getFunctionName() {
+            return functionName;
+        }
+
+        public String getCoeffs() {
+            if (coeffs == null) {
+                return "";
+            }
+            return Arrays.toString(coeffs);
+        }
+
+        public double getMse() {
+            return mse;
+        }
+    }
+
+    public static class DataPoint {
+        private final double x;
+        private final double y;
+        private final double yBest;
+        private final double eBest;
+
+        public DataPoint(double x, double y, double yBest, double eBest) {
+            this.x = x;
+            this.y = y;
+            this.yBest = yBest;
+            this.eBest = eBest;
+        }
+
+        public double getX() {
+            return x;
+        }
+
+        public double getY() {
+            return y;
+        }
+
+        public double getYBest() {
+            return yBest;
+        }
+
+        public double getEBest() {
+            return eBest;
+        }
+    }
+
+    @FXML
+    private void handleReturn(ActionEvent actionEvent) {
+        switchScene(actionEvent, "/com/example/lab4_gui/views/index-view.fxml");
+    }
+
+    private void switchScene(ActionEvent event, String fxmlFilePath) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFilePath));
+            Parent root = loader.load();
+            Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -32,15 +32,14 @@
             <Button onAction="#clearAll" prefHeight="30.0" prefWidth="130.0" text="Очистить данные" />
         </VBox>
         <!-- Таблица данных -->
-        <TableView fx:id="dataTable" layoutX="327.0" layoutY="365.0" prefHeight="327.0" prefWidth="282.0">
+        <TableView fx:id="dataTable" layoutX="327.0" layoutY="365.0" prefHeight="327.0" prefWidth="288.0">
             <columns>
                 <TableColumn prefWidth="140.79999542236328" text="X" fx:id="xColumn" />
                 <TableColumn fx:id="yColumn" prefWidth="140.79998779296875" text="Y" />
             </columns>
         </TableView>
-
         <!-- График -->
-        <LineChart fx:id="lineChart" layoutX="609.0" layoutY="197.0" prefHeight="608.0" prefWidth="699.0">
+        <LineChart fx:id="lineChart" layoutX="603.0" layoutY="197.0" prefHeight="608.0" prefWidth="699.0">
             <xAxis>
                 <NumberAxis label="X" />
             </xAxis>

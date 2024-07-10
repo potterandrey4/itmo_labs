@@ -1,7 +1,9 @@
 package com.example.lab4_gui.controllers;
 
+import com.example.lab4_gui.math.CalculateData;
 import com.example.lab4_gui.math.RandomFunctionGenerator;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,6 +15,7 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 public class InputController {
     @FXML
@@ -78,12 +81,38 @@ public class InputController {
         }
     }
 
-    public void handleCalculate(ActionEvent actionEvent) {
+    public void handleCalculate(ActionEvent event) {
 
         if (dataTable.getItems().size() < 8) {
             showMessage(Alert.AlertType.WARNING, "Маловато..", "введите от 8 до 12 значений");
         } else {
-            switchScene(actionEvent, "com/example/lab4_gui/views/result-view.fxml");
+            ObservableList<Double[]> dataList = dataTable.getItems();
+            int size = dataList.size();
+            double[] xArray = new double[size];
+            double[] yArray = new double[size];
+
+            for (int i = 0; i < size; i++) {
+                Double[] point = dataList.get(i);
+                xArray[i] = point[0];
+                yArray[i] = point[1];
+            }
+            System.out.println(Arrays.toString(xArray));
+            System.out.println(Arrays.toString(yArray));
+
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/lab4_gui/views/result-view.fxml"));
+                Parent root = loader.load();
+
+                ResultController resultController = loader.getController();
+                resultController.setInputData(xArray, yArray);
+                resultController.initializeData();
+
+                Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+                stage.setScene(new Scene(root));
+                stage.show();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
 
     }
@@ -115,19 +144,7 @@ public class InputController {
         alert.show();
     }
 
-    private void switchScene(ActionEvent event, String fxmlFilePath) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFilePath));
-            Parent root = loader.load();
-            Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void clearAll(ActionEvent actionEvent) {
+    public void clearAll() {
         dataTable.getItems().clear();
         graphSeries.getData().clear();
         lineChart.getData().clear();
