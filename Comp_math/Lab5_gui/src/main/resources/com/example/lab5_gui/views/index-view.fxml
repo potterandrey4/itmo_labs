@@ -2,23 +2,21 @@
 
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Line?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="870.0" prefWidth="1303.0" style="-fx-background-color: #2e1440;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.lab5_gui.controllers.InputController">
+<?import javafx.scene.text.*?>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="870.0"
+            prefWidth="1303.0" style="-fx-background-color: #2e1440;" xmlns="http://javafx.com/javafx/17.0.6"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.lab5_gui.controllers.InputController">
     <children>
         <!-- Текстовое описание -->
         <AnchorPane prefHeight="96.0" prefWidth="1303.0" style="-fx-background-color: #fafafa;">
             <children>
-                <Text fontSmoothingType="LCD" layoutX="507.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Дьячков Андрей P3209 Лаба 5" textAlignment="CENTER" wrappingWidth="288.44677734375">
+                <Text fontSmoothingType="LCD" layoutX="507.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                      text="Дьячков Андрей P3209 Лаба 5" textAlignment="CENTER" wrappingWidth="288.44677734375">
                     <font>
-                        <Font name="Ubuntu Condensed" size="31.0" />
+                        <Font name="Ubuntu Condensed" size="31.0"/>
                     </font>
                 </Text>
             </children>
@@ -26,56 +24,66 @@
         <!-- Таблица данных -->
         <TableView fx:id="dataTable" layoutX="330.0" layoutY="298.0" prefHeight="313.0" prefWidth="288.0">
             <columns>
-                <TableColumn prefWidth="140.79999542236328" text="X" fx:id="xColumn" />
-                <TableColumn fx:id="yColumn" prefWidth="140.79998779296875" text="Y" />
+                <TableColumn prefWidth="140.79999542236328" text="X" fx:id="xColumn"/>
+                <TableColumn fx:id="yColumn" prefWidth="140.79998779296875" text="Y"/>
             </columns>
         </TableView>
         <!-- График -->
         <LineChart fx:id="lineChart" layoutX="599.0" layoutY="170.0" prefHeight="646.0" prefWidth="704.0">
             <xAxis>
-                <NumberAxis label="X" />
+                <NumberAxis label="X"/>
             </xAxis>
             <yAxis>
-                <NumberAxis label="Y" />
+                <NumberAxis label="Y"/>
             </yAxis>
         </LineChart>
 
-        <Button layoutX="66.0" layoutY="767.0" mnemonicParsing="false" onAction="#handleCalculate" prefHeight="42.0" prefWidth="554.0" text="Вычислить">
+        <Button layoutX="66.0" layoutY="767.0" mnemonicParsing="false" onAction="#handleCalculate" prefHeight="42.0"
+                prefWidth="554.0" text="Вычислить">
             <font>
-                <Font size="26.0" />
+                <Font size="26.0"/>
             </font>
         </Button>
 
-        <Text fill="WHITE" fontSmoothingType="LCD" layoutX="14.0" layoutY="156.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Заполнить псведослучайными значениями" textAlignment="CENTER" wrappingWidth="288.44677734375">
+        <Text fill="WHITE" fontSmoothingType="LCD" layoutX="14.0" layoutY="156.0" strokeType="OUTSIDE" strokeWidth="0.0"
+              text="Заполнить значениями c функции" textAlignment="CENTER" wrappingWidth="288.44677734375">
             <font>
-                <Font size="24.0" />
+                <Font size="24.0"/>
             </font>
         </Text>
-        <Button fx:id="line" layoutX="90.0" layoutY="240.0" maxHeight="30.0" maxWidth="135.0" minHeight="30.0" minWidth="135.0" onAction="#setFxId" prefHeight="30.0" prefWidth="135.0" text="Линейная" />
-        <Button fx:id="polinom_2" layoutX="90.0" layoutY="293.0" maxHeight="30.0" maxWidth="135.0" minHeight="30.0" minWidth="135.0" onAction="#setFxId" prefHeight="30.0" prefWidth="135.0" text="Полином 2й ст." />
-        <Button fx:id="polinom_3" layoutX="90.0" layoutY="348.0" maxHeight="30.0" maxWidth="135.0" minHeight="30.0" minWidth="135.0" onAction="#setFxId" prefHeight="30.0" prefWidth="135.0" text="Полином 3й ст." />
-        <Button fx:id="exponenta" layoutX="90.0" layoutY="403.0" maxHeight="30.0" maxWidth="135.0" minHeight="30.0" minWidth="135.0" onAction="#setFxId" prefHeight="30.0" prefWidth="135.0" text="Экспоненциальная" />
-        <Button fx:id="logarifm" layoutX="90.0" layoutY="456.0" maxHeight="30.0" maxWidth="135.0" minHeight="30.0" minWidth="135.0" onAction="#setFxId" prefHeight="30.0" prefWidth="135.0" text="Логарифмическая" />
-        <Button fx:id="degree" layoutX="90.0" layoutY="509.0" maxHeight="30.0" maxWidth="135.0" minHeight="30.0" minWidth="135.0" onAction="#setFxId" prefHeight="30.0" prefWidth="135.0" text="Степенная" />
+        <Button fx:id="line" layoutX="90.0" layoutY="240.0" maxHeight="30.0" maxWidth="135.0" minHeight="30.0"
+                minWidth="135.0" onAction="#setFxId" prefHeight="30.0" prefWidth="135.0" text="x + sin(x)"/>
+        <Button fx:id="polinom_2" layoutX="90.0" layoutY="293.0" maxHeight="30.0" maxWidth="135.0" minHeight="30.0"
+                minWidth="135.0" onAction="#setFxId" prefHeight="30.0" prefWidth="135.0" text="x&#178; - x + 5"/>
+        <Button fx:id="polinom_3" layoutX="90.0" layoutY="348.0" maxHeight="30.0" maxWidth="135.0" minHeight="30.0"
+                minWidth="135.0" onAction="#setFxId" prefHeight="30.0" prefWidth="135.0" text="3*log(x) + 2"/>
 
-        <Line endX="64.60003662109375" layoutX="157.0" layoutY="562.0" startX="-65.79995727539062" stroke="#969696" />
-        <Button fx:id="noiseButton" layoutX="90.0" layoutY="581.0" mnemonicParsing="false" onAction="#setNoise" prefHeight="30.0" prefWidth="135.0" text="Добавить шум" />
-         <TextField fx:id="yInput" alignment="CENTER" layoutX="497.0" layoutY="161.0" prefHeight="30.0" prefWidth="130.0" promptText="Введите y" />
-         <Button layoutX="420.0" layoutY="256.0" onAction="#clearAll" prefHeight="30.0" prefWidth="130.0" text="Очистить данные" />
-         <Button fx:id="addPointButton" layoutX="420.0" layoutY="209.0" onAction="#addPoint" prefHeight="30.0" prefWidth="130.0" text="Добавить точку" />
-         <TextField alignment="CENTER" layoutX="343.0" layoutY="161.0" prefHeight="30.0" prefWidth="130.0" promptText="Введите x" fx:id="xInput" />
-      <Text fill="WHITE" fontSmoothingType="LCD" layoutX="57.0" layoutY="680.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Аргумент функции" textAlignment="CENTER" wrappingWidth="201.44677734375">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Text>
-      <Text fill="WHITE" fontSmoothingType="LCD" layoutX="348.0" layoutY="668.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Количество узлов интерполяции" textAlignment="CENTER" wrappingWidth="201.44677734375">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Text>
-      <TextField fx:id="function_arg" alignment="CENTER" layoutX="91.0" layoutY="707.0" prefHeight="30.0" prefWidth="130.0" text="2" />
-      <TextField fx:id="nodes_interpolation" alignment="CENTER" layoutX="384.0" layoutY="707.0" prefHeight="30.0" prefWidth="130.0" text="2" />
-      <Line endX="465.0" layoutX="156.0" layoutY="639.0" startX="-101.0" stroke="#969696" />
+
+        <TextField fx:id="yInput" alignment="CENTER" layoutX="497.0" layoutY="161.0" prefHeight="30.0" prefWidth="130.0"
+                   promptText="Введите y"/>
+        <Button layoutX="420.0" layoutY="256.0" onAction="#clearAll" prefHeight="30.0" prefWidth="130.0"
+                text="Очистить данные"/>
+        <Button fx:id="addPointButton" layoutX="420.0" layoutY="209.0" onAction="#addPoint" prefHeight="30.0"
+                prefWidth="130.0" text="Добавить точку"/>
+        <TextField alignment="CENTER" layoutX="343.0" layoutY="161.0" prefHeight="30.0" prefWidth="130.0"
+                   promptText="Введите x" fx:id="xInput"/>
+        <Text fill="WHITE" fontSmoothingType="LCD" layoutX="57.0" layoutY="680.0" strokeType="OUTSIDE" strokeWidth="0.0"
+              text="Аргумент функции" textAlignment="CENTER" wrappingWidth="201.44677734375">
+            <font>
+                <Font size="20.0"/>
+            </font>
+        </Text>
+        <Text fill="WHITE" fontSmoothingType="LCD" layoutX="348.0" layoutY="668.0" strokeType="OUTSIDE"
+              strokeWidth="0.0" text="Количество узлов интерполяции" textAlignment="CENTER"
+              wrappingWidth="201.44677734375">
+            <font>
+                <Font size="20.0"/>
+            </font>
+        </Text>
+        <TextField fx:id="function_arg" alignment="CENTER" layoutX="91.0" layoutY="707.0" prefHeight="30.0"
+                   prefWidth="130.0" text="2"/>
+        <TextField fx:id="nodes_interpolation" alignment="CENTER" layoutX="384.0" layoutY="707.0" prefHeight="30.0"
+                   prefWidth="130.0" text="11"/>
+        <Line endX="465.0" layoutX="156.0" layoutY="639.0" startX="-101.0" stroke="#969696"/>
     </children>
 </AnchorPane>
