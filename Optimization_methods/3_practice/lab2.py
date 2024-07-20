@@ -89,6 +89,10 @@ def df(x):
 def ddf(x):
     return 1 + math.sin(x)
 
+print("Решение уравнения: x²/2 - sin(x)")
+print("[a, b] = [0, 1]")
+print("ε = 0.03")
+print("="*40)
 
 # метод половинного деления
 result1 = bisection_method(f, 0, 1, 0.03)
@@ -112,5 +116,3 @@ print(f"Приближенное точка и значение минимума
 result4 = newton_method(f, df, ddf, 1, 0.03)
 print("метод Ньютона")
 print(f"Приближенное точка и значение минимума: {result4}", "\n")
-
-print("#."+"#"*20)
