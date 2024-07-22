@@ -4,16 +4,16 @@ import math
 def bisection_method(f, a, b, e):
     k = 0
     while (b - a) / 2 > e:
-        k+=1
         x1 = (a + b - e) / 2
         x2 = (a + b + e) / 2
-        y1 = f(x1)
+        
+        y1 = f(x1)        
         y2 = f(x2)
+        
         if y1 > y2:
             a = x1
         else:
             b = x2
-
         xm = (a + b) / 2
         ym = f(xm)
     return [xm, ym]
@@ -24,10 +24,8 @@ def bisection_method(f, a, b, e):
 def golden_section_search(f, a, b, e):
     x1 = a + 0.382 * (b - a)
     x2 = a + 0.618 * (b - a)
-    
-    k = 1
+
     while abs(b - a) > e:
-        k+=1
         if f(x1) < f(x2):
             b = x2
             x2 = x1
@@ -36,7 +34,6 @@ def golden_section_search(f, a, b, e):
             a = x1
             x1 = x2
             x2 = a + 0.618 * (b - a)
-    
     return [(b + a) / 2, f((b + a) / 2)]
 
 
@@ -45,20 +42,19 @@ def secant_method(f, df, a, b, e):
     x_res = 0
     f_xres = 0
 
-    x = a - ( (df(a)) / (df(a))-df(b) ) * (a-b)
-    f_x = df(x)
+    df_x = 100
 
-    while abs(f_x) > e:
+    while abs(df_x) > e:
         x = a - ( (df(a)) / (df(a))-df(b) ) * (a-b)
-        f_x = df(x)
+        df_x = df(x)
 
-        if f_x > 0:
+        if df_x > 0:
             b = x
         else:
             a = x
-        if abs(f_x) <= e:
+        if abs(df_x) <= e:
             x_res = x
-            f_xes = f_x
+            f_xes = f(x_res)
 
     return [x_res, f(x_res)]
 
@@ -66,6 +62,7 @@ def secant_method(f, df, a, b, e):
 # метод Ньютона
 def newton_method(f, df, ddf, x0, e, max_iter=100):
     for i in range(max_iter):
+
         df_n = df(x0)
         ddf_n = ddf(x0)
 
@@ -73,7 +70,6 @@ def newton_method(f, df, ddf, x0, e, max_iter=100):
             return [x0, f(x0)]
 
         x1 = x0 - df_n / ddf_n
-
         x0 = x1
 
     raise RuntimeError(f"Превышено максимальное число итераций ({max_iter})")
@@ -89,30 +85,23 @@ def df(x):
 def ddf(x):
     return 1 + math.sin(x)
 
-print("Решение уравнения: x²/2 - sin(x)")
-print("[a, b] = [0, 1]")
-print("ε = 0.03")
-print("="*40)
+a = 0
+b = 1
+x0 = 1
+e = 0.03
 
-# метод половинного деления
-result1 = bisection_method(f, 0, 1, 0.03)
-print("метод половинного деления")
+print("Метод половинного деления")
+result1 = bisection_method(f, a, b, e)
 print(f"Приближенное точка и значение минимума: {result1}", "\n")
 
-
-# метод золотого сечения
-result2 = golden_section_search(f, 0, 1, 0.03)
-print("метод золотого сечения")
+print("Метод золотого сечения")
+result2 = golden_section_search(f, a, b, e)
 print(f"Приближенное точка и значение минимума: {result2}", "\n")
 
-
-# метод хорд
-result3 = secant_method(f, df, 0, 1, 0.03)
-print("метод хорд")
+print("Метод хорд")
+result3 = secant_method(f, df, a, b, e)
 print(f"Приближенное точка и значение минимума: {result3}", "\n")
 
-
-# метод Ньютона
-result4 = newton_method(f, df, ddf, 1, 0.03)
-print("метод Ньютона")
+print("Метод Ньютона")
+result4 = newton_method(f, df, ddf, x0, e)
 print(f"Приближенное точка и значение минимума: {result4}", "\n")
