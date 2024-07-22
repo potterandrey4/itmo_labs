@@ -21,13 +21,13 @@ def bisection_method(f, a, b, e):
 		
 		if y1 > y2:
 			print("	- $y_1 > y_2$, следовательно:")
-			print(f"			- $a = {x1:.5f}$")
-			print(f"			- $[a,b] = [{a:.5f}, {b:.5f}]$")
+			print(f"		- $a = {x1:.5f}$")
+			print(f"		- $[a,b] = [{a:.5f}, {b:.5f}]$")
 			a = x1
 		else:
 			print("	- $y_2 > y_1$, следовательно:")
-			print(f"			- $b = {x2:.5f}$")
-			print(f"			- $[a,b] = [{a:.5f}, {b:.5f}]$")
+			print(f"		- $b = {x2:.5f}$")
+			print(f"		- $[a,b] = [{a:.5f}, {b:.5f}]$")
 			b = x2
 		print()
 		xm = (a + b) / 2
@@ -40,19 +40,32 @@ def bisection_method(f, a, b, e):
 def golden_section_search(f, a, b, e):
 	x1 = a + 0.382 * (b - a)
 	x2 = a + 0.618 * (b - a)
-	
+	print("- 1 итерация")
+	print("	- Вычислим точки по формулам $x_1 = a+0.382(b-a)$, $x_2 = a+0.618(b-a)$:")
+	print(f"		- $x_1 = {a:.5f}+0.382({b:.5f}-{a:.5f})= {x1:.5f}$")
+	print(f"		- $x_2 = {a:.5f}+0.618({b:.5f}-{a:.5f})= {x2:.5f}$")
 	k = 1
 	while abs(b - a) > e:
 		k+=1
+		print(f"- {k} итерация")
 		if f(x1) < f(x2):
+			print(f"	- $f({x1:.5f}) < f({x2:.5f})$ или ${f(x1):.5f} < {f(x2):.5f}$, следовательно:")
 			b = x2
+			print(f"		- отрезок $[a; x_2]$ или $[{a:.5f}; {x2:.5f}]$")
 			x2 = x1
+			print(f"		- $x2 = x1 = {x1:.5f}$")
 			x1 = a + 0.382 * (b - a)
+			print(f"		- $x1 = a + 0.382 * (b - a) = {a:.5f} + 0.382 *({b:.5f} - {a:.5f}) = {x1:.5f}$")
 		else:
+			print(f"	- $f({x1:.5f}) > f({x2:.5f})$ или ${f(x1):.5f} > {f(x2):.5f}$, следовательно:")
 			a = x1
+			print(f"		- отрезок $[x_1; b]$ или $[{x1:.5f}; {b:.5f}]$")
 			x1 = x2
+			print(f"		- $x1 = x2 = {x2:.5f}$")
 			x2 = a + 0.618 * (b - a)
-	
+			print(f"		- $x2 = a + 0.618 * (b - a) = {a:.5f} + 0.618 *({b:.5f} - {a:.5f}) = {x2:.5f}$")
+		# if (k == 5):
+		# 	print(f"{k}: (b + a) / 2, f((b + a) / 2) = {((b + a) / 2):.5f}; {(f((b + a) / 2)):.5f}")
 	return [(b + a) / 2, f((b + a) / 2)]
 
 
@@ -107,9 +120,9 @@ def ddf(x):
 
 
 # метод половинного деления
-result1 = bisection_method(f, 0, 1, 0.03)
 print("метод половинного деления")
-print(f"Приближенное точка и значение минимума: {result1}", "\n")
+result1 = bisection_method(f, 0, 1, 0.03)
+print(f"\nТочка минимума и приближенное значение: {result1}", "\n", "---")
 
 
 # метод золотого сечения
@@ -119,8 +132,8 @@ print(f"Приближенное точка и значение минимума
 
 
 # метод хорд
-result3 = secant_method(f, df, 0, 1, 0.03)
 print("метод хорд")
+result3 = secant_method(f, df, 0, 1, 0.03)
 print(f"Приближенное точка и значение минимума: {result3}", "\n")
 
 
