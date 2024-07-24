@@ -1,6 +1,6 @@
 # Язык программирования (psln)
 
-```bnf
+```ebnf
 <program> ::= <expression>*
 
 <expression> ::= <comment>
