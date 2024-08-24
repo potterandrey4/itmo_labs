@@ -65,4 +65,4 @@ x_min, y_min = steepest_descent(x0, y0, eps, max_iter)
 print(f"Minimum at x = {x_min:.4f}, y = {y_min:.4f}, f(x,y) = {f(x_min, y_min):.4f}")
 
 # ??? градиент: https://www.desmos.com/calculator/0ttfy20x6e
-# наибыстрейший спуск: https://www.desmos.com/calculator/rfslsqwvoo
+# наибыстрейший спуск: https://www.desmos.com/calculator/rfslsqwvoo 

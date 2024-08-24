@@ -39,25 +39,19 @@ def golden_section_search(f, a, b, e):
 
 # метод хорд
 def secant_method(f, df, a, b, e):
-    x_res = 0
-    f_xres = 0
-
-    df_x = 100
-
-    while abs(df_x) > e:
-        x = a - ( (df(a)) / (df(a))-df(b) ) * (a-b)
-        df_x = df(x)
-
-        if df_x > 0:
+    while True:
+        # Вычисляем следующее приближение по формуле из методички
+        x = a - (df(a) / (df(a) - df(b))) * (a - b)
+        
+        # Проверка на окончание поиска
+        if abs(df(x)) <= e:
+            return [x, f(x)]
+        
+        # Переход к новому отрезку
+        if df(x) > 0:
             b = x
         else:
             a = x
-        if abs(df_x) <= e:
-            x_res = x
-            f_xes = f(x_res)
-
-    return [x_res, f(x_res)]
-
 
 # метод Ньютона
 def newton_method(f, df, ddf, x0, e, max_iter=100):
@@ -77,18 +71,18 @@ def newton_method(f, df, ddf, x0, e, max_iter=100):
 
 
 def f(x):
-    return (x**2)/2 - math.sin(x)
+    return (x*x*x*x)/4 + (x*x) - 8*x + 12
 
 def df(x):
-    return x - math.cos(x)
+    return x*x*x + 2*x - 8
 
 def ddf(x):
-    return 1 + math.sin(x)
+    return 3*(x*x) + 2
 
 a = 0
-b = 1
+b = 2
 x0 = 1
-e = 0.03
+e = 0.05
 
 print("Метод половинного деления")
 result1 = bisection_method(f, a, b, e)
