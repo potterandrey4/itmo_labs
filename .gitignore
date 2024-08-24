@@ -5,7 +5,7 @@
 /НЕ_ДЛЯ_ГИТА/
 .gitignore
 
-/MISPI/lab3
+/MISPI/lab3/
 /MISPI/lab3_working_copy/build/
 /MISPI/lab3_working_copy/tests/
 /MISPI/lab3_working_copy/.idea/
@@ -18,3 +18,5 @@
 /Web/lab4/mvnw.cmd
 /Web/lab4/mvnw
 /Web/lab4/.mvn/wrapper/
+
+/Optimization_methods/md_book/
