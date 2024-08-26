@@ -1,18 +1,6 @@
 import numpy as np
 from scipy.optimize import minimize_scalar
 
-# Градиенты функции
-# мой 3й вариант
-# def grad_f(x, y):
-#     df_dx = 2*x - 4
-#     df_dy = 6 - 2*y
-#     return np.array([df_dx, df_dy])
-
-def grad_f(x, y):
-    df_dx = 10*x + 4*y - 16
-    df_dy = 4*x + 2*y -12
-    return np.array([df_dx, df_dy])
-
 # Метод градиентного спуска
 def gradient_descent(x0, y0, alpha, eps, max_iter):
     x, y = x0, y0
@@ -52,17 +40,35 @@ def steepest_descent(x0, y0, eps, max_iter):
     return x, y
 
 
-# мой вариатн (3)
+
+# <3 вариант>
+# https://www.desmos.com/3d/ufu7c1xwht (экстремумов нет)
+
 # def f(x, y):
-#     return x**2 - y**2 - 4*x + 6*y
+#   return x**2 - y**2 - 4*x + 6*y
 
+# # Градиенты функции
+# def grad_f(x, y):
+#   df_dx = 2*x - 4
+#   df_dy = 6 - 2*y
+#   return np.array([df_dx, df_dy])
+
+# </3 вариант>
+
+# вымышленный вариант: z = x^2 - xy + y^2 - 7x + 8y
 def f(x, y):
-    return 5*x**2 + 4*x*y + y**2 - 16*x - 12*y
+    return x**2 - x*y + y**2 - 7*x + 8*y
 
-x0, y0 = 0.0, 0.0
+def grad_f(x, y):
+    df_dx = 2*x - y - 7
+    df_dy = -x + 2*y + 8
+    return np.array([df_dx, df_dy])
+
+
+x0, y0 = 1.0, 2.0
 alpha = 0.001
 eps = 1e-6
-max_iter = 10000
+max_iter = 1000
 
 print("Метод градиентного спуска:")
 coords = gradient_descent(x0, y0, alpha, eps, max_iter)
