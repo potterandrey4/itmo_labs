@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -14,7 +13,7 @@
         <junit.version>5.9.2</junit.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-        <javafx.version>17.0.2</javafx.version>
+        <javafx.version>17.0.2</javafx.version> <!-- Укажите версию JavaFX -->
     </properties>
 
     <dependencies>
@@ -51,12 +50,6 @@
                 <configuration>
                     <source>${maven.compiler.source}</source>
                     <target>${maven.compiler.target}</target>
-                    <compilerArgs>
-                        <arg>--module-path</arg>
-                        <arg>D:/Downloads/javafx-sdk-17.0.2/lib</arg>
-                        <arg>--add-modules</arg>
-                        <arg>javafx.controls,javafx.fxml</arg>
-                    </compilerArgs>
                 </configuration>
             </plugin>
             <plugin>

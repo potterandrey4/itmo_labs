@@ -134,12 +134,12 @@ eps = 1e-6
 max_iter = 3
 
 # Метод градиентного спуска
-# coords, report_gd = gradient_descent(x0, y0, alpha, eps, max_iter)
-# x_min, y_min = coords[-1]
+coords, report_gd = gradient_descent(x0, y0, alpha, eps, max_iter)
+x_min, y_min = coords[-1]
 
-# # Печать отчета в формате Markdown для метода градиентного спуска
-# print("\n".join(report_gd))
-# print(f"\n**Итог: Минимум найден в точке x = {format_number(x_min)}, y = {format_number(y_min)}, f(x,y) = {format_number(f(x_min, y_min))}**\n")
+# Печать отчета в формате Markdown для метода градиентного спуска
+print("\n".join(report_gd))
+print(f"\n**Итог: Минимум найден в точке x = {format_number(x_min)}, y = {format_number(y_min)}, f(x,y) = {format_number(f(x_min, y_min))}**\n")
 
 # Метод наискорейшего спуска
 x_min_sd, y_min_sd, report = steepest_descent(x0, y0, eps, max_iter)

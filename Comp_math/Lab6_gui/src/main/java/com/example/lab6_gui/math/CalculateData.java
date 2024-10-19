@@ -12,7 +12,7 @@ public class CalculateData {
 
     static BiFunction<Double, Double, Double> f1 = (x, y) -> x + y;
     static BiFunction<Double, Double, Double> f2 = (x, y) -> Math.sin(x) - y;
-    static BiFunction<Double, Double, Double> f3 = (x, y) -> Math.exp(-x) - y * y;
+    static BiFunction<Double, Double, Double> f3 = (x, y) -> y + (2*x);
 
 
     public static DataBean apply(String funcInput, double x0, double y0, double xn, double e, double h) {
@@ -30,7 +30,10 @@ public class CalculateData {
                 func = f2;
                 exactSolution = DiffMethods::exactSolutionF2;
             }
-            case "equation3" -> func = f3;
+            case "equation3" -> {
+				func = f3;
+				exactSolution = DiffMethods::exactSolutionF3;
+			}
             default -> {
                 return null;
             }

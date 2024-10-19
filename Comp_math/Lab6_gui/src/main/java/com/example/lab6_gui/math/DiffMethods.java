@@ -5,12 +5,17 @@ import java.util.stream.IntStream;
 
 public class DiffMethods {
 
+	// y(0)=1
     public static double exactSolutionF1(double x) {
-        return 2 * Math.exp(x) - x - 1;
+        return - x + 2 * Math.exp(x) - 1;
     }
 
     public static double exactSolutionF2(double x) {
-        return 1.49 * Math.exp(-x) + Math.sin(x) / 2 - Math.cos(x) / 2;
+        return (3 * Math.exp(-x) + Math.sin(x) - Math.cos(x)) / 2;
+    }
+
+    public static double exactSolutionF3(double x) {
+        return 3 * Math.exp(x) - 2 * (x + 1);
     }
 
     public static double[] euler(BiFunction<Double, Double, Double> f, double y0, double x0, double xn, double h) {

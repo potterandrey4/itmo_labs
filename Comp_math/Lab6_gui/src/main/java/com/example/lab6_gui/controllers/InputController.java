@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -29,6 +30,11 @@ public class InputController {
         double h = Double.parseDouble(h_input.getText().replace(",", "."));
 //        int h = Integer.parseInt(h_input.getText());
         double e = Double.parseDouble(e_input.getText().replace(",", "."));
+
+		if (x0 >= xn) {
+			showErrorAlert("Ошибка", "x0 должно быть строго меньше xn.");
+			return;
+		}
 
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/lab6_gui/views/result-view.fxml"));
@@ -59,4 +65,12 @@ public class InputController {
                         "-fx-border-color: #5e9bff;"
         );
     }
+
+	private void showErrorAlert(String title, String message) {
+		Alert alert = new Alert(Alert.AlertType.ERROR);
+		alert.setTitle(title);
+		alert.setHeaderText(null);
+		alert.setContentText(message);
+		alert.showAndWait();
+	}
 }

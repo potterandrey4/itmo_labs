@@ -1,26 +1,26 @@
 import numpy as np
 import math
 
-def find_extremum(f, x1, delta_x, eps):
+def find_extremum(f, x1, delta_x, eps, max_iter=1000):
     k = 0
-    while True:
-        k+=1
-        # Шаг 2: Вычисление x2
-        x2 = x1 + delta_x
-        
-        # Шаг 3: Вычисление значений функции в точках x1 и x2
-        f_x1 = f(x1)
-        f_x2 = f(x2)
-        
-        # Шаг 4: Сравнение значений f(x1) и f(x2)
-        if f_x1 > f_x2:
-            x3 = x1 + 2 * delta_x
-        else:
-            x3 = x1 - delta_x
-        
-        # Шаг 5: Вычисление значения функции в точке x3
-        f_x3 = f(x3)
-        
+
+    # Шаг 2: Вычисление x2
+    x2 = x1 + delta_x
+    
+    # Шаг 3: Вычисление значений функции в точках x1 и x2
+    f_x1 = f(x1)
+    f_x2 = f(x2)
+    
+    # Шаг 4: Сравнение значений f(x1) и f(x2)
+    if f_x1 > f_x2:
+        x3 = x1 + 2 * delta_x
+    else:
+        x3 = x1 - delta_x
+    
+    # Шаг 5: Вычисление значения функции в точке x3
+    f_x3 = f(x3)
+    
+    while k <= max_iter:
         # Шаг 6: Находим Fmin и Xmin
         Fmin = min(f_x1, f_x2, f_x3)
         Xmin = [x1, x2, x3][[f_x1, f_x2, f_x3].index(Fmin)]
@@ -46,6 +46,8 @@ def find_extremum(f, x1, delta_x, eps):
             x1, x2, x3 = sorted([x1, x2, x3, x])[:3]
         else:
             x1 = x
+        k+=1
+    return x, f_x, k
 
 
 def f(x):

@@ -1,5 +1,10 @@
 import math
 
+def format_number(value):
+	str_value = f"{value:.5f}"
+	str_value = str_value.rstrip('0').rstrip('.') if '.' in str_value else str_value
+	return str_value
+
 # метод половинного деления
 def bisection_method(f, a, b, e, max_iter=5):
 	k = 1
@@ -7,27 +12,27 @@ def bisection_method(f, a, b, e, max_iter=5):
 		print(f"- {k} итерация")
 		print("	- Берём две точки вблизи интервала [a, b]:")
 		x1 = (a + b - e) / 2
-		print(f"		- $x_1 =  ({a:.5f}+{b:.5f}-{e}) / 2 = {x1:.5f}$")
+		print(f"		- $x_1 =  \\frac{{{format_number(a)}+{format_number(b)}-{e}}}{{2}} = {format_number(x1)}$")
 		x2 = (a + b + e) / 2
-		print(f"		- $x_2 =  ({a:.5f}+{b:.5f}+{e}) / 2 = {x2:.5f}$")
+		print(f"		- $x_2 =  \\frac{{{format_number(a)}+{format_number(b)}+{e}}}{{2}} = {format_number(x2)}$")
 		print("	- Вычислим значения функций в этих точках")
 		
 		y1 = f(x1)
-		print(f"		- $y_1 = {y1:.5f}$")
+		print(f"		- $y_1 = {format_number(y1)}$")
 		
 		y2 = f(x2)
-		print(f"		- $y_2 = {y2:.5f}$")
+		print(f"		- $y_2 = {format_number(y2)}$")
 		
 		if y1 > y2:
 			print("	- $y_1 > y_2$, следовательно:")
-			print(f"		- $a = {x1:.5f}$")
+			print(f"		- $a = {format_number(x1)}$")
 			a = x1
-			print(f"		- $[a,b] = [{a:.5f}, {b:.5f}]$")
+			print(f"		- $[a,b] = [{format_number(a)}, {format_number(b)}]$")
 		else:
 			print("	- $y_2 > y_1$, следовательно:")
-			print(f"		- $b = {x2:.5f}$")
+			print(f"		- $b = {format_number(x2)}$")
 			b = x2
-			print(f"		- $[a,b] = [{a:.5f}, {b:.5f}]$")
+			print(f"		- $[a,b] = [{format_number(a)}, {format_number(b)}]$")
 		print()
 		xm = (a + b) / 2
 		ym = f(xm)
@@ -38,7 +43,7 @@ def bisection_method(f, a, b, e, max_iter=5):
 			print(f"> требуемая точность вручную не достигнута")
 			break
 
-	print("#### $x = \\dfrac{a + b}{2}$\n#### $f(x) = f(x)$")
+	print("#### $x = \\frac{a + b}{2}$\n#### $f(x) = f(x)$")
 	return [xm, ym]
 
 
@@ -50,27 +55,27 @@ def golden_section_search(f, a, b, e, max_iter=5):
 	x2 = a + 0.618 * (b - a)
 	print("- 1 итерация")
 	print("	- Вычислим точки по формулам $x_1 = a+0.382(b-a)$, $x_2 = a+0.618(b-a)$:")
-	print(f"		- $x_1 = {a:.5f}+0.382({b:.5f}-{a:.5f})= {x1:.5f}$")
-	print(f"		- $x_2 = {a:.5f}+0.618({b:.5f}-{a:.5f})= {x2:.5f}$")
+	print(f"		- $x_1 = {format_number(a)}+0.382({format_number(b)}-{format_number(a)})= {format_number(x1)}$")
+	print(f"		- $x_2 = {format_number(a)}+0.618({format_number(b)}-{format_number(a)})= {format_number(x2)}$")
 	k = 1
 	while abs(b - a) > e:
 		print(f"- {k} итерация")
 		if f(x1) < f(x2):
-			print(f"	- $f({x1:.5f}) < f({x2:.5f})$ или ${f(x1):.5f} < {f(x2):.5f}$, следовательно:")
+			print(f"	- $f({format_number(x1)}) < f({format_number(x2)})$ или ${format_number(f(x1))} < {format_number(f(x2))}$, следовательно:")
 			b = x2
-			print(f"		- отрезок $[a; x_2]$ или $[{a:.5f}; {x2:.5f}]$")
+			print(f"		- отрезок $[a; x_2]$ или $[{format_number(a)}; {format_number(x2)}]$")
 			x2 = x1
-			print(f"		- $x2 = x1 = {x1:.5f}$")
+			print(f"		- $x_2 = x_1 = {format_number(x1)}$")
 			x1 = a + 0.382 * (b - a)
-			print(f"		- $x1 = a + 0.382 * (b - a) = {a:.5f} + 0.382 *({b:.5f} - {a:.5f}) = {x1:.5f}$")
+			print(f"		- $x_1 = a + 0.382 * (b - a) = {format_number(a)} + 0.382 *({format_number(b)} - {format_number(a)}) = {format_number(x1)}$")
 		else:
-			print(f"	- $f({x1:.5f}) > f({x2:.5f})$ или ${f(x1):.5f} > {f(x2):.5f}$, следовательно:")
+			print(f"	- $f({format_number(x1)}) > f({format_number(x2)})$ или ${format_number(f(x1))} > {format_number(f(x2))}$, следовательно:")
 			a = x1
-			print(f"		- отрезок $[x_1; b]$ или $[{x1:.5f}; {b:.5f}]$")
+			print(f"		- отрезок $[x_1; b]$ или $[{format_number(x1)}; {format_number(b)}]$")
 			x1 = x2
-			print(f"		- $x1 = x2 = {x2:.5f}$")
+			print(f"		- $x1 = x2 = {format_number(x2)}$")
 			x2 = a + 0.618 * (b - a)
-			print(f"		- $x2 = a + 0.618 * (b - a) = {a:.5f} + 0.618 *({b:.5f} - {a:.5f}) = {x2:.5f}$")
+			print(f"		- $x2 = a + 0.618 * (b - a) = {format_number(a)} + 0.618 *({format_number(b)} - {format_number(a)}) = {format_number(x2)}$")
 
 		k += 1
 		# Если достигнуто максимальное количество итераций
@@ -78,7 +83,7 @@ def golden_section_search(f, a, b, e, max_iter=5):
 			print(f"> требуемая точность вручную не достигнута")
 			break
 
-	print("#### $x = \\dfrac{b + a}{2}$\n#### $f(x) = f(\\dfrac{b + a}{2})$")
+	print("#### $x = \\frac{b + a}{2}$\n#### $f(x) = f(\\frac{b + a}{2})$")
 	return [(b + a) / 2, f((b + a) / 2)]
 
 
@@ -95,10 +100,10 @@ def secant_method(f, df, a, b, e, max_iter=5):
 
 		# Печать отчета для текущей итерации
 		print(f"- {k} итерация")
-		print("    - $\\widetilde{x} = a - \\dfrac{f'(a)}{f'(a)-f'(b)}(a-b)", end="")
-		print(f" = {a:.5f} - {df(a):.5f} / ({df(a):.5f} - {df(b):.5f}) * ({a:.5f} - {b:.5f}) = {x:.5f}$")
+		print("    - $\\widetilde{x} = a - \\frac{f'(a)}{f'(a)-f'(b)}(a-b)", end="")
+		print(f" = {format_number(a)} - \\frac{{{format_number(df(a))}}}{{{format_number(df(a))} - {format_number(df(b))}}} * ({format_number(a)} - {format_number(b)}) = {format_number(x)}$")
 		print("    - $f'(\\widetilde{x}) = ", end="")
-		print(f"f'({x:.5f}) = {df_x:.5f}$")
+		print(f"f'({format_number(x)}) = {format_number(df_x)}$")
 
 		# Проверка и выбор нового отрезка
 		if df_x > 0:
@@ -138,12 +143,12 @@ def newton_method(f, df, ddf, x0, e, max_iter=5):
 
         # Печать текущей итерации
         print(f"- {k + 1} итерация")
-        print("    - $x_{k+1} = x_k - \\dfrac{f'(x_k)}{f''(x_k)}$", end="")
-        print(f" = {xk:.5f} - {df_xk:.5f} / {ddf_xk:.5f} = ", end="")
+        print("    - $x_{k+1} = x_k - \\frac{f'(x_k)}{f''(x_k)}", end="")
+        print(f" = {format_number(xk)} - \\frac{{{format_number(df_xk)}}}{{{format_number(ddf_xk)}}} = ", end="")
         
         # Вычисляем новую точку
         xk1 = xk - df_xk / ddf_xk
-        print(f"{xk1:.5f}$")
+        print(f"{format_number(xk1)}$")
 
         # Проверка на окончание поиска
         if abs(df_xk) <= e:
@@ -158,7 +163,7 @@ def newton_method(f, df, ddf, x0, e, max_iter=5):
     if k == max_iter:
         print(f"> требуемая точность вручную не достигнута")
 
-    print(f"### $x^* \\approx x_k = {xk:.5f}$\n### $f^* \\approx f(x_k) = {f(xk):.5f}$")
+    print(f"### $x^* \\approx x_k = {format_number(xk)}$\n### $f^* \\approx f(x_k) = {f(xk):.5f}$")
     return [xk, f(xk)]
 
 

@@ -15,11 +15,9 @@ public class MethodsForNE {
 			mid = (a + b) / 2;
 			double fMid = function.apply(mid);
 
-
 			if (Math.abs(fMid) < eps) {
 				break;
 			}
-
 			if (function.apply(a) * fMid < 0) {
 				b = mid;
 			} else {
