@@ -1,13 +1,13 @@
-package itmo.andrey.laba1;
+package itmo.andrey.lab1_backend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class Laba1Application {
+public class Lab1_backendApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(Laba1Application.class, args);
+		SpringApplication.run(Lab1_backendApplication.class, args);
 	}
 
 }
