@@ -1,0 +1,157 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > Planet</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">org.example.domain</a>
+</div>
+
+<h1>Coverage Summary for Class: Planet (org.example.domain)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Planet</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/15)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package org.example.domain;
+&nbsp;
+&nbsp;/**
+&nbsp; * Класс, представляющий планету
+&nbsp; */
+&nbsp;public class Planet extends CelestialObject {
+&nbsp;    private final PlanetShape shape;
+&nbsp;    private final boolean hasNightSide;
+&nbsp;
+&nbsp;    public Planet(String name, Color color, double size, Position position,
+&nbsp;            PlanetShape shape, boolean hasNightSide) {
+<b class="nc">&nbsp;        super(name, color, size, position);</b>
+<b class="nc">&nbsp;        this.shape = shape;</b>
+<b class="nc">&nbsp;        this.hasNightSide = hasNightSide;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public PlanetShape getShape() {
+<b class="nc">&nbsp;        return shape;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public boolean hasNightSide() {
+<b class="nc">&nbsp;        return hasNightSide;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public String getDisplayRepresentation() {
+<b class="nc">&nbsp;        StringBuilder representation = new StringBuilder();</b>
+<b class="nc">&nbsp;        representation.append(&quot;Планета &quot;)</b>
+<b class="nc">&nbsp;                .append(getName())</b>
+<b class="nc">&nbsp;                .append(&quot; цвета &quot;)</b>
+<b class="nc">&nbsp;                .append(getColor())</b>
+<b class="nc">&nbsp;                .append(&quot;, форма: &quot;)</b>
+<b class="nc">&nbsp;                .append(shape);</b>
+&nbsp;
+<b class="nc">&nbsp;        if (hasNightSide) {</b>
+<b class="nc">&nbsp;            representation.append(&quot; (видна ночная сторона)&quot;);</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        return representation.toString();</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-03-21 00:03</div>
+</div>
+</body>
+</html>
