@@ -13,9 +13,9 @@ class ScreenTest {
     @BeforeEach
     void setUp() {
         screen = new Screen();
-        star = new Star("Звезда", Color.RED, 1.0,
+        star = new Star(Name.RED_STAR, Color.RED, 1.0,
                 new Position(ScreenRegion.EDGE, 10, 20), StarSystem.SINGLE);
-        planet = new Planet("Планета", Color.BLUE, 2.0,
+        planet = new Planet(Name.PLANET, Color.BLUE, 2.0,
                 new Position(ScreenRegion.CORNER, 30, 40),
                 PlanetShape.CRESCENT, true);
     }
@@ -76,12 +76,17 @@ class ScreenTest {
     @Test
     void displayObjectShouldThrowExceptionIfOverlapping() {
         Screen screen = new Screen();
-        CelestialObject star = new Star("Звезда", Color.RED, 5.0, new Position(ScreenRegion.CENTER, 50, 50), StarSystem.SINGLE);
-        CelestialObject planet = new Planet("Планета", Color.BLUE, 3.0, new Position(ScreenRegion.CENTER, 51, 51), PlanetShape.CRESCENT, true);
+        CelestialObject star = new Star(Name.RED_STAR, Color.RED, 5.0,
+                new Position(ScreenRegion.CENTER, 50, 50), StarSystem.SINGLE);
+        CelestialObject planet = new Planet(Name.PLANET, Color.BLUE, 3.0,
+                new Position(ScreenRegion.CENTER, 51, 51), PlanetShape.CRESCENT, true);
 
         screen.displayObject(star);
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> screen.displayObject(planet));
-        assertEquals("Объект пересекается с уже существующими объектами на экране.", exception.getMessage());
+        OverlapException exception = assertThrows(OverlapException.class,
+                () -> screen.displayObject(planet));
+
+        assertEquals(star, exception.getExistingObject());
+        assertEquals(planet, exception.getNewObject());
     }
 }

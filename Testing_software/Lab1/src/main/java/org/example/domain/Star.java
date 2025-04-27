@@ -8,14 +8,14 @@ import lombok.Setter;
 public class Star extends CelestialObject {
     private StarSystem starSystem;
 
-    public Star(String name, Color color, double size, Position position, StarSystem starSystem) {
+    public Star(Name name, Color color, double size, Position position, StarSystem starSystem) {
         super(name, color, size, position);
         this.starSystem = starSystem;
     }
 
     @Override
-    public String getDisplayRepresentation() {
-        return "Звезда " + getName() + " (" + getColor() + ")";
+    protected boolean isStarObject() {
+        return true;
     }
 
     public StarSystem getSystem() {

@@ -32,7 +32,7 @@ class SpaceSimulationTest {
     void addStarDisplaysObjectWhenSimulationStarted() {
         simulation.start();
 
-        Star star = new Star("Красная звезда", Color.RED, 1.0,
+        Star star = new Star(Name.RED_STAR, Color.RED, 1.0,
                 new Position(ScreenRegion.EDGE, 10, 20), StarSystem.SINGLE);
         simulation.addStar(star);
 
@@ -48,7 +48,7 @@ class SpaceSimulationTest {
 
     @Test
     void addStarDoesNotDisplayObjectWhenSimulationNotStarted() {
-        Star star = new Star("Красная звезда", Color.RED, 1.0,
+        Star star = new Star(Name.RED_STAR, Color.RED, 1.0,
                 new Position(ScreenRegion.EDGE, 10, 20), StarSystem.SINGLE);
         simulation.addStar(star);
 
@@ -65,7 +65,7 @@ class SpaceSimulationTest {
     void addPlanetDisplaysObjectWhenSimulationStarted() {
         simulation.start();
 
-        Planet planet = new Planet("Планета", Color.RED, 2.0,
+        Planet planet = new Planet(Name.PLANET, Color.RED, 2.0,
                 new Position(ScreenRegion.CORNER, 30, 40),
                 PlanetShape.CRESCENT, true);
         simulation.addPlanet(planet);
@@ -82,7 +82,7 @@ class SpaceSimulationTest {
 
     @Test
     void addPlanetDoesNotDisplayObjectWhenSimulationNotStarted() {
-        Planet planet = new Planet("Планета", Color.RED, 2.0,
+        Planet planet = new Planet(Name.PLANET, Color.RED, 2.0,
                 new Position(ScreenRegion.CORNER, 30, 40),
                 PlanetShape.CRESCENT, true);
         simulation.addPlanet(planet);
@@ -100,11 +100,11 @@ class SpaceSimulationTest {
     void addMultipleObjectsToSimulation() {
         simulation.start();
 
-        Star star1 = new Star("Красная звезда", Color.RED, 1.0,
+        Star star1 = new Star(Name.RED_STAR, Color.RED, 1.0,
                 new Position(ScreenRegion.EDGE, 10, 20), StarSystem.BINARY);
-        Star star2 = new Star("Вторая звезда", Color.RED, 0.8,
+        Star star2 = new Star(Name.YELLOW_STAR, Color.RED, 0.8,
                 new Position(ScreenRegion.EDGE, 15, 25), StarSystem.BINARY);
-        Planet planet = new Planet("Планета", Color.RED, 2.0,
+        Planet planet = new Planet(Name.PLANET, Color.RED, 2.0,
                 new Position(ScreenRegion.CORNER, 30, 40),
                 PlanetShape.CRESCENT, true);
 

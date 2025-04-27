@@ -1,21 +1,25 @@
 package org.example.domain;
 
 public abstract class CelestialObject {
-    private final String name;
+    private final Name name;
     private final Color color;
     private final double size;
     private Position position;
 
-    public CelestialObject(String name, Color color, double size, Position position) {
+    public CelestialObject(Name name, Color color, double size, Position position) {
         this.name = name;
         this.color = color;
         this.size = size;
         this.position = position;
     }
 
-    public abstract String getDisplayRepresentation();
+    public ObjectType getObjectType() {
+        return isStarObject() ? ObjectType.STAR : ObjectType.PLANET;
+    }
 
-    public String getName() {
+    protected abstract boolean isStarObject();
+
+    public Name getName() {
         return name;
     }
 
