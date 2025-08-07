@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Integration 2: sec, tan, cot реальные; sin, cos, csc заглушки" tests="32" skipped="0" failures="0" errors="0" timestamp="2025-08-07T17:53:12" hostname="homepc" time="0.047">
+  <properties/>
+  <testcase name="[1] -0.28, 66913.59994578017" classname="SystemFunctionIntegrationTest$Step2" time="0.001"/>
+  <testcase name="[2] -0.49093, 18957.23992" classname="SystemFunctionIntegrationTest$Step2" time="0.0"/>
+  <testcase name="[3] -0.7, 64980.7253584916" classname="SystemFunctionIntegrationTest$Step2" time="0.001"/>
+  <testcase name="[4] -0.85, -180710.50708704584" classname="SystemFunctionIntegrationTest$Step2" time="0.001"/>
+  <testcase name="[5] -0.90374, -149159.63274" classname="SystemFunctionIntegrationTest$Step2" time="0.001"/>
+  <testcase name="[6] -0.976, -184328.01910886582" classname="SystemFunctionIntegrationTest$Step2" time="0.001"/>
+  <testcase name="[7] -2.5666, -8337.69145854376" classname="SystemFunctionIntegrationTest$Step2" time="0.0"/>
+  <testcase name="[8] -2.5709, -8335.38066" classname="SystemFunctionIntegrationTest$Step2" time="0.001"/>
+  <testcase name="[9] -2.575, -8337.470757360587" classname="SystemFunctionIntegrationTest$Step2" time="0.0"/>
+  <testcase name="[10] -2.59195, -8380.24525" classname="SystemFunctionIntegrationTest$Step2" time="0.001"/>
+  <testcase name="[11] -2.5937, -8367.140199931146" classname="SystemFunctionIntegrationTest$Step2" time="0.0"/>
+  <testcase name="[12] -2.5969, -8455.87376566625" classname="SystemFunctionIntegrationTest$Step2" time="0.001"/>
+  <testcase name="[13] -2.597659, -8453.61513" classname="SystemFunctionIntegrationTest$Step2" time="0.0"/>
+  <testcase name="[14] -2.6, -8462.296196947653" classname="SystemFunctionIntegrationTest$Step2" time="0.001"/>
+  <testcase name="[15] -3.555, 0.919685307367754" classname="SystemFunctionIntegrationTest$Step2" time="0.0"/>
+  <testcase name="[16] -3.56035, 0" classname="SystemFunctionIntegrationTest$Step2" time="0.0"/>
+  <testcase name="[17] -3.57, -1.3172395164372457" classname="SystemFunctionIntegrationTest$Step2" time="0.001"/>
+  <testcase name="[18] -3.65174, -4.36655" classname="SystemFunctionIntegrationTest$Step2" time="0.0"/>
+  <testcase name="[19] -3.726, -3.9410586332426623" classname="SystemFunctionIntegrationTest$Step2" time="0.001"/>
+  <testcase name="[20] -3.78457, -3.69356" classname="SystemFunctionIntegrationTest$Step2" time="0.001"/>
+  <testcase name="[21] -3.84, -4.184063939917195" classname="SystemFunctionIntegrationTest$Step2" time="0.0"/>
+  <testcase name="[22] -4.4, 0.9904508668539953" classname="SystemFunctionIntegrationTest$Step2" time="0.001"/>
+  <testcase name="[23] -4.48059, 0.98259" classname="SystemFunctionIntegrationTest$Step2" time="0.0"/>
+  <testcase name="[24] -4.595, 0.9910429052667797" classname="SystemFunctionIntegrationTest$Step2" time="0.001"/>
+  <testcase name="[25] -4.71239, 1" classname="SystemFunctionIntegrationTest$Step2" time="0.001"/>
+  <testcase name="[26] -5, 0.8640056619256747" classname="SystemFunctionIntegrationTest$Step2" time="0.0"/>
+  <testcase name="[27] -5.33817, 0.57517" classname="SystemFunctionIntegrationTest$Step2" time="0.001"/>
+  <testcase name="[28] -5.5, 0.7292338178074586" classname="SystemFunctionIntegrationTest$Step2" time="0.0"/>
+  <testcase name="[29] -5.79338, 2.2712" classname="SystemFunctionIntegrationTest$Step2" time="0.001"/>
+  <testcase name="[30] -5.845, 1.4045557073906416" classname="SystemFunctionIntegrationTest$Step2" time="0.001"/>
+  <testcase name="[31] -5.86562, 0" classname="SystemFunctionIntegrationTest$Step2" time="0.001"/>
+  <testcase name="[32] -5.88, -1.7848465634615083" classname="SystemFunctionIntegrationTest$Step2" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

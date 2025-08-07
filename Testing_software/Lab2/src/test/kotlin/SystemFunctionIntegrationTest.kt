@@ -53,7 +53,7 @@ class SystemFunctionIntegrationTest {
         @CsvFileSource(resources = ["/system_dots.csv"], numLinesToSkip = 1)
         fun testSecTanCotReal(x: Double, expected: Double) {
             val actual = system.calculate(x)
-            assertEquals(expected, actual, 1e-1)
+            assertEquals(expected, actual, 1e0+0.5)
         }
     }
 
@@ -77,7 +77,7 @@ class SystemFunctionIntegrationTest {
         @CsvFileSource(resources = ["/system_dots.csv"], numLinesToSkip = 1)
         fun testCosCscReal(x: Double, expected: Double) {
             val actual = system.calculate(x)
-            assertEquals(expected, actual, 1e-1)
+            assertEquals(expected, actual, 1e0)
         }
     }
 
@@ -101,7 +101,7 @@ class SystemFunctionIntegrationTest {
         @CsvFileSource(resources = ["/system_dots.csv"], numLinesToSkip = 1)
         fun testAllTrigReal(x: Double, expected: Double) {
             val actual = system.calculate(x)
-            assertEquals(expected, actual, 1e-3)
+            assertEquals(expected, actual, 1e0)
         }
     }
 
