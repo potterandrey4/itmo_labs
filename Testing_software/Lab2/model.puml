@@ -1,0 +1,26 @@
+@startuml
+class SystemFunction
+class Sin
+class Cos
+class Tan
+class Cot
+class Sec
+class Csc
+class Ln
+class Log3
+class Log5
+class Log10
+class CsvExporter
+class SimulationState
+
+SystemFunction --> Sin
+SystemFunction --> Cos
+SystemFunction --> Tan
+SystemFunction --> Cot
+SystemFunction --> Sec
+SystemFunction --> Csc
+SystemFunction --> Ln
+SystemFunction --> Log3
+SystemFunction --> Log5
+SystemFunction --> Log10
+@enduml
