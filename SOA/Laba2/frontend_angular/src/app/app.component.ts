@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
@@ -10,14 +10,14 @@ import { DisciplineManagerComponent } from './components/discipline-manager/disc
 import { LabworkService } from './services/labwork.service';
 import { BarsService } from './services/bars.service';
 import { ApiError } from './services/http-client.service';
+import { LabworkTableComponent } from './components/labwork-table/labwork-table.component';
 
 // Если у тебя нет отдельного диалога — создадим его позже
 import { LabworkFormComponent } from './components/labwork-form/labwork-form.component';
 
 const DEFAULT_FILTERS: LabworkSearchFilters = {
   page: 0,
-  size: 10,
-  sort: 'id,asc'
+  size: 10
 };
 
 @Component({
@@ -26,6 +26,8 @@ const DEFAULT_FILTERS: LabworkSearchFilters = {
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
+  @ViewChild(LabworkTableComponent) labworkTable?: LabworkTableComponent;
+
   filters: LabworkSearchFilters = { ...DEFAULT_FILTERS };
   page: PageLabWork | null = null;
   selected: LabWork | null = null;
@@ -38,6 +40,7 @@ export class AppComponent implements OnInit {
   disciplineGroups: Record<string, number> | null = null;
   barsLabworkId: number | null = null;
   barsDisciplineId: number | null = null;
+  sidebarCollapsed = false;
 
   constructor(
     private labworkService: LabworkService,
@@ -106,11 +109,15 @@ export class AppComponent implements OnInit {
   onResetFilters(): void {
     this.filters = { ...DEFAULT_FILTERS };
     this.quickNameFilter = '';
+    // Сбросить сортировки в таблице
+    if (this.labworkTable) {
+      this.labworkTable.sorts = [];
+    }
     this.runSearch();
   }
 
   onSortChange(sort: string | null): void {
-    this.filters.sort = sort ?? DEFAULT_FILTERS.sort;
+    this.filters.sort = sort ?? undefined;
     this.runSearch({ page: 0 });
   }
 
@@ -122,6 +129,7 @@ export class AppComponent implements OnInit {
     const dialogRef = this.dialog.open(LabworkFormComponent, {
       width: '720px',
       maxWidth: '90vw',
+      autoFocus: false,
       data: { labwork: null, disciplines: this.disciplines }
     });
 
@@ -139,6 +147,7 @@ export class AppComponent implements OnInit {
     const dialogRef = this.dialog.open(LabworkFormComponent, {
       width: '720px',
       maxWidth: '90vw',
+      autoFocus: false,
       data: { labwork, disciplines: this.disciplines }
     });
 
@@ -156,6 +165,7 @@ export class AppComponent implements OnInit {
     const dialogRef = this.dialog.open(DisciplineManagerComponent, {
       width: '640px',
       maxWidth: '90vw',
+      autoFocus: false,
       data: { disciplines: this.disciplines }
     });
 

@@ -6,7 +6,17 @@
     </h3>
 
     <!-- Основной контейнер с правильной высотой -->
-    <div class="manager-body">
+    <mat-dialog-content *ngIf="dialogMode; else inlineContent" class="dialog-content">
+        <ng-container *ngTemplateOutlet="managerContent"></ng-container>
+    </mat-dialog-content>
+
+    <ng-template #inlineContent>
+        <div class="manager-body">
+            <ng-container *ngTemplateOutlet="managerContent"></ng-container>
+        </div>
+    </ng-template>
+
+    <ng-template #managerContent>
         <!-- Список дисциплин — БЕЗ mat-list (это и было причиной!) -->
         <div class="discipline-list" *ngIf="disciplines.length; else empty">
             <div class="discipline-item" *ngFor="let disc of disciplines">
@@ -61,11 +71,11 @@
         </ng-template>
 
         <!-- Форма создания -->
-        <form (ngSubmit)="createDiscipline()" class="create-form" novalidate>
+        <form (ngSubmit)="createDiscipline()" class="create-form" novalidate #createForm="ngForm">
             <mat-form-field appearance="outline">
                 <mat-label>Название дисциплины *</mat-label>
-                <input matInput [(ngModel)]="newDiscipline.name" name="name" required />
-                <mat-error *ngIf="!newDiscipline.name.trim()">Обязательное поле</mat-error>
+                <input matInput [(ngModel)]="newDiscipline.name" name="name" required #nameInput="ngModel" />
+                <mat-error *ngIf="nameInput.touched && !newDiscipline.name.trim()">Обязательное поле</mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="outline">
@@ -74,11 +84,18 @@
                 <span matSuffix>ч.</span>
             </mat-form-field>
 
-            <button mat-raised-button color="primary" type="submit" class="create-btn"
+            <button *ngIf="!dialogMode" mat-raised-button color="primary" type="submit" class="create-btn"
                 [disabled]="busy || !newDiscipline.name.trim()">
                 <mat-icon>add</mat-icon>
                 Создать
             </button>
         </form>
-    </div>
+    </ng-template>
+
+    <mat-dialog-actions *ngIf="dialogMode" align="end">
+        <button mat-button (click)="dialogRef?.close()">Отмена</button>
+        <button mat-raised-button color="primary" (click)="createDiscipline()" [disabled]="busy || !newDiscipline.name.trim()">
+            Создать
+        </button>
+    </mat-dialog-actions>
 </section>

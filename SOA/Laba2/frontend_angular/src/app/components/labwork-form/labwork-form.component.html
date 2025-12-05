@@ -46,8 +46,7 @@
 
                 <div class="app-field">
                     <label class="form-label">Сложность</label>
-                    <mat-select [(ngModel)]="form.difficulty" name="difficulty" placeholder="—">
-                        <mat-option [value]="null">—</mat-option>
+                    <mat-select [(ngModel)]="form.difficulty" name="difficulty" placeholder="Выберите сложность">
                         <mat-option *ngFor="let diff of difficulties" [value]="diff">
                             {{ difficultyLabels[diff] }}
                         </mat-option>
@@ -56,8 +55,7 @@
 
                 <div class="app-field">
                     <label class="form-label">Дисциплина *</label>
-                    <mat-select [(ngModel)]="form.disciplineId" name="disciplineId" required>
-                        <mat-option [value]="null">Выберите дисциплину</mat-option>
+                    <mat-select [(ngModel)]="form.disciplineId" name="disciplineId" required placeholder="Выберите дисциплину">
                         <mat-option *ngFor="let disc of disciplines" [value]="disc.id">
                             {{ disc.name }}
                         </mat-option>

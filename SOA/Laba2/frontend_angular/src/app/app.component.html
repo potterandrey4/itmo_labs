@@ -11,15 +11,23 @@
 
   <div class="layout">
     <!-- Sidebar Filters -->
-    <aside class="sidebar">
+    <aside class="sidebar" [class.collapsed]="sidebarCollapsed">
       <div class="sidebar-header">
-        <h3><mat-icon>tune</mat-icon> Фильтры</h3>
-        <button mat-icon-button (click)="onResetFilters()" class="reset-btn">
-          <mat-icon>refresh</mat-icon>
-        </button>
+        <h3 *ngIf="!sidebarCollapsed">
+          <mat-icon>tune</mat-icon> 
+          <span class="sidebar-title-text">Фильтры</span>
+        </h3>
+        <div class="sidebar-actions">
+          <button mat-icon-button (click)="onResetFilters()" class="reset-btn" *ngIf="!sidebarCollapsed" title="Сбросить фильтры">
+            <mat-icon>refresh</mat-icon>
+          </button>
+          <button mat-icon-button (click)="sidebarCollapsed = !sidebarCollapsed" class="toggle-btn" [title]="sidebarCollapsed ? 'Показать фильтры' : 'Скрыть фильтры'">
+            <mat-icon>{{ sidebarCollapsed ? 'chevron_right' : 'chevron_left' }}</mat-icon>
+          </button>
+        </div>
       </div>
 
-      <div class="sidebar-content">
+      <div class="sidebar-content" *ngIf="!sidebarCollapsed">
         <app-filters-panel [filters]="filters" (filtersChange)="onFiltersChange($event)" (onSearch)="runSearch()"
           [loading]="loading">
         </app-filters-panel>

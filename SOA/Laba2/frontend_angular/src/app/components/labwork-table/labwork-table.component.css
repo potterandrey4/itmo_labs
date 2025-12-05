@@ -25,10 +25,36 @@ tbody td {
     user-select: none;
 }
 
-.sortable mat-icon {
+.sortable:hover {
+    background: rgba(79, 70, 229, 0.05);
+}
+
+.sort-indicator {
+    display: inline-flex;
+    align-items: center;
     vertical-align: middle;
+    margin-left: 0.25rem;
+}
+
+.sort-indicator mat-icon {
     font-size: 1rem;
-    margin-left: 0.5rem;
+    width: 1rem;
+    height: 1rem;
+    color: var(--primary-color, #6366f1);
+}
+
+.sort-index {
+    font-size: 0.7rem;
+    font-weight: 600;
+    background: var(--primary-color, #6366f1);
+    color: white;
+    border-radius: 50%;
+    width: 14px;
+    height: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 2px;
 }
 
 tbody tr:hover {

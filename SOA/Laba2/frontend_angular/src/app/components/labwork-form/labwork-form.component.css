@@ -116,7 +116,7 @@ mat-dialog-actions {
 .dialog-content,
 .mat-dialog-content {
     overflow: hidden !important;
-    padding-bottom: 0 !important;
+    padding-bottom: 1.5rem !important;
 }
 
 /* Адаптивность — на узких экранах всё в столбик */

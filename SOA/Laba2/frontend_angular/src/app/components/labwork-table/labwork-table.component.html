@@ -14,37 +14,61 @@
         <table mat-table [dataSource]="dataSource" class="mat-elevation-z1" *ngIf="page && page.content">
             <!-- ID Column -->
             <ng-container matColumnDef="id">
-                <th mat-header-cell *matHeaderCellDef class="sortable" (click)="toggleSort('id')">ID
-                    <mat-icon *ngIf="currentSortColumn === 'id'">{{ currentSortDirection === 'desc' ? 'arrow_downward' :
-                        'arrow_upward' }}</mat-icon>
+                <th mat-header-cell *matHeaderCellDef class="sortable" (click)="toggleSort('id')">
+                    ID
+                    <span class="sort-indicator" *ngIf="getSortDirection('id')">
+                        <mat-icon>{{ getSortDirection('id') === 'desc' ? 'arrow_downward' : 'arrow_upward' }}</mat-icon>
+                        <span class="sort-index" *ngIf="sorts.length > 1">{{ getSortIndex('id') + 1 }}</span>
+                    </span>
                 </th>
                 <td mat-cell *matCellDef="let lab">{{ lab.id }}</td>
             </ng-container>
 
             <!-- Name Column -->
             <ng-container matColumnDef="name">
-                <th mat-header-cell *matHeaderCellDef class="sortable" (click)="toggleSort('name')">Название
-                    <mat-icon *ngIf="currentSortColumn === 'name'">{{ currentSortDirection === 'desc' ? 'arrow_downward'
-                        : 'arrow_upward' }}</mat-icon>
+                <th mat-header-cell *matHeaderCellDef class="sortable" (click)="toggleSort('name')">
+                    Название
+                    <span class="sort-indicator" *ngIf="getSortDirection('name')">
+                        <mat-icon>{{ getSortDirection('name') === 'desc' ? 'arrow_downward' : 'arrow_upward' }}</mat-icon>
+                        <span class="sort-index" *ngIf="sorts.length > 1">{{ getSortIndex('name') + 1 }}</span>
+                    </span>
                 </th>
                 <td mat-cell *matCellDef="let lab">{{ lab.name }}</td>
             </ng-container>
 
             <!-- Difficulty Column -->
             <ng-container matColumnDef="difficulty">
-                <th mat-header-cell *matHeaderCellDef>Сложность</th>
+                <th mat-header-cell *matHeaderCellDef class="sortable" (click)="toggleSort('difficulty')">
+                    Сложность
+                    <span class="sort-indicator" *ngIf="getSortDirection('difficulty')">
+                        <mat-icon>{{ getSortDirection('difficulty') === 'desc' ? 'arrow_downward' : 'arrow_upward' }}</mat-icon>
+                        <span class="sort-index" *ngIf="sorts.length > 1">{{ getSortIndex('difficulty') + 1 }}</span>
+                    </span>
+                </th>
                 <td mat-cell *matCellDef="let lab">{{ getDifficultyLabel(lab) }}</td>
             </ng-container>
 
             <!-- Minimal point -->
             <ng-container matColumnDef="minimalPoint">
-                <th mat-header-cell *matHeaderCellDef>Мин. балл</th>
+                <th mat-header-cell *matHeaderCellDef class="sortable" (click)="toggleSort('minimalpoint')">
+                    Мин. балл
+                    <span class="sort-indicator" *ngIf="getSortDirection('minimalpoint')">
+                        <mat-icon>{{ getSortDirection('minimalpoint') === 'desc' ? 'arrow_downward' : 'arrow_upward' }}</mat-icon>
+                        <span class="sort-index" *ngIf="sorts.length > 1">{{ getSortIndex('minimalpoint') + 1 }}</span>
+                    </span>
+                </th>
                 <td mat-cell *matCellDef="let lab">{{ lab.minimalPoint }}</td>
             </ng-container>
 
             <!-- PQ Max -->
             <ng-container matColumnDef="personalQualitiesMaximum">
-                <th mat-header-cell *matHeaderCellDef>PQ Max</th>
+                <th mat-header-cell *matHeaderCellDef class="sortable" (click)="toggleSort('personalqualitiesmaximum')">
+                    PQ Max
+                    <span class="sort-indicator" *ngIf="getSortDirection('personalqualitiesmaximum')">
+                        <mat-icon>{{ getSortDirection('personalqualitiesmaximum') === 'desc' ? 'arrow_downward' : 'arrow_upward' }}</mat-icon>
+                        <span class="sort-index" *ngIf="sorts.length > 1">{{ getSortIndex('personalqualitiesmaximum') + 1 }}</span>
+                    </span>
+                </th>
                 <td mat-cell *matCellDef="let lab">{{ lab.personalQualitiesMaximum || '—' }}</td>
             </ng-container>
 
@@ -62,9 +86,12 @@
 
             <!-- Created -->
             <ng-container matColumnDef="creationDate">
-                <th mat-header-cell *matHeaderCellDef class="sortable" (click)="toggleSort('creationDate')">Создано
-                    <mat-icon *ngIf="currentSortColumn === 'creationDate'">{{ currentSortDirection === 'desc' ?
-                        'arrow_downward' : 'arrow_upward' }}</mat-icon>
+                <th mat-header-cell *matHeaderCellDef class="sortable" (click)="toggleSort('creationdate')">
+                    Создано
+                    <span class="sort-indicator" *ngIf="getSortDirection('creationdate')">
+                        <mat-icon>{{ getSortDirection('creationdate') === 'desc' ? 'arrow_downward' : 'arrow_upward' }}</mat-icon>
+                        <span class="sort-index" *ngIf="sorts.length > 1">{{ getSortIndex('creationdate') + 1 }}</span>
+                    </span>
                 </th>
                 <td mat-cell *matCellDef="let lab">{{ formatDate(lab.creationDate) }}</td>
             </ng-container>

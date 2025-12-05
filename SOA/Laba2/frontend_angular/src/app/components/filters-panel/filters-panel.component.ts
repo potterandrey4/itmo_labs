@@ -56,11 +56,6 @@ export class FiltersPanelComponent implements OnInit {
     this.filtersChange.emit({ size: +value });
   }
 
-  handleSortChange(event: any): void {
-    const value = event && (event.value ?? event.target?.value);
-    this.filtersChange.emit({ sort: value });
-  }
-
   handleTextChange(field: keyof LabworkSearchFilters, event: Event): void {
     const target = event.target as HTMLInputElement;
     const value = target.value;

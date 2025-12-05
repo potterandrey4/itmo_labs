@@ -1,6 +1,7 @@
-import { Component, Input, Output, EventEmitter, HostBinding, Inject, Optional } from '@angular/core';
+import { Component, Input, Output, EventEmitter, HostBinding, Inject, Optional, ViewChild } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { NgForm } from '@angular/forms';
 import { Discipline, DisciplineInput } from '../../models';
 import { LabworkService } from '../../services/labwork.service';
 
@@ -16,6 +17,7 @@ export class DisciplineManagerComponent {
   @Output() create = new EventEmitter<DisciplineInput>();
   @Output() delete = new EventEmitter<number>();
   @Output() disciplineChange = new EventEmitter<void>();
+  @ViewChild('createForm') createForm?: NgForm;
 
   newDiscipline: DisciplineInput = { name: '', practiceHours: null };
   editingDiscipline: Discipline | null = null;
@@ -43,6 +45,7 @@ export class DisciplineManagerComponent {
         next: (created) => {
           this.disciplines.push(created);
           this.newDiscipline = { name: '', practiceHours: null };
+          this.createForm?.resetForm({ name: '', hours: null });
           this.snackBar.open('Дисциплина создана', 'OK', { duration: 3000, panelClass: ['mat-snack-success'] });
         },
         error: (err) => {
@@ -52,6 +55,7 @@ export class DisciplineManagerComponent {
     } else {
       this.create.emit(payload);
       this.newDiscipline = { name: '', practiceHours: null };
+      this.createForm?.resetForm({ name: '', hours: null });
     }
   }
 

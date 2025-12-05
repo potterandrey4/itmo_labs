@@ -77,15 +77,6 @@
                 <option [value]="50">50</option>
             </select>
         </div>
-        <div class="app-field">
-            <label class="form-label">Сортировка</label>
-            <select class="form-select" (change)="handleSortChange($event)" [value]="filters.sort || 'id,asc'">
-                <option value="id,asc">ID ↑</option>
-                <option value="id,desc">ID ↓</option>
-                <option value="name,asc">Название ↑</option>
-                <option value="name,desc">Название ↓</option>
-            </select>
-        </div>
     </div>
     <div>
         <button mat-raised-button color="primary" type="button" (click)="onSearch.emit()"

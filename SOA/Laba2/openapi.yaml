@@ -57,7 +57,7 @@ paths:
                       Поля для сортировки в формате: `field,direction;field,direction;field,direction`
                       Можно указать несколько полей через точку с запятой.
                       Direction: `asc` (по возрастанию) или `desc` (по убыванию).
-                      Примеры: `name,asc`, `id,desc;difficulty,asc`, `name,asc;id,desc`
+                      Примеры: `name,asc`, `id,desc;difficulty,asc`, `name,asc;id,desc` и т.д.
                   required: false
                   schema:
                       type: string

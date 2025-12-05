@@ -3,6 +3,11 @@ import { LabWork, PageLabWork, Discipline, Difficulty } from '../../models';
 import { difficultyLabels } from '../../models';
 import { MatTableDataSource } from '@angular/material/table';
 
+interface SortItem {
+  column: string;
+  direction: 'asc' | 'desc';
+}
+
 @Component({
   selector: 'app-labwork-table',
   templateUrl: './labwork-table.component.html',
@@ -25,25 +30,48 @@ export class LabworkTableComponent {
   displayedColumns: string[] = ['id', 'name', 'difficulty', 'minimalPoint', 'personalQualitiesMaximum', 'coordinates', 'discipline', 'creationDate', 'actions'];
   dataSource = new MatTableDataSource<LabWork>([]);
 
-  currentSortColumn: string | null = null;
-  currentSortDirection: 'asc' | 'desc' | null = null;
+  // Массив текущих сортировок (множественная сортировка)
+  sorts: SortItem[] = [];
+
+  // Получить направление сортировки для столбца (или null если не сортируется)
+  getSortDirection(column: string): 'asc' | 'desc' | null {
+    const item = this.sorts.find(s => s.column === column);
+    return item ? item.direction : null;
+  }
+
+  // Получить индекс сортировки (для отображения номера, если несколько сортировок)
+  getSortIndex(column: string): number {
+    return this.sorts.findIndex(s => s.column === column);
+  }
 
   toggleSort(column: string): void {
-    if (this.currentSortColumn !== column) {
-      this.currentSortColumn = column;
-      this.currentSortDirection = 'desc';
-      this.sortChange.emit(`${column},desc`);
-      return;
+    const existingIndex = this.sorts.findIndex(s => s.column === column);
+    
+    if (existingIndex === -1) {
+      // Столбец ещё не сортируется — добавляем desc
+      this.sorts.push({ column, direction: 'desc' });
+    } else {
+      const existing = this.sorts[existingIndex];
+      if (existing.direction === 'desc') {
+        // Меняем на asc
+        this.sorts[existingIndex] = { column, direction: 'asc' };
+      } else {
+        // Убираем сортировку
+        this.sorts.splice(existingIndex, 1);
+      }
     }
-    if (this.currentSortDirection === 'desc') {
-      this.currentSortDirection = 'asc';
-      this.sortChange.emit(`${column},asc`);
-      return;
+    
+    this.emitSortChange();
+  }
+
+  private emitSortChange(): void {
+    if (this.sorts.length === 0) {
+      this.sortChange.emit(null);
+    } else {
+      // Формируем строку: "field1,dir1;field2,dir2"
+      const sortString = this.sorts.map(s => `${s.column},${s.direction}`).join(';');
+      this.sortChange.emit(sortString);
     }
-    // clear sort
-    this.currentSortColumn = null;
-    this.currentSortDirection = null;
-    this.sortChange.emit(null);
   }
 
   onRowClick(lab: LabWork): void {
