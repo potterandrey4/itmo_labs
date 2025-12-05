@@ -1,0 +1,23 @@
+/* Pagination controls styling */
+nav {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    margin: 0.75rem 0;
+}
+
+button {
+    padding: 0.45rem 0.6rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background: #fff;
+}
+
+button:disabled {
+    opacity: 0.6;
+}
+
+span {
+    color: var(--text-muted);
+    margin-left: 0.5rem;
+}

@@ -1,0 +1,84 @@
+<section class="discipline-manager" [class.dialog-mode]="dialogMode">
+    <!-- Заголовок -->
+    <h2 *ngIf="dialogMode" mat-dialog-title>Управление дисциплинами</h2>
+    <h3 *ngIf="!dialogMode" class="sidebar-title">
+        Управление дисциплинами
+    </h3>
+
+    <!-- Основной контейнер с правильной высотой -->
+    <div class="manager-body">
+        <!-- Список дисциплин — БЕЗ mat-list (это и было причиной!) -->
+        <div class="discipline-list" *ngIf="disciplines.length; else empty">
+            <div class="discipline-item" *ngFor="let disc of disciplines">
+                <div *ngIf="editingDiscipline?.id === disc.id; else viewMode">
+                    <form (ngSubmit)="updateDiscipline()" class="edit-form" novalidate>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Название дисциплины *</mat-label>
+                            <input matInput [(ngModel)]="editingDiscipline!.name" name="editName" required />
+                            <mat-error *ngIf="!editingDiscipline!.name.trim()">Обязательное поле</mat-error>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Часы практики</mat-label>
+                            <input matInput type="number" [(ngModel)]="editingDiscipline!.practiceHours"
+                                name="editHours" min="0" />
+                            <span matSuffix>ч.</span>
+                        </mat-form-field>
+                        <div class="edit-actions">
+                            <button mat-button type="button" (click)="cancelEditing()">Отмена</button>
+                            <button mat-raised-button color="primary" type="submit"
+                                [disabled]="busy || !editingDiscipline!.name.trim()">
+                                Сохранить
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <ng-template #viewMode>
+                    <div class="discipline-info">
+                        <div class="name">{{ disc.name }}</div>
+                        <div class="hours" *ngIf="disc.practiceHours != null">
+                            {{ disc.practiceHours }} ч. практики
+                        </div>
+                    </div>
+                    <div class="actions">
+                        <button mat-icon-button color="primary" (click)="startEditing(disc)" [disabled]="busy">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                        <button mat-icon-button color="warn" class="delete-btn" (click)="deleteDiscipline(disc.id)"
+                            [disabled]="busy">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </div>
+                </ng-template>
+            </div>
+        </div>
+
+        <!-- Пустое состояние -->
+        <ng-template #empty>
+            <div class="empty-state">
+                <mat-icon>info</mat-icon>
+                <p>Дисциплины ещё не добавлены</p>
+            </div>
+        </ng-template>
+
+        <!-- Форма создания -->
+        <form (ngSubmit)="createDiscipline()" class="create-form" novalidate>
+            <mat-form-field appearance="outline">
+                <mat-label>Название дисциплины *</mat-label>
+                <input matInput [(ngModel)]="newDiscipline.name" name="name" required />
+                <mat-error *ngIf="!newDiscipline.name.trim()">Обязательное поле</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Часы практики</mat-label>
+                <input matInput type="number" [(ngModel)]="newDiscipline.practiceHours" name="hours" min="0" />
+                <span matSuffix>ч.</span>
+            </mat-form-field>
+
+            <button mat-raised-button color="primary" type="submit" class="create-btn"
+                [disabled]="busy || !newDiscipline.name.trim()">
+                <mat-icon>add</mat-icon>
+                Создать
+            </button>
+        </form>
+    </div>
+</section>

@@ -1,0 +1,93 @@
+<div class="modern-app">
+  <!-- Top App Bar -->
+  <mat-toolbar color="primary" class="app-bar">
+    <button mat-icon-button>
+      <mat-icon>menu_book</mat-icon>
+    </button>
+    <span class="title">LabWork</span>
+    <span class="subtitle">Управление лабораторными</span>
+    <span class="spacer"></span>
+  </mat-toolbar>
+
+  <div class="layout">
+    <!-- Sidebar Filters -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h3><mat-icon>tune</mat-icon> Фильтры</h3>
+        <button mat-icon-button (click)="onResetFilters()" class="reset-btn">
+          <mat-icon>refresh</mat-icon>
+        </button>
+      </div>
+
+      <div class="sidebar-content">
+        <app-filters-panel [filters]="filters" (filtersChange)="onFiltersChange($event)" (onSearch)="runSearch()"
+          [loading]="loading">
+        </app-filters-panel>
+
+        <mat-divider class="my-4"></mat-divider>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Table Header with Search -->
+      <div class="table-header">
+        <mat-form-field appearance="outline" class="table-search">
+          <mat-label>Поиск по названию...</mat-label>
+          <input matInput [value]="quickNameFilter" (input)="onQuickSearch($any($event.target).value)" />
+        </mat-form-field>
+
+        <div class="header-actions">
+          <button mat-stroked-button (click)="openCreateDialog()">
+            <mat-icon>add</mat-icon> Новая работа
+          </button>
+          <button mat-stroked-button color="primary" (click)="openDisciplineManagerDialog()">
+            <mat-icon>manage_accounts</mat-icon> Управление дисциплинами
+          </button>
+        </div>
+      </div>
+
+      <mat-slide-toggle [(ngModel)]="groupByDiscipline" (change)="onToggleGrouping($event.checked)">
+        Группировать по дисциплинам
+      </mat-slide-toggle>
+
+      <!-- Table -->
+      <div class="table-container">
+        <app-labwork-table [page]="page" [selected]="selected" [loading]="loading"
+          [groupByDiscipline]="groupByDiscipline" [disciplineGroups]="disciplineGroups" [disciplines]="disciplines"
+          (select)="onSelect($event)" (edit)="openEditDialog($event)" (delete)="deleteLabwork($event)"
+          (sortChange)="onSortChange($event)">
+        </app-labwork-table>
+      </div>
+
+      <!-- Bars Operations -->
+      <div class="bars-operations">
+        <h3>Bars операции</h3>
+        <div class="operations-content">
+          <mat-form-field appearance="outline">
+            <mat-label>Labwork ID</mat-label>
+            <input matInput type="number" [(ngModel)]="barsLabworkId" />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Дисциплина</mat-label>
+            <mat-select [(ngModel)]="barsDisciplineId">
+              <mat-option [value]="null">—</mat-option>
+              <mat-option *ngFor="let d of disciplines" [value]="d.id">{{ d.name }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <div class="buttons">
+            <button mat-stroked-button color="accent" type="button" (click)="decreaseDifficulty(barsLabworkId!)"
+              [disabled]="busy || !barsLabworkId">Уменьшить сложность</button>
+            <button mat-raised-button color="primary" type="button"
+              (click)="assignDiscipline({ labworkId: barsLabworkId!, discipline: getDisciplineById(barsDisciplineId)! })"
+              [disabled]="busy || !barsLabworkId || !barsDisciplineId">Назначить дисциплину</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pagination -->
+      <app-pagination-controls class="pagination" [page]="page" (pageChange)="onPageChange($event)">
+      </app-pagination-controls>
+    </main>
+  </div>
+</div>

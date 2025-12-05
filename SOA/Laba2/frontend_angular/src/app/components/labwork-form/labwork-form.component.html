@@ -1,0 +1,98 @@
+<section>
+    <h2 *ngIf="dialogMode" mat-dialog-title>
+        {{ selected ? 'Редактировать лабораторную работу' : 'Новая лабораторная работа' }}
+    </h2>
+
+    <header *ngIf="!dialogMode">
+        <h2>{{ selected ? 'Редактировать' : 'Создать' }} лабораторную работу</h2>
+    </header>
+
+    <ng-template #formTemplate>
+        <form (ngSubmit)="onSubmit()" class="mat-form">
+            <div class="form-row">
+                <mat-form-field appearance="outline" class="app-field">
+                    <mat-label>Название</mat-label>
+                    <input matInput [(ngModel)]="form.name" name="name" required />
+                    <mat-error *ngIf="errors.name">{{ errors.name }}</mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="app-field">
+                    <mat-label>X координата</mat-label>
+                    <input matInput [(ngModel)]="form.coordinates.x" name="coordX" type="number" required />
+                    <mat-error *ngIf="errors.coordinates?.x">{{ errors.coordinates!.x }}</mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="app-field">
+                    <mat-label>Y координата</mat-label>
+                    <input matInput [(ngModel)]="form.coordinates.y" name="coordY" type="number" required />
+                    <mat-error *ngIf="errors.coordinates?.y">{{ errors.coordinates!.y }}</mat-error> </mat-form-field>
+
+                <mat-form-field appearance="outline" class="app-field">
+                    <mat-label>Минимальный балл</mat-label>
+                    <input matInput [(ngModel)]="form.minimalPoint" name="minimalPoint" type="number" required />
+                    <mat-error *ngIf="errors.minimalPoint">{{ errors.minimalPoint }}</mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="form-row">
+                <div class="app-field">
+                    <label class="form-label">Личностные качества (макс)</label>
+                    <input class="form-control" [(ngModel)]="form.personalQualitiesMaximum" name="pqMax"
+                        type="number" />
+                    <span *ngIf="errors.personalQualitiesMaximum" class="error">
+                        {{ errors.personalQualitiesMaximum }}
+                    </span>
+                </div>
+
+                <div class="app-field">
+                    <label class="form-label">Сложность</label>
+                    <mat-select [(ngModel)]="form.difficulty" name="difficulty" placeholder="—">
+                        <mat-option [value]="null">—</mat-option>
+                        <mat-option *ngFor="let diff of difficulties" [value]="diff">
+                            {{ difficultyLabels[diff] }}
+                        </mat-option>
+                    </mat-select>
+                </div>
+
+                <div class="app-field">
+                    <label class="form-label">Дисциплина *</label>
+                    <mat-select [(ngModel)]="form.disciplineId" name="disciplineId" required>
+                        <mat-option [value]="null">Выберите дисциплину</mat-option>
+                        <mat-option *ngFor="let disc of disciplines" [value]="disc.id">
+                            {{ disc.name }}
+                        </mat-option>
+                    </mat-select>
+                    <span *ngIf="errors.disciplineId" class="error">
+                        {{ errors.disciplineId }}
+                    </span>
+                </div>
+            </div>
+
+            <div class="form-actions" *ngIf="!dialogMode">
+                <button mat-raised-button color="primary" type="submit" [disabled]="busy">
+                    {{ busy ? 'Сохранение...' : (selected ? 'Обновить' : 'Создать') }}
+                </button>
+                <button mat-stroked-button color="warn" *ngIf="selected" (click)="onDeleteClick()" type="button">
+                    Удалить
+                </button>
+            </div>
+        </form>
+    </ng-template>
+
+    <ng-container *ngIf="dialogMode; else inline">
+        <mat-dialog-content class="dialog-content">
+            <ng-container *ngTemplateOutlet="formTemplate"></ng-container>
+        </mat-dialog-content>
+    </ng-container>
+
+    <ng-template #inline>
+        <ng-container *ngTemplateOutlet="formTemplate"></ng-container>
+    </ng-template>
+
+    <mat-dialog-actions *ngIf="dialogMode" align="end">
+        <button mat-button (click)="dialogRef?.close()">Отмена</button>
+        <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="busy">
+            {{ busy ? 'Сохранение...' : (selected ? 'Обновить' : 'Создать') }}
+        </button>
+    </mat-dialog-actions>
+</section>

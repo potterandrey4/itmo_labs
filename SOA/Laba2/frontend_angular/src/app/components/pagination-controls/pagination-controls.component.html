@@ -1,0 +1,9 @@
+<nav *ngIf="page">
+    <button mat-stroked-button type="button" (click)="onPrev()" [disabled]="!canPrev">Назад</button>
+    <ng-container *ngFor="let p of getPageNumbers()">
+        <button mat-stroked-button type="button" (click)="onPageClick(p)" [disabled]="page!.number === p">{{ p + 1
+            }}</button>
+    </ng-container>
+    <button mat-stroked-button type="button" (click)="onNext()" [disabled]="!canNext">Вперёд</button>
+    <span>Стр. {{ page!.number + 1 }} / {{ page!.totalPages }}</span>
+</nav>

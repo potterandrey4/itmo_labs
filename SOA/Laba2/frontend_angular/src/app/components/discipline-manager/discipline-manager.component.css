@@ -1,0 +1,169 @@
+/* Критично для диалога */
+:host-context(mat-dialog-content) {
+    display: flex !important;
+    flex-direction: column;
+    height: 100%;
+    max-height: 100vh;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.discipline-manager {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+/* Заголовок */
+mat-dialog-title,
+.sidebar-title {
+    margin: 0;
+    padding: 1.5rem 1.5rem 0.75rem;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #1e293b;
+    flex-shrink: 0;
+}
+
+/* Основной контент */
+.manager-body {
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    padding: 0 1.5rem 1.5rem;
+}
+
+/* Список — обычный div, а не mat-list! */
+.discipline-list {
+    flex: 1;
+    overflow-y: auto;
+    margin: 0.75rem 0;
+    padding: 0.75rem;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    /* Красивый скроллбар */
+    scrollbar-width: thin;
+    scrollbar-color: #94a3b8 #f8fafc;
+}
+
+.discipline-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.discipline-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.discipline-list::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+}
+
+/* Элемент дисциплины */
+.discipline-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.discipline-item:last-child {
+    border-bottom: none;
+}
+
+.discipline-info {
+    flex: 1;
+    min-width: 0;
+    /* Важно для ellipsis */
+}
+
+.name {
+    font-weight: 500;
+    color: #1e293b;
+    font-size: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.hours {
+    font-size: 0.875rem;
+    color: #64748b;
+    margin-top: 0.25rem;
+}
+
+.actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.edit-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.edit-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.delete-btn {
+    color: #ef4444;
+    flex-shrink: 0;
+}
+
+/* Пустое состояние */
+.empty-state {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #94a3b8;
+    padding: 2rem 0;
+}
+
+.empty-state mat-icon {
+    font-size: 3rem;
+    width: 3rem;
+    height: 3rem;
+    opacity: 0.4;
+    margin-bottom: 0.5rem;
+}
+
+/* Форма */
+.create-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1rem;
+    flex-shrink: 0;
+}
+
+.create-btn {
+    align-self: flex-start;
+    border-radius: 12px;
+    padding: 0 1.5rem;
+    height: 48px;
+    font-weight: 600;
+}
+
+/* Режим диалога */
+.dialog-mode {
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.dialog-mode .sidebar-title {
+    display: none;
+}

@@ -1,0 +1,135 @@
+/* Основной контейнер — убираем горизонтальный скролл */
+section {
+    background: white;
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    /* ← Главное: убираем горизонтальный скролл */
+}
+
+/* Диалог — чуть другие отступы */
+:host(.dialog-mode) {
+    padding: 0 !important;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+:host(.dialog-mode) .dialog-content {
+    padding: 1rem 1.5rem 1.5rem;
+    overflow: hidden;
+}
+
+/* Заголовки */
+mat-dialog-title,
+header h2 {
+    margin: 0 0 1.5rem 0;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+/* Форма — вертикальная, с правильными отступами */
+.mat-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+}
+
+/* Ряд полей — горизонтально на больших экранах, вертикально на маленьких */
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+    width: 100%;
+}
+
+/* Поля — на всю доступную ширину */
+.app-field {
+    width: 100%;
+    min-width: 0;
+    /* важно для flex/grid */
+}
+
+/* mat-form-field — растягиваем */
+mat-form-field {
+    width: 100%;
+}
+
+/* Обычные input/select — только для не-Material полей */
+.form-control,
+.form-select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 12px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    background: white;
+}
+
+.form-control:focus,
+.form-select:focus {
+    outline: none;
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+/* Кнопки в диалоге — уже есть mat-dialog-actions */
+mat-dialog-actions {
+    padding: 1rem 1.5rem !important;
+    margin: 0 !important;
+    background: #f8fafc;
+    border-top: 1px solid #e2e8f0;
+}
+
+/* Inline-кнопки */
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+}
+
+.form-actions button {
+    flex: 1;
+    min-width: 140px;
+}
+
+/* Ошибки */
+.error {
+    color: #ef4444;
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+}
+
+/* Убираем горизонтальный скролл у всех */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+.dialog-content,
+.mat-dialog-content {
+    overflow: hidden !important;
+    padding-bottom: 0 !important;
+}
+
+/* Адаптивность — на узких экранах всё в столбик */
+@media (max-width: 640px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    section {
+        padding: 1rem;
+    }
+
+    :host(.dialog-mode) .dialog-content {
+        padding: 1rem;
+    }
+}

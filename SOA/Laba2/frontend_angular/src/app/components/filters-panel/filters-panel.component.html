@@ -1,0 +1,95 @@
+<section>
+    <h3>Фильтры</h3>
+    <div class="filter-row">
+        <mat-form-field appearance="outline" class="app-field">
+            <mat-label>Название</mat-label>
+            <input matInput type="text" [value]="filters.name || ''" (input)="handleTextChange('name', $event)" />
+        </mat-form-field>
+    </div>
+    <div class="filter-row">
+        <mat-form-field appearance="outline" class="app-field">
+            <mat-label>Мин. сложность</mat-label>
+            <mat-select (selectionChange)="handleDifficultyChange($event)" [value]="filters.minDifficulty || ''">
+                <mat-option value="">—</mat-option>
+                <mat-option *ngFor="let d of difficulties" [value]="d">{{ difficultyLabels[d] }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="app-field">
+            <mat-label>Дисциплина</mat-label>
+            <mat-select (selectionChange)="handleDisciplineChange($event)" [value]="filters.disciplineName || ''">
+                <mat-option value="">—</mat-option>
+                <mat-option *ngFor="let disc of disciplines" [value]="disc.name">{{ disc.name }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <div class="filter-row">
+        <div class="app-field">
+            <label class="form-label">Минимальный балл</label>
+            <input class="form-control" type="number" [value]="filters.minimalPointGreaterThan ?? ''"
+                (input)="handleNumberChange('minimalPointGreaterThan', $event)" />
+        </div>
+        <div class="app-field">
+            <label class="form-label">Личностные качества (макс) &gt;</label>
+            <input class="form-control" type="number" [value]="filters.personalQualitiesMaximumGreaterThan ?? ''"
+                (input)="handleNumberChange('personalQualitiesMaximumGreaterThan', $event)" />
+        </div>
+    </div>
+    <div class="filter-row">
+        <div class="app-field">
+            <label class="form-label">X ≥</label>
+            <input class="form-control" type="number" [value]="filters.xGreaterThan ?? ''"
+                (input)="handleNumberChange('xGreaterThan', $event)" />
+        </div>
+        <div class="app-field">
+            <label class="form-label">X ≤</label>
+            <input class="form-control" type="number" [value]="filters.xLessThan ?? ''"
+                (input)="handleNumberChange('xLessThan', $event)" />
+        </div>
+        <div class="app-field">
+            <label class="form-label">Y ≥</label>
+            <input class="form-control" type="number" [value]="filters.yGreaterThan ?? ''"
+                (input)="handleNumberChange('yGreaterThan', $event)" />
+        </div>
+        <div class="app-field">
+            <label class="form-label">Y ≤</label>
+            <input class="form-control" type="number" [value]="filters.yLessThan ?? ''"
+                (input)="handleNumberChange('yLessThan', $event)" />
+        </div>
+    </div>
+    <div class="filter-row">
+        <div class="app-field">
+            <label class="form-label">Создано c</label>
+            <input class="form-control" type="datetime-local" [value]="formatForInput(filters.creationDateFrom)"
+                (change)="handleDateChange('creationDateFrom', $event)" />
+        </div>
+        <div class="app-field">
+            <label class="form-label">по</label>
+            <input class="form-control" type="datetime-local" [value]="formatForInput(filters.creationDateTo)"
+                (change)="handleDateChange('creationDateTo', $event)" />
+        </div>
+    </div>
+    <div class="filter-row">
+        <div class="app-field">
+            <label class="form-label">Размер страницы</label>
+            <select class="form-select" (change)="handleSizeChange($event)" [value]="filters.size || 10">
+                <option [value]="10">10</option>
+                <option [value]="20">20</option>
+                <option [value]="50">50</option>
+            </select>
+        </div>
+        <div class="app-field">
+            <label class="form-label">Сортировка</label>
+            <select class="form-select" (change)="handleSortChange($event)" [value]="filters.sort || 'id,asc'">
+                <option value="id,asc">ID ↑</option>
+                <option value="id,desc">ID ↓</option>
+                <option value="name,asc">Название ↑</option>
+                <option value="name,desc">Название ↓</option>
+            </select>
+        </div>
+    </div>
+    <div>
+        <button mat-raised-button color="primary" type="button" (click)="onSearch.emit()"
+            [disabled]="loading">Применить</button>
+        <button mat-stroked-button type="button" (click)="onReset.emit()" [disabled]="loading">Сбросить</button>
+    </div>
+</section>

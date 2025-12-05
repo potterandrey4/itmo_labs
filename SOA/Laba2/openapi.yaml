@@ -1,0 +1,862 @@
+openapi: 3.0.3
+info:
+    version: "1"
+    title: LabWork Management API
+    description: |
+        API для управления коллекцией LabWorkов с поддержкой
+        CRUD операций, фильтрации, сортировки, пагинации и дополнительных операций.
+        
+        Система состоит из двух веб-сервисов:
+        1. **LabWork Management** - основной сервис для управления коллекцией
+        2. **BARS Operations** - дополнительные операции над LabWorkами
+
+servers:
+    - url: http://localhost:8085/LabworkService_war
+      description: Tomcat-деплой основного сервиса для разработки
+
+tags:
+    - name: LabWork Management
+      description: API для управления лабораторными работами
+    - name: BARS Operations
+      description: Дополнительные операции над лабораторными работами
+
+paths:
+    /labworks/search:
+        post:
+            tags:
+                - LabWork Management
+            summary: Получить список всех лабораторных работ
+            description: |
+                Получение массива лабораторных работ с поддержкой:
+                - **Фильтрации** по любой комбинации полей
+                - **Сортировки** по одному или нескольким полям
+                - **Постраничного вывода** с указанием размера и номера страницы
+
+            operationId: getAllLabWorks
+            parameters:
+                - name: page
+                  in: query
+                  description: Номер страницы
+                  required: false
+                  schema:
+                      type: integer
+                      default: 0
+                      minimum: 0
+                - name: size
+                  in: query
+                  description: Размер страницы (количество элементов)
+                  required: false
+                  schema:
+                      type: integer
+                      default: 10
+                      minimum: 1
+                      maximum: 100
+                - name: sort
+                  in: query
+                  description: |
+                      Поля для сортировки в формате: `field,direction;field,direction;field,direction`
+                      Можно указать несколько полей через точку с запятой.
+                      Direction: `asc` (по возрастанию) или `desc` (по убыванию).
+                      Примеры: `name,asc`, `id,desc;difficulty,asc`, `name,asc;id,desc`
+                  required: false
+                  schema:
+                      type: string
+                  example: "name,asc;id,desc"
+                - name: name
+                  in: query
+                  description: Фильтр по имени (точное совпадение)
+                  required: false
+                  schema:
+                      type: string
+                - name: minDifficulty
+                  in: query
+                  description: Фильтр по минимальной сложности
+                  required: false
+                  schema:
+                      $ref: '#/components/schemas/Difficulty'
+                - name: minimalPointGreaterThan
+                  in: query
+                  description: Фильтр - минимальный балл больше указанного значения
+                  required: false
+                  schema:
+                      type: number
+                      format: float
+                      exclusiveMinimum: true
+                      minimum: 0
+                - name: personalQualitiesMaximumGreaterThan
+                  in: query
+                  description: Фильтр - личностные качества больше указанного значения
+                  required: false
+                  schema:
+                      type: integer
+                      exclusiveMinimum: true
+                      minimum: 0
+                - name: xGreaterThan
+                  in: query
+                  description: Фильтр - координата X больше указанного значения
+                  required: false
+                  schema:
+                      type: integer
+                      format: int64
+                - name: xLessThan
+                  in: query
+                  description: Фильтр - координата X меньше указанного значения
+                  required: false
+                  schema:
+                      type: integer
+                      format: int64
+                - name: yGreaterThan
+                  in: query
+                  description: Фильтр - координата Y больше указанного значения
+                  required: false
+                  schema:
+                      type: integer
+                      format: int64
+                - name: yLessThan
+                  in: query
+                  description: Фильтр - координата Y меньше указанного значения
+                  required: false
+                  schema:
+                      type: integer
+                      format: int64
+                - name: creationDateFrom
+                  in: query
+                  description: Фильтр - дата создания от (включительно)
+                  required: false
+                  schema:
+                      type: string
+                      format: date-time
+                  example: "2024-01-01T00:00:00Z"
+                - name: creationDateTo
+                  in: query
+                  description: Фильтр - дата создания до (включительно)
+                  required: false
+                  schema:
+                      type: string
+                      format: date-time
+                  example: "2024-12-31T23:59:59Z"
+                - name: disciplineName
+                  in: query
+                  description: Фильтр по имени дисциплины
+                  required: false
+                  schema:
+                      type: string
+            responses:
+                '200':
+                    description: Успешно получен список лабораторных работ
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/PageLabWork'
+                '400':
+                    description: Неверные параметры запроса
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+
+    /labworks:
+        post:
+            tags:
+                - LabWork Management
+            summary: Создать новую лабораторную работу
+            description: |
+                Создает новую лабораторную работу в системе.
+                Поля `id` и `creationDate` генерируются автоматически.
+            operationId: newLabWork
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/LabWorkInput'
+            responses:
+                '201':
+                    description: Лабораторная работа успешно создана
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/LabWork'
+                '400':
+                    description: Ошибка валидации данных
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+
+    /labworks/{id}:
+        get:
+            tags:
+                - LabWork Management
+            summary: Получить лабораторную работу по ID
+            description: Возвращает информацию о лабораторной работе по её уникальному идентификатору
+            operationId: getLabWorkById
+            parameters:
+                - name: id
+                  in: path
+                  description: Уникальный идентификатор лабораторной работы
+                  required: true
+                  schema:
+                      type: integer
+                      format: int32
+                      minimum: 1
+            responses:
+                '200':
+                    description: Лабораторная работа найдена
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/LabWork'
+                '404':
+                    description: Лабораторная работа не найдена
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+
+        put:
+            tags:
+                - LabWork Management
+            summary: Обновить лабораторную работу
+            description: |
+                Обновляет существующую лабораторную работу.
+            operationId: updateLabWork
+            parameters:
+                - name: id
+                  in: path
+                  description: ID лабораторной работы для обновления
+                  required: true
+                  schema:
+                      type: integer
+                      format: int64
+                      minimum: 1
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/LabWorkInput'
+            responses:
+                '200':
+                    description: Лабораторная работа успешно обновлена
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/LabWork'
+                '400':
+                    description: Ошибка валидации данных
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '404':
+                    description: Лабораторная работа не найдена
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+
+        delete:
+            tags:
+                - LabWork Management
+            summary: Удалить лабораторную работу
+            description: Удаляет лабораторную работу из системы по её ID
+            operationId: deleteLabWork
+            parameters:
+                - name: id
+                  in: path
+                  description: ID лабораторной работы для удаления
+                  required: true
+                  schema:
+                      type: integer
+                      format: int64
+                      minimum: 1
+            responses:
+                '204':
+                    description: Лабораторная работа успешно удалена
+                '404':
+                    description: Лабораторная работа не найдена
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+
+    /labworks/by/discipline-groups:
+        get:
+            tags:
+                - LabWork Management
+            summary: Сгруппировать объекты по дисциплине
+            description: |
+                Группирует лабораторные работы по значению поля `discipline.name` и
+                возвращает количество элементов в каждой группе.
+                
+                Результат представлен в виде Map (объект JSON), где:
+                - ключ - название дисциплины
+                - значение - количество лабораторных работ этой дисциплины
+            operationId: disciplineGroups
+            responses:
+                '200':
+                    description: Успешно получена группировка
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                additionalProperties:
+                                    type: integer
+                                    format: int64
+                                example:
+                                    "Алгоритмы и структуры данных": 5
+                                    "Базы данных": 3
+                                    "Компьютерные сети": 2
+
+    /labworks/by/prefixed-names:
+        get:
+            tags:
+                - LabWork Management
+            summary: Найти работы по началу имени
+            description: |
+                Возвращает массив лабораторных работ, название которых начинается с заданной подстроки.
+                Поиск чувствителен к регистру.
+            operationId: prefixedNames
+            parameters:
+                - name: prefix
+                  in: query
+                  description: Подстрока для поиска в начале имени
+                  required: true
+                  schema:
+                      type: string
+                      minLength: 1
+                  example: "Алго"
+            responses:
+                '200':
+                    description: Успешно получен список лабораторных работ
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/LabWork'
+                '400':
+                    description: Префикс не указан
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+
+    /labworks/by/difficulty-greater-than:
+        get:
+            tags:
+                - LabWork Management
+            summary: Найти работы с difficulty больше заданного
+            description: |
+                Возвращает массив лабораторных работ, значение поля `difficulty` которых
+                больше указанного.
+                
+                Порядок сложности (от меньшего к большему):
+                - VERY_EASY (0)
+                - EASY (1)
+                - INSANE (2)
+                - TERRIBLE (3)
+            operationId: findByDifficultyGreaterThan
+            parameters:
+                - name: difficulty
+                  in: query
+                  description: Минимальное значение difficulty (результат не включает равные)
+                  required: true
+                  schema:
+                      $ref: '#/components/schemas/Difficulty'
+                  example: "EASY"
+            responses:
+                '200':
+                    description: Успешно получен список лабораторных работ
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/LabWork'
+                '400':
+                    description: Неверное значение difficulty
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+
+    /bars/labwork/{labworkId}/difficulty/decrease/{stepsCount}:
+        post:
+            tags:
+                - BARS Operations
+            summary: Понизить сложность лабораторной работы
+            description: |
+                Уменьшает значение поля `difficulty` на указанное количество шагов.
+                
+                Порядок сложности (с индексами):
+                - VERY_EASY (0) - минимальное значение
+                - EASY (1)
+                - INSANE (2)
+                - TERRIBLE (3)
+                
+                Если результат операции выходит за границы (< VERY_EASY), устанавливается VERY_EASY.
+            operationId: decreaseDifficulty
+            parameters:
+                - name: labworkId
+                  in: path
+                  description: ID лабораторной работы
+                  required: true
+                  schema:
+                      type: integer
+                      format: int64
+                      minimum: 1
+                  example: 1
+                - name: stepsCount
+                  in: path
+                  description: Количество шагов для понижения сложности
+                  required: true
+                  schema:
+                      type: integer
+                      format: int32
+                      minimum: 1
+                  example: 2
+            responses:
+                '200':
+                    description: Сложность успешно изменена
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/LabWork'
+                '400':
+                    description: Неверное количество шагов (должно быть > 0)
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '404':
+                    description: Лабораторная работа не найдена
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+
+    /bars/discipline/{disciplineId}/labwork/{labworkId}/add:
+        post:
+            tags:
+                - BARS Operations
+            summary: Добавить лабораторную работу в программу дисциплины
+            description: |
+                Обновляет дисциплину существующей лабораторной работы.
+                Позволяет изменить привязку лабораторной работы к дисциплине
+                и установить количество часов практики.
+                
+                Параметр `disciplineId` используется как название дисциплины.
+            operationId: addLabWorkToDiscipline
+            parameters:
+                - name: disciplineId
+                  in: path
+                  description: Название дисциплины
+                  required: true
+                  schema:
+                      type: string
+                      minLength: 1
+                  example: "Алгоритмы и структуры данных"
+                - name: labworkId
+                  in: path
+                  description: ID лабораторной работы для добавления
+                  required: true
+                  schema:
+                      type: integer
+                      format: int64
+                      minimum: 1
+                  example: 1
+                - name: practiceHours
+                  in: query
+                  description: Количество часов практики для дисциплины
+                  required: false
+                  schema:
+                      type: integer
+                      format: int64
+                      minimum: 0
+                  example: 48
+            responses:
+                '200':
+                    description: Лабораторная работа успешно добавлена к дисциплине
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/LabWork'
+                '400':
+                    description: Неверные параметры запроса
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '404':
+                    description: Лабораторная работа не найдена
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+
+    /disciplines:
+        get:
+            tags:
+                - LabWork Management
+            summary: Получить список всех дисциплин
+            operationId: getAllDisciplines
+            responses:
+                '200':
+                    description: Успешно получен список дисциплин
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Discipline'
+        post:
+            tags:
+                - LabWork Management
+            summary: Создать новую дисциплину
+            operationId: createDiscipline
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/DisciplineInput'
+            responses:
+                '201':
+                    description: Дисциплина успешно создана
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Discipline'
+                '400':
+                    description: Неверные данные
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+    /disciplines/{id}:
+        get:
+            tags:
+                - LabWork Management
+            summary: Получить дисциплину по ID
+            operationId: getDiscipline
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: integer
+                      format: int64
+                      minimum: 1
+            responses:
+                '200':
+                    description: Успешно получена дисциплина
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Discipline'
+                '404':
+                    description: Дисциплина не найдена
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+        put:
+            tags:
+                - LabWork Management
+            summary: Обновить дисциплину
+            operationId: updateDiscipline
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: integer
+                      format: int64
+                      minimum: 1
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/DisciplineInput'
+            responses:
+                '200':
+                    description: Дисциплина успешно обновлена
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Discipline'
+                '400':
+                    description: Неверные данные
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '404':
+                    description: Дисциплина не найдена
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+        delete:
+            tags:
+                - LabWork Management
+            summary: Удалить дисциплину
+            operationId: deleteDiscipline
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: integer
+                      format: int64
+                      minimum: 1
+            responses:
+                '204':
+                    description: Дисциплина успешно удалена
+                '404':
+                    description: Дисциплина не найдена
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+    schemas:
+        LabWork:
+            type: object
+            description: Лабораторная работа
+            required:
+                - name
+                - coordinates
+                - creationDate
+                - minimalPoint
+                - discipline
+            properties:
+                id:
+                    type: integer
+                    format: int64
+                    description: Уникальный идентификатор (генерируется автоматически)
+                    readOnly: true
+                    minimum: 1
+                    example: 1
+                name:
+                    type: string
+                    description: Название лабораторной работы
+                    minLength: 1
+                    example: "Алгоритмы сортировки"
+                coordinates:
+                    $ref: '#/components/schemas/Coordinates'
+                creationDate:
+                    type: string
+                    format: date-time
+                    description: Дата и время создания (генерируется автоматически)
+                    readOnly: true
+                    example: "2025-10-24T12:00:00"
+                minimalPoint:
+                    type: number
+                    format: float
+                    description: Минимальный балл за работу (должен быть больше 0)
+                    exclusiveMinimum: true
+                    minimum: 0
+                    example: 50.5
+                personalQualitiesMaximum:
+                    type: integer
+                    format: int32
+                    description: Максимальное значение личностных качеств (должно быть больше 0)
+                    exclusiveMinimum: true
+                    minimum: 0
+                    example: 100
+                difficulty:
+                    $ref: '#/components/schemas/Difficulty'
+                disciplineId:
+                    type: integer
+                    format: int64
+                    description: ID дисциплины
+                    minimum: 1
+                    example: 1
+
+        LabWorkInput:
+            type: object
+            description: Данные для создания или обновления лабораторной работы
+            required:
+                - name
+                - coordinates
+                - minimalPoint
+                - disciplineId
+            properties:
+                name:
+                    type: string
+                    description: Название лабораторной работы
+                    minLength: 1
+                    example: "Алгоритмы сортировки"
+                coordinates:
+                    $ref: '#/components/schemas/Coordinates'
+                minimalPoint:
+                    type: number
+                    format: float
+                    description: Минимальный балл за работу
+                    exclusiveMinimum: true
+                    minimum: 0.00001
+                    example: 50.5
+                personalQualitiesMaximum:
+                    type: integer
+                    format: int32
+                    description: Максимальное значение личностных качеств
+                    exclusiveMinimum: true
+                    minimum: 0
+                    example: 100
+                difficulty:
+                    $ref: '#/components/schemas/Difficulty'
+                disciplineId:
+                    type: integer
+                    format: int64
+                    description: ID дисциплины
+                    minimum: 1
+                    example: 1
+
+        Coordinates:
+            type: object
+            description: Координаты лабораторной работы
+            required:
+                - x
+                - y
+            properties:
+                x:
+                    type: number
+                    format: double64
+                    description: Координата X
+                    example: 100
+                y:
+                    type: number
+                    format: float64
+                    description: Координата Y (должна быть больше -156)
+                    minimum: -155.0
+                    example: 50
+
+        Discipline:
+            type: object
+            description: Дисциплина
+            required:
+                - id
+                - name
+            properties:
+                id:
+                    type: integer
+                    format: int64
+                    description: ID дисциплины
+                    minimum: 1
+                    example: 1
+                name:
+                    type: string
+                    description: Название дисциплины
+                    minLength: 1
+                    example: "Алгоритмы и структуры данных"
+                practiceHours:
+                    type: integer
+                    description: Количество часов практики
+                    minimum: 0
+                    example: 48
+
+        DisciplineInput:
+            type: object
+            description: Входные данные для дисциплины
+            required:
+                - name
+            properties:
+                name:
+                    type: string
+                    description: Название дисциплины
+                    minLength: 1
+                    example: "Алгоритмы и структуры данных"
+                practiceHours:
+                    type: integer
+                    description: Количество часов практики
+                    minimum: 0
+                    example: 48
+
+        Difficulty:
+            type: string
+            description: Уровень сложности лабораторной работы
+            enum:
+                - VERY_EASY
+                - EASY
+                - INSANE
+                - TERRIBLE
+            example: "EASY"
+
+        PageLabWork:
+            type: object
+            description: Страница с лабораторными работами
+            properties:
+                content:
+                    type: array
+                    description: Массив лабораторных работ на текущей странице
+                    items:
+                        $ref: '#/components/schemas/LabWork'
+                totalElements:
+                    type: integer
+                    format: int64
+                    description: Общее количество элементов во всей коллекции
+                    example: 100
+                totalPages:
+                    type: integer
+                    format: int32
+                    description: Общее количество страниц
+                    example: 10
+                size:
+                    type: integer
+                    format: int32
+                    description: Размер страницы
+                    example: 10
+                number:
+                    type: integer
+                    format: int32
+                    description: Номер текущей страницы (начиная с 0)
+                    example: 0
+                numberOfElements:
+                    type: integer
+                    format: int32
+                    description: Количество элементов на текущей странице
+                    example: 10
+                first:
+                    type: boolean
+                    description: Является ли текущая страница первой
+                    example: true
+                last:
+                    type: boolean
+                    description: Является ли текущая страница последней
+                    example: false
+                empty:
+                    type: boolean
+                    description: Является ли страница пустой
+                    example: false
+
+        ErrorResponse:
+            type: object
+            description: Описание ошибки
+            properties:
+                timestamp:
+                    type: string
+                    format: date-time
+                    description: Время возникновения ошибки
+                    example: "2025-11-08T12:00:00"
+                status:
+                    type: integer
+                    format: int32
+                    description: HTTP статус код
+                    example: 400
+                error:
+                    type: string
+                    description: Описание типа ошибки
+                    example: "Bad Request"
+                message:
+                    type: string
+                    description: Детальное сообщение об ошибке
+                    example: "Validation failed for field 'name': must not be empty"
+                path:
+                    type: string
+                    description: Путь запроса, вызвавшего ошибку
+                    example: "/api/labworks"

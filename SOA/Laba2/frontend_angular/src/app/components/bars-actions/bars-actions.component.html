@@ -1,0 +1,24 @@
+<section>
+    <h3>Действия</h3>
+    <div>
+        <mat-form-field appearance="outline">
+            <mat-label>Labwork ID</mat-label>
+            <input matInput type="number" (input)="onLabworkIdChange($event)" />
+        </mat-form-field>
+    </div>
+    <div>
+        <mat-form-field appearance="outline">
+            <mat-label>Дисциплина</mat-label>
+            <mat-select (selectionChange)="onDisciplineChange($event)">
+                <mat-option [value]="0">—</mat-option>
+                <mat-option *ngFor="let d of disciplines" [value]="d.id">{{ d.name }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <div>
+        <button mat-stroked-button color="primary" type="button" (click)="onDecrease()"
+            [disabled]="busy || !selectedLabworkId">Уменьшить сложность</button>
+        <button mat-raised-button color="accent" type="button" (click)="onAssign()"
+            [disabled]="busy || !selectedLabworkId || !selectedDisciplineId">Назначить дисциплину</button>
+    </div>
+</section>
