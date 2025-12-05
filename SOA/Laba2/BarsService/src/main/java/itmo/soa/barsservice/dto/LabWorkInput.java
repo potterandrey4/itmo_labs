@@ -9,7 +9,7 @@ import itmo.soa.barsservice.model.LabWork;
 public class LabWorkInput {
     private String name;
     private Coordinates coordinates;
-    private Double minimalPoint;
+    private String minimalPoint;
     private Integer personalQualitiesMaximum;
     private Difficulty difficulty;
     private long disciplineId;
@@ -41,11 +41,11 @@ public class LabWorkInput {
         this.coordinates = coordinates;
     }
 
-    public Double getMinimalPoint() {
+    public String getMinimalPoint() {
         return minimalPoint;
     }
 
-    public void setMinimalPoint(Double minimalPoint) {
+    public void setMinimalPoint(String minimalPoint) {
         this.minimalPoint = minimalPoint;
     }
 

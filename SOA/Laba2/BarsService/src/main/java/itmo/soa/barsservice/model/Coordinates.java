@@ -4,13 +4,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Coordinates {
-    private Double x;
-    private Double y;
+    private String x;
+    private String y;
 
     public Coordinates() {
     }
 
-    public Coordinates(Double x, Double y) {
+    public Coordinates(String x, String y) {
         this.x = x;
         this.y = y;
     }
@@ -22,19 +22,19 @@ public class Coordinates {
         return new Coordinates(source.getX(), source.getY());
     }
 
-    public Double getX() {
+    public String getX() {
         return x;
     }
 
-    public void setX(Double x) {
+    public void setX(String x) {
         this.x = x;
     }
 
-    public Double getY() {
+    public String getY() {
         return y;
     }
 
-    public void setY(Double y) {
+    public void setY(String y) {
         this.y = y;
     }
 }

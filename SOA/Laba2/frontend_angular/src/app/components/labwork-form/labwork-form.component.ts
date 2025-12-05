@@ -1,4 +1,5 @@
-import { Component, EventEmitter, HostBinding, Inject, Input, OnChanges, Optional, Output, SimpleChanges } from "@angular/core";
+import { Component, EventEmitter, HostBinding, Inject, Input, OnChanges, Optional, Output, SimpleChanges, ViewChild } from "@angular/core";
+import { NgModel, NgForm } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { Discipline } from "@models/discipline.model";
 import { LabWorkInput } from "@models/labwork-input.model";
@@ -41,6 +42,7 @@ export class LabworkFormComponent implements OnChanges {
 
   form: LabWorkInput = this.createEmptyForm();
   errors: FormErrors = {};
+  @ViewChild('formRef') private _formRef?: NgForm;
 
   readonly difficultyLabels = difficultyLabels;
   readonly difficulties = difficulties;
@@ -99,18 +101,100 @@ export class LabworkFormComponent implements OnChanges {
   validateForm(): boolean {
     const e: FormErrors = {};
 
-    if (!this.form.name?.trim()) e.name = 'Название обязательно';
-    if (this.form.coordinates.x == null) e.coordinates = { ...(e.coordinates || {}), x: 'X координата обязательна' };
-    if (this.form.coordinates.y == null) e.coordinates = { ...(e.coordinates || {}), y: 'Y координата обязательна' };
-    if (this.form.minimalPoint == null) e.minimalPoint = 'Минимальный балл обязателен';
-    if (this.form.disciplineId == null) e.disciplineId = 'Дисциплина обязательна';
+    // Name validation
+    if (!this.form.name?.trim()) {
+      e.name = 'Название обязательно';
+    }
+
+    // Coordinates validation
+    const numRegex = /^\s*-?\d*\.?\d+(?:e[+-]?\d+)?\s*$/i;
+
+    const xStr = this.form.coordinates.x?.toString().trim() || '';
+    if (xStr === '') {
+      e.coordinates = { ...(e.coordinates || {}), x: 'X координата обязательна' };
+    } else if (!numRegex.test(xStr)) {
+      e.coordinates = { ...(e.coordinates || {}), x: 'X координата должна быть числом' };
+    } else {
+      const xVal = parseFloat(xStr);
+      if (isNaN(xVal) || !isFinite(xVal)) {
+        e.coordinates = { ...(e.coordinates || {}), x: 'X координата должна быть конечным числом' };
+      }
+    }
+
+    const yStr = this.form.coordinates.y?.toString().trim() || '';
+    if (yStr === '') {
+      e.coordinates = { ...(e.coordinates || {}), y: 'Y координата обязательна' };
+    } else if (!numRegex.test(yStr)) {
+      e.coordinates = { ...(e.coordinates || {}), y: 'Y координата должна быть числом' };
+    } else {
+      const yVal = parseFloat(yStr);
+      if (isNaN(yVal) || !isFinite(yVal)) {
+        e.coordinates = { ...(e.coordinates || {}), y: 'Y координата должна быть конечным числом' };
+      } else if (yVal <= -156) {
+        e.coordinates = { ...(e.coordinates || {}), y: 'Y координата должна быть больше -156' };
+      }
+    }
+
+    // Minimal point validation
+    const minStr = this.form.minimalPoint?.toString().trim() || '';
+    if (minStr === '') {
+      e.minimalPoint = 'Минимальный балл обязателен';
+    } else if (!numRegex.test(minStr)) {
+      e.minimalPoint = 'Минимальный балл должен быть числом';
+    } else {
+      const minVal = parseFloat(minStr);
+      if (isNaN(minVal) || !isFinite(minVal)) {
+        e.minimalPoint = 'Минимальный балл должен быть конечным числом';
+      } else if (minVal <= 0) {
+        e.minimalPoint = 'Минимальный балл должен быть больше 0';
+      }
+    }
+
+    // Personal qualities maximum validation
+    if (this.form.personalQualitiesMaximum != null && this.form.personalQualitiesMaximum.toString().trim() !== '') {
+      const pqStr = this.form.personalQualitiesMaximum.toString().trim();
+      if (!numRegex.test(pqStr)) {
+        e.personalQualitiesMaximum = 'Личностные качества (макс) должны быть числом';
+      } else {
+        const pqVal = parseFloat(pqStr);
+        if (isNaN(pqVal) || !isFinite(pqVal)) {
+          e.personalQualitiesMaximum = 'Личностные качества (макс) должны быть конечным числом';
+        } else if (pqVal <= 0) {
+          e.personalQualitiesMaximum = 'Личностные качества (макс) должны быть больше 0';
+        }
+      }
+    }
+
+    // Difficulty validation
+    if (this.form.difficulty == null) {
+      e.difficulty = 'Сложность обязательна';
+    }
+
+    // Discipline validation
+    if (this.form.disciplineId == null) {
+      e.disciplineId = 'Дисциплина обязательна';
+    }
 
     this.errors = e;
     return Object.keys(e).length === 0;
   }
 
-  onSubmit(): void {
-    if (!this.validateForm()) return;
+  onSubmit(formRef?: NgForm): void {
+    const actualFormRef = formRef ?? this._formRef;
+    // Mark all fields as touched to show validation errors
+    if (formRef) {
+      Object.keys(formRef.controls).forEach(key => {
+        formRef.controls[key].markAsTouched();
+      });
+    }
+
+    if (!this.validateForm()) {
+      // mark controls as touched and set errors on concrete controls for Material styles
+      if (actualFormRef) {
+        this.markAndSetAllControlErrors(actualFormRef);
+      }
+      return;
+    }
 
     const payload: LabWorkInput = { ...this.form };
 
@@ -136,5 +220,108 @@ export class LabworkFormComponent implements OnChanges {
         ? this.dialogRef?.close({ deleteId: this.selected.id })
         : this.delete.emit(this.selected.id);
     }
+  }
+
+  // Input filtering methods
+  onInputX(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    input.value = this.filterNumber(input.value);
+    this.form.coordinates.x = input.value;
+  }
+
+  onBlurX(control?: NgModel): void {
+    this.validateForm();
+    if (control && control.control) {
+      const err = this.errors.coordinates?.x;
+      control.control.setErrors(err ? { custom: true } : null);
+      if (err) control.control.markAsTouched();
+    }
+  }
+
+  onInputY(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    input.value = this.filterNumber(input.value);
+    this.form.coordinates.y = input.value;
+  }
+
+  onBlurY(control?: NgModel): void {
+    this.validateForm();
+    if (control && control.control) {
+      const err = this.errors.coordinates?.y;
+      control.control.setErrors(err ? { custom: true } : null);
+      if (err) control.control.markAsTouched();
+    }
+  }
+
+  onInputMinimalPoint(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    input.value = this.filterPositiveNumber(input.value);
+    this.form.minimalPoint = input.value;
+  }
+
+  onBlurMinimalPoint(control?: NgModel): void {
+    this.validateForm();
+    if (control && control.control) {
+      const err = this.errors.minimalPoint;
+      control.control.setErrors(err ? { custom: true } : null);
+      if (err) control.control.markAsTouched();
+    }
+  }
+
+  onInputPersonalQualities(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    input.value = this.filterPositiveNumber(input.value);
+    this.form.personalQualitiesMaximum = input.value;
+    // Re-validate to update errors
+    if (this.errors.personalQualitiesMaximum) {
+      this.validateForm();
+    }
+  }
+
+  private markAndSetAllControlErrors(formRef: NgForm) {
+    if (!formRef || !formRef.controls) return;
+    const map: Record<string, string | undefined> = {
+      coordX: this.errors.coordinates?.x,
+      coordY: this.errors.coordinates?.y,
+      minimalPoint: this.errors.minimalPoint,
+      pqMax: this.errors.personalQualitiesMaximum,
+      difficulty: this.errors.difficulty,
+      disciplineId: this.errors.disciplineId
+    };
+    Object.keys(map).forEach(key => {
+      const ctrl = formRef.controls[key];
+      if (!ctrl) return;
+      const errMsg = map[key];
+      if (errMsg) {
+        ctrl.setErrors({ custom: true });
+        try { ctrl.markAsTouched(); } catch (e) { /* ignore */ }
+      } else {
+        ctrl.setErrors(null);
+      }
+    });
+  }
+
+  private filterNumber(value: string): string {
+    // Allow digits, one dot, one minus at start
+    let result = value.replace(/[^0-9.-]/g, '');
+    // Ensure only one dot
+    const parts = result.split('.');
+    if (parts.length > 2) {
+      result = parts[0] + '.' + parts.slice(1).join('');
+    }
+    // Ensure minus only at start
+    result = result.replace(/-/g, (match, offset) => offset === 0 ? match : '');
+    return result;
+  }
+
+  private filterPositiveNumber(value: string): string {
+    // Allow digits, one dot, no minus
+    let result = value.replace(/[^0-9.]/g, '');
+    // Ensure only one dot
+    const parts = result.split('.');
+    if (parts.length > 2) {
+      result = parts[0] + '.' + parts.slice(1).join('');
+    }
+    return result;
   }
 }

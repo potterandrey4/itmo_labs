@@ -1,6 +1,6 @@
 {
     "/LabworkService": {
-        "target": "https://localhost:8443/LabworkService-1",
+        "target": "https://localhost:8445/LabworkService-1",
         "secure": false,
         "changeOrigin": true,
         "pathRewrite": {

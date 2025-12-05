@@ -32,7 +32,10 @@ public class LabworkService {
 		comparators.put("id", Comparator.comparing(LabWork::getId, Comparator.nullsLast(Long::compareTo)));
 		comparators.put("name", Comparator.comparing(LabWork::getName, Comparator.nullsLast(String::compareTo)));
 		comparators.put("minimalpoint",
-				Comparator.comparing(LabWork::getMinimalPoint, Comparator.nullsLast(Double::compareTo)));
+				Comparator.comparing((LabWork lab) -> {
+					String mp = lab.getMinimalPoint();
+					return mp == null ? null : Double.parseDouble(mp);
+				}, Comparator.nullsLast(Double::compareTo)));
 		comparators.put("personalqualitiesmaximum",
 				Comparator.comparing(LabWork::getPersonalQualitiesMaximum, Comparator.nullsLast(Integer::compareTo)));
 		comparators.put("difficulty",
@@ -211,8 +214,16 @@ public class LabworkService {
 		if (minimalPointGreaterThan == null) {
 			return true;
 		}
-		Double minimalPoint = labWork.getMinimalPoint();
-		return minimalPoint != null && minimalPoint > minimalPointGreaterThan;
+		String minimalPointStr = labWork.getMinimalPoint();
+		if (minimalPointStr == null) {
+			return false;
+		}
+		try {
+			Double minimalPoint = Double.parseDouble(minimalPointStr);
+			return minimalPoint > minimalPointGreaterThan;
+		} catch (NumberFormatException e) {
+			return false;
+		}
 	}
 
 	private boolean filterByPersonalQualities(LabWork labWork, Integer personalQualitiesGreaterThan) {
@@ -228,8 +239,10 @@ public class LabworkService {
 		if (coordinates == null) {
 			return xGreater == null && yGreater == null;
 		}
-		boolean matchesX = xGreater == null || (coordinates.getX() != null && Double.parseDouble(coordinates.getX()) > xGreater);
-		boolean matchesY = yGreater == null || (coordinates.getY() != null && Double.parseDouble(coordinates.getY()) > yGreater);
+		boolean matchesX = xGreater == null
+				|| (coordinates.getX() != null && Double.parseDouble(coordinates.getX()) > xGreater);
+		boolean matchesY = yGreater == null
+				|| (coordinates.getY() != null && Double.parseDouble(coordinates.getY()) > yGreater);
 		return matchesX && matchesY;
 	}
 
@@ -238,8 +251,10 @@ public class LabworkService {
 		if (coordinates == null) {
 			return xLess == null && yLess == null;
 		}
-		boolean matchesX = xLess == null || (coordinates.getX() != null && Double.parseDouble(coordinates.getX()) < xLess);
-		boolean matchesY = yLess == null || (coordinates.getY() != null && Double.parseDouble(coordinates.getY()) < yLess);
+		boolean matchesX = xLess == null
+				|| (coordinates.getX() != null && Double.parseDouble(coordinates.getX()) < xLess);
+		boolean matchesY = yLess == null
+				|| (coordinates.getY() != null && Double.parseDouble(coordinates.getY()) < yLess);
 		return matchesX && matchesY;
 	}
 
@@ -267,9 +282,10 @@ public class LabworkService {
 	private void applyInput(LabWork target, LabWorkInput input) {
 		target.setName(input.getName().trim());
 		target.setCoordinates(copyCoordinates(input.getCoordinates()));
-		target.setMinimalPoint(Double.parseDouble(input.getMinimalPoint()));
+		target.setMinimalPoint(input.getMinimalPoint().replace(',', '.'));
 		target.setPersonalQualitiesMaximum(
-				input.getPersonalQualitiesMaximum() != null ? Integer.parseInt(input.getPersonalQualitiesMaximum())
+				input.getPersonalQualitiesMaximum() != null
+						? Integer.parseInt(input.getPersonalQualitiesMaximum().replace(',', '.'))
 						: null);
 		Difficulty difficulty = input.getDifficulty() == null ? Difficulty.VERY_EASY : input.getDifficulty();
 		target.setDifficulty(difficulty);
@@ -293,7 +309,11 @@ public class LabworkService {
 		if (coordinates == null) {
 			return null;
 		}
-		return new Coordinates(coordinates.getX(), coordinates.getY());
+		String x = coordinates.getX();
+		String y = coordinates.getY();
+		return new Coordinates(
+				x != null ? x.replace(',', '.') : null,
+				y != null ? y.replace(',', '.') : null);
 	}
 
 	private static Double coordinatesX(LabWork labWork) {

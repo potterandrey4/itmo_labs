@@ -10,7 +10,7 @@ public class LabWork {
     private String name;
     private Coordinates coordinates;
     private OffsetDateTime creationDate;
-    private Double minimalPoint;
+    private String minimalPoint;
     private Integer personalQualitiesMaximum;
     private Difficulty difficulty;
     private long disciplineId;
@@ -47,11 +47,11 @@ public class LabWork {
         this.creationDate = creationDate;
     }
 
-    public Double getMinimalPoint() {
+    public String getMinimalPoint() {
         return minimalPoint;
     }
 
-    public void setMinimalPoint(Double minimalPoint) {
+    public void setMinimalPoint(String minimalPoint) {
         this.minimalPoint = minimalPoint;
     }
 
