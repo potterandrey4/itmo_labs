@@ -46,7 +46,7 @@ export class AppComponent implements OnInit {
     private labworkService: LabworkService,
     private barsService: BarsService,
     private snackBar: MatSnackBar,
-    private dialog: MatDialog  // ← Добавили MatDialog
+    private dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -54,12 +54,10 @@ export class AppComponent implements OnInit {
     this.loadDisciplines();
   }
 
-  // === Выбор строки (если нужно подсвечивать) ===
   onSelect(labwork: LabWork): void {
     this.selected = labwork;
   }
 
-  // === Остальное — как было, но чуть чище ===
   runSearch(override?: Partial<LabworkSearchFilters>): void {
     const filters = { ...this.filters, ...override, page: override?.page ?? 0 };
     this.filters = filters;
@@ -109,7 +107,6 @@ export class AppComponent implements OnInit {
   onResetFilters(): void {
     this.filters = { ...DEFAULT_FILTERS };
     this.quickNameFilter = '';
-    // Сбросить сортировки в таблице
     if (this.labworkTable) {
       this.labworkTable.sorts = [];
     }
@@ -170,12 +167,10 @@ export class AppComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(() => {
-      // when dialog closed, reload disciplines to pick up changes
       this.loadDisciplines();
     });
   }
 
-  // === CRUD ===
   createLabwork(input: LabWorkInput): void {
     this.withBusy(
       this.labworkService.createLabwork(input),
@@ -268,7 +263,6 @@ export class AppComponent implements OnInit {
     });
   }
 
-  // === Утилиты ===
   private toLabWorkInput(labwork: LabWork): LabWorkInput {
     return {
       name: labwork.name,

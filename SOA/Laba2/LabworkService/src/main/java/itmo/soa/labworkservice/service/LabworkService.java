@@ -326,7 +326,6 @@ public class LabworkService {
 		return coordinates == null ? null : Double.parseDouble(coordinates.getY());
 	}
 
-	// Discipline methods
 	public List<Discipline> getAllDisciplines() {
 		return new ArrayList<>(disciplineStorage.values());
 	}
@@ -361,10 +360,8 @@ public class LabworkService {
 		if (disciplineStorage.remove(id) == null) {
 			throw new NoSuchElementException("Discipline with id=" + id + " not found");
 		}
-		// Remove from labworks
 		storage.values().forEach(lab -> {
 			if (lab.getDisciplineId() == id) {
-				// Maybe set to null or default
 			}
 		});
 	}

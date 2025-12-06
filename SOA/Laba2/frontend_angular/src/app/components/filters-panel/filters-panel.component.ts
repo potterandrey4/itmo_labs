@@ -69,8 +69,6 @@ export class FiltersPanelComponent implements OnInit {
       this.filtersChange.emit({ [field]: undefined });
       return;
     }
-    // value is like 'YYYY-MM-DDTHH:MM' (local). Convert to ISO with timezone (UTC) so server can parse OffsetDateTime.
-    // Append seconds if missing, then create Date and send ISO string (UTC Z): e.g. '2025-11-22T12:34:00Z'
     const withSeconds = value.length === 16 ? `${value}:00` : value;
     const dt = new Date(withSeconds);
     const iso = dt.toISOString();

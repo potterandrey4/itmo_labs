@@ -53,7 +53,6 @@ export class LabworkFormComponent implements OnChanges {
   ) {
     this.dialogMode = !!this.dialogRef;
 
-    // ← ЭТО ГЛАВНОЕ ИСПРАВЛЕНИЕ — заполняем форму при открытии диалога!
     if (this.dialogMode && dialogData) {
       this.selected = dialogData.labwork ?? null;
       if (dialogData.disciplines) {
@@ -63,14 +62,12 @@ export class LabworkFormComponent implements OnChanges {
     }
   }
 
-  // Для inline-режима — когда selected приходит как @Input
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['selected'] || changes['disciplines']) {
       this.updateFormFromSelected();
     }
   }
 
-  // ← Универсальная функция заполнения формы
   private updateFormFromSelected(): void {
     if (this.selected) {
       this.form = {
@@ -101,12 +98,10 @@ export class LabworkFormComponent implements OnChanges {
   validateForm(): boolean {
     const e: FormErrors = {};
 
-    // Name validation
     if (!this.form.name?.trim()) {
       e.name = 'Название обязательно';
     }
 
-    // Coordinates validation
     const numRegex = /^\s*-?\d*\.?\d+(?:e[+-]?\d+)?\s*$/i;
 
     const xStr = this.form.coordinates.x?.toString().trim() || '';
@@ -135,7 +130,6 @@ export class LabworkFormComponent implements OnChanges {
       }
     }
 
-    // Minimal point validation
     const minStr = this.form.minimalPoint?.toString().trim() || '';
     if (minStr === '') {
       e.minimalPoint = 'Минимальный балл обязателен';
@@ -150,7 +144,6 @@ export class LabworkFormComponent implements OnChanges {
       }
     }
 
-    // Personal qualities maximum validation
     if (this.form.personalQualitiesMaximum != null && this.form.personalQualitiesMaximum.toString().trim() !== '') {
       const pqStr = this.form.personalQualitiesMaximum.toString().trim();
       if (!numRegex.test(pqStr)) {
@@ -165,12 +158,10 @@ export class LabworkFormComponent implements OnChanges {
       }
     }
 
-    // Difficulty validation
     if (this.form.difficulty == null) {
       e.difficulty = 'Сложность обязательна';
     }
 
-    // Discipline validation
     if (this.form.disciplineId == null) {
       e.disciplineId = 'Дисциплина обязательна';
     }
@@ -181,7 +172,6 @@ export class LabworkFormComponent implements OnChanges {
 
   onSubmit(formRef?: NgForm): void {
     const actualFormRef = formRef ?? this._formRef;
-    // Mark all fields as touched to show validation errors
     if (formRef) {
       Object.keys(formRef.controls).forEach(key => {
         formRef.controls[key].markAsTouched();
@@ -189,7 +179,6 @@ export class LabworkFormComponent implements OnChanges {
     }
 
     if (!this.validateForm()) {
-      // mark controls as touched and set errors on concrete controls for Material styles
       if (actualFormRef) {
         this.markAndSetAllControlErrors(actualFormRef);
       }
@@ -222,7 +211,6 @@ export class LabworkFormComponent implements OnChanges {
     }
   }
 
-  // Input filtering methods
   onInputX(event: Event): void {
     const input = event.target as HTMLInputElement;
     input.value = this.filterNumber(input.value);
@@ -272,7 +260,6 @@ export class LabworkFormComponent implements OnChanges {
     const input = event.target as HTMLInputElement;
     input.value = this.filterPositiveNumber(input.value);
     this.form.personalQualitiesMaximum = input.value;
-    // Re-validate to update errors
     if (this.errors.personalQualitiesMaximum) {
       this.validateForm();
     }
@@ -302,22 +289,17 @@ export class LabworkFormComponent implements OnChanges {
   }
 
   private filterNumber(value: string): string {
-    // Allow digits, one dot, one minus at start
     let result = value.replace(/[^0-9.-]/g, '');
-    // Ensure only one dot
     const parts = result.split('.');
     if (parts.length > 2) {
       result = parts[0] + '.' + parts.slice(1).join('');
     }
-    // Ensure minus only at start
     result = result.replace(/-/g, (match, offset) => offset === 0 ? match : '');
     return result;
   }
 
   private filterPositiveNumber(value: string): string {
-    // Allow digits, one dot, no minus
     let result = value.replace(/[^0-9.]/g, '');
-    // Ensure only one dot
     const parts = result.split('.');
     if (parts.length > 2) {
       result = parts[0] + '.' + parts.slice(1).join('');

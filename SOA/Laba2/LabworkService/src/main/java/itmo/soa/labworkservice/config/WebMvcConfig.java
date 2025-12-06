@@ -45,7 +45,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
 	@Override
 	public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
-		// ensure our Jackson converter is first
 		MappingJackson2HttpMessageConverter jackson = mappingJackson2HttpMessageConverter(objectMapper());
 		converters.removeIf(c -> c instanceof MappingJackson2HttpMessageConverter);
 		converters.add(0, jackson);

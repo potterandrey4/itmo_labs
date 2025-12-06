@@ -15,13 +15,12 @@ echo "=== Запускаем Payara Micro $PAYARA_VERSION только по HTTP
 
 cd ../deployment
 
-# Скачиваем Payara Micro, если нет
 if [ ! -f "$PAYARA_JAR" ]; then
   echo "Скачиваем Payara Micro $PAYARA_VERSION..."
   wget -q "$PAYARA_URL"
 
   if [ ! -f "$PAYARA_JAR" ]; then
-    echo "❌ Ошибка скачивания Payara Micro!"
+    echo "Ошибка скачивания Payara Micro!"
     echo "URL: $PAYARA_URL"
     echo "Скачай вручную и положи в deployment/"
     exit 1
@@ -30,11 +29,9 @@ fi
 
 echo "✓ Payara Micro найден: $PAYARA_JAR"
 
-# Убиваем старый процесс
 pkill -f payara-micro || true
 sleep 1
 
-# Запуск
 echo "=== Запускаем Payara Micro ==="
 java \
   -Djavax.net.ssl.keyStore=../files_https/labwork-keystore.jks \

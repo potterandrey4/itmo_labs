@@ -2,7 +2,7 @@
   "name": "frontend",
   "version": "0.0.0",
   "scripts": {
-    "start:https": "ng serve --host 0.0.0.0 --port 4200 --ssl true --ssl-cert ../files_https/frontend.pem --ssl-key ../files_https/frontend-key.pem",
+    "start:https": "ng serve --host 0.0.0.0 --port 4200 --ssl true --ssl-cert ../files_https/frontend.pem --ssl-key ../files_https/frontend-key.pem --disable-host-check",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",

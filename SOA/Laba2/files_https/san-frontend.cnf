@@ -1,0 +1,10 @@
+[req]
+distinguished_name = dn
+prompt = no
+req_extensions = v3_req
+
+[dn]
+CN = helios.cs.ifmo.ru
+
+[v3_req]
+subjectAltName = DNS:helios.cs.ifmo.ru,DNS:localhost,IP:127.0.0.1,IP:77.83.86.104,IP:77.234.196.4

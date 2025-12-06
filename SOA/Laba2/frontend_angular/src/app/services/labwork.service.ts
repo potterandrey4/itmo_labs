@@ -55,7 +55,6 @@ export class LabworkService {
         return this.httpClient.request<LabWork>(`${LABWORK_API_BASE_URL}/labworks/${id}`);
     }
 
-    // Discipline functions
     getAllDisciplines(): Observable<Discipline[]> {
         return this.httpClient.request<Discipline[]>(`${LABWORK_API_BASE_URL}/disciplines`);
     }

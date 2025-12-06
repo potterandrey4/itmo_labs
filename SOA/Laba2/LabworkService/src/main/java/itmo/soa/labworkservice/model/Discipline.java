@@ -4,8 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PositiveOrZero;
 
 public class Discipline {
-    private long id; // Значение поля должно быть больше 0, Значение этого поля должно быть
-                     // уникальным, Значение этого поля должно генерироваться автоматически
+    private long id;
     @NotBlank(message = "Discipline name must not be blank")
     private String name;
 
