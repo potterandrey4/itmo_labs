@@ -4,7 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { ErrorPayload } from '../models';
 
-export const LABWORK_API_BASE_URL = 'https://77.83.86.104:8443/LabworkService-1';
+export const LABWORK_API_BASE_URL = 'https://77.83.86.104:8445/LabworkService-1';
 export const BARS_API_BASE_URL = 'https://77.83.86.104:8444';
 
 @Injectable({

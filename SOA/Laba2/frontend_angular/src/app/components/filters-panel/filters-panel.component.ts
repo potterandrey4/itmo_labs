@@ -37,7 +37,7 @@ export class FiltersPanelComponent implements OnInit {
     if (isNaN(num)) return;
     if (field === 'size' && (num < 1 || num > 100)) return;
     if (field === 'page' && num < 0) return;
-    if (['minimalPointGreaterThan', 'personalQualitiesMaximumGreaterThan', 'xGreaterThan', 'xLessThan', 'yGreaterThan', 'yLessThan'].includes(field as string) && (num < -1e10 || num > 1e10)) return;
+    if (['minimalPointGreaterThan', 'minimalPointLessThan', 'personalQualitiesMaximumGreaterThan', 'personalQualitiesMaximumLessThan', 'xGreaterThan', 'xLessThan', 'yGreaterThan', 'yLessThan'].includes(field as string) && (num < -1e10 || num > 1e10)) return;
     this.filtersChange.emit({ [field]: value === '' ? undefined : num });
   }
 

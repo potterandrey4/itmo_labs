@@ -24,8 +24,14 @@ public class SearchDTO {
     @DecimalMin(value = "0", inclusive = false)
     private Double minimalPointGreaterThan;
 
+    @DecimalMin(value = "0", inclusive = false)
+    private Double minimalPointLessThan;
+
     @Positive
     private Integer personalQualitiesMaximumGreaterThan;
+
+    @Positive
+    private Integer personalQualitiesMaximumLessThan;
 
     private Double xGreaterThan;
     private Double xLessThan;
@@ -88,12 +94,28 @@ public class SearchDTO {
         this.minimalPointGreaterThan = minimalPointGreaterThan;
     }
 
+    public Double getMinimalPointLessThan() {
+        return minimalPointLessThan;
+    }
+
+    public void setMinimalPointLessThan(Double minimalPointLessThan) {
+        this.minimalPointLessThan = minimalPointLessThan;
+    }
+
     public Integer getPersonalQualitiesMaximumGreaterThan() {
         return personalQualitiesMaximumGreaterThan;
     }
 
     public void setPersonalQualitiesMaximumGreaterThan(Integer personalQualitiesMaximumGreaterThan) {
         this.personalQualitiesMaximumGreaterThan = personalQualitiesMaximumGreaterThan;
+    }
+
+    public Integer getPersonalQualitiesMaximumLessThan() {
+        return personalQualitiesMaximumLessThan;
+    }
+
+    public void setPersonalQualitiesMaximumLessThan(Integer personalQualitiesMaximumLessThan) {
+        this.personalQualitiesMaximumLessThan = personalQualitiesMaximumLessThan;
     }
 
     public Double getXGreaterThan() {

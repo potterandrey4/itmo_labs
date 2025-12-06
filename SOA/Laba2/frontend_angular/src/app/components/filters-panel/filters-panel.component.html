@@ -24,34 +24,46 @@
     </div>
     <div class="filter-row">
         <div class="app-field">
-            <label class="form-label">Минимальный балл</label>
+            <label class="form-label">Минимальный балл &gt;</label>
             <input class="form-control" type="number" [value]="filters.minimalPointGreaterThan ?? ''"
                 (input)="handleNumberChange('minimalPointGreaterThan', $event)" />
         </div>
+        <div class="app-field">
+            <label class="form-label">Минимальный балл ≤</label>
+            <input class="form-control" type="number" [value]="filters.minimalPointLessThan ?? ''"
+                (input)="handleNumberChange('minimalPointLessThan', $event)" />
+        </div>
+    </div>
+    <div class="filter-row">
         <div class="app-field">
             <label class="form-label">Личностные качества (макс) &gt;</label>
             <input class="form-control" type="number" [value]="filters.personalQualitiesMaximumGreaterThan ?? ''"
                 (input)="handleNumberChange('personalQualitiesMaximumGreaterThan', $event)" />
         </div>
+        <div class="app-field">
+            <label class="form-label">Личностные качества (макс) ≤</label>
+            <input class="form-control" type="number" [value]="filters.personalQualitiesMaximumLessThan ?? ''"
+                (input)="handleNumberChange('personalQualitiesMaximumLessThan', $event)" />
+        </div>
     </div>
     <div class="filter-row">
         <div class="app-field">
-            <label class="form-label">X ≥</label>
+            <label class="form-label">X &gt;</label>
             <input class="form-control" type="number" [value]="filters.xGreaterThan ?? ''"
                 (input)="handleNumberChange('xGreaterThan', $event)" />
         </div>
         <div class="app-field">
-            <label class="form-label">X ≤</label>
+            <label class="form-label">X &lt;</label>
             <input class="form-control" type="number" [value]="filters.xLessThan ?? ''"
                 (input)="handleNumberChange('xLessThan', $event)" />
         </div>
         <div class="app-field">
-            <label class="form-label">Y ≥</label>
+            <label class="form-label">Y &gt;</label>
             <input class="form-control" type="number" [value]="filters.yGreaterThan ?? ''"
                 (input)="handleNumberChange('yGreaterThan', $event)" />
         </div>
         <div class="app-field">
-            <label class="form-label">Y ≤</label>
+            <label class="form-label">Y &lt;</label>
             <input class="form-control" type="number" [value]="filters.yLessThan ?? ''"
                 (input)="handleNumberChange('yLessThan', $event)" />
         </div>

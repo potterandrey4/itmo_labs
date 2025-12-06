@@ -32,13 +32,26 @@ echo "=== Запуск LabworkService на Payara Micro ==="
 echo "Payara: $PAYARA_JAR"
 echo "War:    $WAR"
 
-pkill -9 -f payara-micro || true
-pkill -9 -f "java.*LabworkService" || true
-sleep 2
+# Убиваем все Java процессы пользователя, связанные с Payara
+pkill -9 -f "payara-micro" || true
+sleep 1
+
+# Проверяем, освободился ли порт 8445
+if lsof -Pi :8445 -sTCP:LISTEN -t >/dev/null 2>&1 ; then
+    echo "Порт 8445 всё ещё занят, принудительно убиваем процесс..."
+    kill -9 $(lsof -t -i:8445) || true
+    sleep 2
+fi
+
+echo "Порт 8445 свободен, запускаем сервис..."
+
+# Создаём директорию для runtime в домашнем каталоге
+RUNTIME_DIR="$DIR/payara-runtime"
+mkdir -p "$RUNTIME_DIR"
 
 java \
   -XX:MaxHeapSize=2G \
-  -XX:MaxMetaspaceSize=256m \
+  -XX:MaxMetaspaceSize=1G \
   -Djavax.net.ssl.keyStore=$DIR/../files_https/labwork-keystore.jks \
   -Djavax.net.ssl.keyStorePassword=ufwiojq$hqoo~i1098*90w@yrf8qihc \
   -Djavax.net.ssl.keyStoreType=JKS \
@@ -48,11 +61,14 @@ java \
   -Dhazelcast.local.localAddress=127.0.0.1 \
   -jar "$PAYARA_JAR" \
   --deploy "$WAR" \
+  --rootdir "$RUNTIME_DIR" \
+  --autoBindHttp \
   --sslPort 8445 \
   --sslCert labwork \
+  --nohostaware \
   --nocluster \
   --lite \
   --disablephonehome \
-  --logtofile /tmp/payara-labwork.log \
+  --logtofile "$DIR/payara-labwork.log" \
   --maxhttpthreads 10 \
   --minhttpthreads 2

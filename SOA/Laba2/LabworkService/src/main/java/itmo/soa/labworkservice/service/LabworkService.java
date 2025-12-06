@@ -72,8 +72,11 @@ public class LabworkService {
 				.stream()
 				.filter(lab -> filterByName(lab, safeFilters.getName()))
 				.filter(lab -> filterByMinDifficulty(lab, safeFilters.getMinDifficulty()))
-				.filter(lab -> filterByMinimalPoint(lab, safeFilters.getMinimalPointGreaterThan()))
-				.filter(lab -> filterByPersonalQualities(lab, safeFilters.getPersonalQualitiesMaximumGreaterThan()))
+				.filter(lab -> filterByMinimalPointGreater(lab, safeFilters.getMinimalPointGreaterThan()))
+				.filter(lab -> filterByMinimalPointLess(lab, safeFilters.getMinimalPointLessThan()))
+				.filter(lab -> filterByPersonalQualitiesGreater(lab,
+						safeFilters.getPersonalQualitiesMaximumGreaterThan()))
+				.filter(lab -> filterByPersonalQualitiesLess(lab, safeFilters.getPersonalQualitiesMaximumLessThan()))
 				.filter(lab -> filterByCoordinateGreater(lab, safeFilters.getXGreaterThan(),
 						safeFilters.getYGreaterThan()))
 				.filter(lab -> filterByCoordinateLess(lab, safeFilters.getXLessThan(), safeFilters.getYLessThan()))
@@ -82,7 +85,6 @@ public class LabworkService {
 				.filter(lab -> filterByDisciplineName(lab, safeFilters.getDisciplineName()))
 				.sorted(comparator)
 				.toList();
-
 		int total = filtered.size();
 		if (total == 0) {
 			return PageLabWork.of(Collections.emptyList(), 0, page, size);
@@ -210,7 +212,7 @@ public class LabworkService {
 		return difficulty == minDifficulty || difficulty.isGreaterThan(minDifficulty);
 	}
 
-	private boolean filterByMinimalPoint(LabWork labWork, Double minimalPointGreaterThan) {
+	private boolean filterByMinimalPointGreater(LabWork labWork, Double minimalPointGreaterThan) {
 		if (minimalPointGreaterThan == null) {
 			return true;
 		}
@@ -226,12 +228,36 @@ public class LabworkService {
 		}
 	}
 
-	private boolean filterByPersonalQualities(LabWork labWork, Integer personalQualitiesGreaterThan) {
+	private boolean filterByMinimalPointLess(LabWork labWork, Double minimalPointLessThan) {
+		if (minimalPointLessThan == null) {
+			return true;
+		}
+		String minimalPointStr = labWork.getMinimalPoint();
+		if (minimalPointStr == null) {
+			return false;
+		}
+		try {
+			Double minimalPoint = Double.parseDouble(minimalPointStr);
+			return minimalPoint <= minimalPointLessThan;
+		} catch (NumberFormatException e) {
+			return false;
+		}
+	}
+
+	private boolean filterByPersonalQualitiesGreater(LabWork labWork, Integer personalQualitiesGreaterThan) {
 		if (personalQualitiesGreaterThan == null) {
 			return true;
 		}
 		Integer value = labWork.getPersonalQualitiesMaximum();
 		return value != null && value > personalQualitiesGreaterThan;
+	}
+
+	private boolean filterByPersonalQualitiesLess(LabWork labWork, Integer personalQualitiesMaximumLessThan) {
+		if (personalQualitiesMaximumLessThan == null) {
+			return true;
+		}
+		Integer value = labWork.getPersonalQualitiesMaximum();
+		return value != null && value <= personalQualitiesMaximumLessThan;
 	}
 
 	private boolean filterByCoordinateGreater(LabWork labWork, Double xGreater, Double yGreater) {

@@ -70,7 +70,9 @@ export interface LabworkSearchFilters {
     name?: string;
     minDifficulty?: Difficulty;
     minimalPointGreaterThan?: number;
+    minimalPointLessThan?: number;
     personalQualitiesMaximumGreaterThan?: number;
+    personalQualitiesMaximumLessThan?: number;
     xGreaterThan?: number;
     xLessThan?: number;
     yGreaterThan?: number;

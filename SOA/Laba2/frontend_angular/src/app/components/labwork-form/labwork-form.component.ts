@@ -122,11 +122,18 @@ export class LabworkFormComponent implements OnChanges {
     } else if (!numRegex.test(yStr)) {
       e.coordinates = { ...(e.coordinates || {}), y: 'Y координата должна быть числом' };
     } else {
-      const yVal = parseFloat(yStr);
+      const yVal = Number(yStr);
       if (isNaN(yVal) || !isFinite(yVal)) {
         e.coordinates = { ...(e.coordinates || {}), y: 'Y координата должна быть конечным числом' };
-      } else if (yVal <= -156) {
-        e.coordinates = { ...(e.coordinates || {}), y: 'Y координата должна быть больше -156' };
+      } else {
+        // Проверяем строковое представление для точного сравнения с -156
+        const normalizedStr = yStr.replace(/^\s*(-?)0*(\d+(?:\.\d+)?(?:e[+-]?\d+)?)\s*$/i, '$1$2');
+        const isExactlyMinus156 = normalizedStr === '-156' || normalizedStr === '-156.0' || /^-156\.0+$/.test(normalizedStr);
+        const isLessThanMinus156 = yVal < -156 && !isExactlyMinus156;
+
+        if (isExactlyMinus156 || isLessThanMinus156) {
+          e.coordinates = { ...(e.coordinates || {}), y: 'Y координата должна быть больше -156' };
+        }
       }
     }
 
